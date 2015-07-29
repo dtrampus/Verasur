@@ -1,3 +1,7 @@
+main_provider:
+    resource: "@MainBundle/Resources/config/routing/provider.yml"
+    prefix:   /provider
+
 main_home:
     path:     /
     defaults: { _controller: MainBundle:Default:index }
