@@ -44,6 +44,11 @@ class ClientController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'El cliente se ha creado correctamente.'
+            );
+            
             return $this->redirect($this->generateUrl('client_show', array('id' => $entity->getId())));
         }
 
@@ -147,7 +152,7 @@ class ClientController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Grabar', 'attr' => array('class' => 'btn-primary')));
 
         return $form;
     }
@@ -172,7 +177,12 @@ class ClientController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('client_edit', array('id' => $id)));
+            $this->addFlash(
+                'success',
+                'El cliente se ha editado correctamente.'
+            );
+            
+            return $this->redirect($this->generateUrl('client_show', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Client:edit.html.twig', array(
@@ -198,6 +208,11 @@ class ClientController extends Controller
                 throw $this->createNotFoundException('Unable to find Client entity.');
             }
 
+            $this->addFlash(
+                'success',
+                'El cliente se ha eliminado correctamente.'
+            );
+            
             $em->remove($entity);
             $em->flush();
         }
