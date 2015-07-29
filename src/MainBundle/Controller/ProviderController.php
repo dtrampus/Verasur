@@ -43,6 +43,11 @@ class ProviderController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El proveedor se ha ingresado correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('provider_show', array('id' => $entity->getId())));
         }
@@ -206,7 +211,11 @@ class ProviderController extends Controller
             $em->remove($entity);
             $em->flush();
         }
-
+        
+        $this->addFlash(
+            'success',
+            'El proveedor se ha eliminado correctamente.'
+        );
         return $this->redirect($this->generateUrl('provider'));
     }
 
