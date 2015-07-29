@@ -1,6 +1,9 @@
 main_provider:
     resource: "@MainBundle/Resources/config/routing/provider.yml"
     prefix:   /provider
+main_client:
+    resource: "@MainBundle/Resources/config/routing/client.yml"
+    prefix:   /client
 
 main_home:
     path:     /
