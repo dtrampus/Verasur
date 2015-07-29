@@ -67,7 +67,7 @@ class ProviderController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Crear', 'attr' => array('class' => 'btn-primary')));
 
         return $form;
     }
@@ -147,7 +147,7 @@ class ProviderController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Grabar', 'attr' => array('class' => 'btn-primary')));
 
         return $form;
     }
@@ -171,10 +171,15 @@ class ProviderController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-
-            return $this->redirect($this->generateUrl('provider_edit', array('id' => $id)));
+            $this->addFlash(
+                'success',
+                'El proveedor se ha editado correctamente.'
+            );
+            
+            return $this->redirect($this->generateUrl('provider_show', array('id' => $id)));
+            //return $this->redirect($this->generateUrl('provider_edit', array('id' => $id)));
         }
-
+       
         return $this->render('MainBundle:Provider:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -217,7 +222,7 @@ class ProviderController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('provider_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }
