@@ -5,37 +5,37 @@ namespace MainBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use MainBundle\Entity\Client;
-use MainBundle\Form\ClientType;
+use MainBundle\Entity\Tank;
+use MainBundle\Form\TankType;
 
 /**
- * Client controller.
+ * Tank controller.
  *
  */
-class ClientController extends Controller
+class TankController extends Controller
 {
 
     /**
-     * Lists all Client entities.
+     * Lists all Tank entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MainBundle:Client')->findAll();
-        session_destroy();
-        return $this->render('MainBundle:Client:index.html.twig', array(
+        $entities = $em->getRepository('MainBundle:Tank')->findAll();
+
+        return $this->render('MainBundle:Tank:index.html.twig', array(
             'entities' => $entities,
         ));
     }
     /**
-     * Creates a new Client entity.
+     * Creates a new Tank entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new Client();
+        $entity = new Tank();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -46,29 +46,29 @@ class ClientController extends Controller
 
             $this->addFlash(
                 'success',
-                'El cliente se ha creado correctamente.'
+                'El tanque se ha creado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('client_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('tank_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('MainBundle:Client:new.html.twig', array(
+        return $this->render('MainBundle:Tank:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Creates a form to create a Client entity.
+     * Creates a form to create a Tank entity.
      *
-     * @param Client $entity The entity
+     * @param Tank $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Client $entity)
+    private function createCreateForm(Tank $entity)
     {
-        $form = $this->createForm(new ClientType(), $entity, array(
-            'action' => $this->generateUrl('client_create'),
+        $form = $this->createForm(new TankType(), $entity, array(
+            'action' => $this->generateUrl('tank_create'),
             'method' => 'POST',
         ));
 
@@ -78,60 +78,60 @@ class ClientController extends Controller
     }
 
     /**
-     * Displays a form to create a new Client entity.
+     * Displays a form to create a new Tank entity.
      *
      */
     public function newAction()
     {
-        $entity = new Client();
+        $entity = new Tank();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('MainBundle:Client:new.html.twig', array(
+        return $this->render('MainBundle:Tank:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a Client entity.
+     * Finds and displays a Tank entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MainBundle:Client')->find($id);
+        $entity = $em->getRepository('MainBundle:Tank')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Tank entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('MainBundle:Client:show.html.twig', array(
+        return $this->render('MainBundle:Tank:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing Client entity.
+     * Displays a form to edit an existing Tank entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MainBundle:Client')->find($id);
+        $entity = $em->getRepository('MainBundle:Tank')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Tank entity.');
         }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('MainBundle:Client:edit.html.twig', array(
+        return $this->render('MainBundle:Tank:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -139,16 +139,16 @@ class ClientController extends Controller
     }
 
     /**
-    * Creates a form to edit a Client entity.
+    * Creates a form to edit a Tank entity.
     *
-    * @param Client $entity The entity
+    * @param Tank $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Client $entity)
+    private function createEditForm(Tank $entity)
     {
-        $form = $this->createForm(new ClientType(), $entity, array(
-            'action' => $this->generateUrl('client_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new TankType(), $entity, array(
+            'action' => $this->generateUrl('tank_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -157,17 +157,17 @@ class ClientController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Client entity.
+     * Edits an existing Tank entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MainBundle:Client')->find($id);
+        $entity = $em->getRepository('MainBundle:Tank')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Tank entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -176,23 +176,23 @@ class ClientController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-
+            
             $this->addFlash(
                 'success',
-                'El cliente se ha grabado correctamente.'
+                'El tanque se ha grabado correctamente.'
             );
-            
-            return $this->redirect($this->generateUrl('client_show', array('id' => $id)));
+
+            return $this->redirect($this->generateUrl('tank_show', array('id' => $id)));
         }
 
-        return $this->render('MainBundle:Client:edit.html.twig', array(
+        return $this->render('MainBundle:Tank:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
-     * Deletes a Client entity.
+     * Deletes a Tank entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -202,26 +202,26 @@ class ClientController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MainBundle:Client')->find($id);
+            $entity = $em->getRepository('MainBundle:Tank')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Client entity.');
+                throw $this->createNotFoundException('Unable to find Tank entity.');
             }
 
             $this->addFlash(
                 'success',
-                'El cliente se ha eliminado correctamente.'
+                'El tanque se ha eliminado correctamente.'
             );
             
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('client'));
+        return $this->redirect($this->generateUrl('tank'));
     }
 
     /**
-     * Creates a form to delete a Client entity by id.
+     * Creates a form to delete a Tank entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -230,9 +230,9 @@ class ClientController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('client_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('tank_delete', array('id' => $id)))
             ->setMethod('DELETE')
-//            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

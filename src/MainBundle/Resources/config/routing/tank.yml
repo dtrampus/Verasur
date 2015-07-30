@@ -1,0 +1,30 @@
+tank:
+    path:     /
+    defaults: { _controller: "MainBundle:Tank:index" }
+
+tank_show:
+    path:     /{id}/show
+    defaults: { _controller: "MainBundle:Tank:show" }
+
+tank_new:
+    path:     /new
+    defaults: { _controller: "MainBundle:Tank:new" }
+
+tank_create:
+    path:     /create
+    defaults: { _controller: "MainBundle:Tank:create" }
+    methods:  POST
+
+tank_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MainBundle:Tank:edit" }
+
+tank_update:
+    path:     /{id}/update
+    defaults: { _controller: "MainBundle:Tank:update" }
+    methods:  [POST, PUT]
+
+tank_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MainBundle:Tank:delete" }
+    methods:  [POST, DELETE]
