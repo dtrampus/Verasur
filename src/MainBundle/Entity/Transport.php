@@ -7,13 +7,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Client
+ * Transport
  *
- * @ORM\Table(name="clients")
- * @ORM\Entity(repositoryClass="MainBundle\Entity\ClientRepository")
+ * @ORM\Table(name="transports")
+ * @ORM\Entity(repositoryClass="MainBundle\Entity\TransportRepository")
  * @UniqueEntity("code")
  */
-class Client
+class Transport
 {
     /**
      * @var integer
@@ -40,9 +40,9 @@ class Client
      *      min = 2,
      *      minMessage = "El campo debe llevar minimo {{ limit }} caracteres"
      * )
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="transport", type="string", length=255)
      */
-    private $nombre;
+    private $transport;
 
 
     /**
@@ -59,7 +59,7 @@ class Client
      * Set code
      *
      * @param string $code
-     * @return Client
+     * @return Transport
      */
     public function setCode($code)
     {
@@ -79,25 +79,25 @@ class Client
     }
 
     /**
-     * Set nombre
+     * Set transport
      *
-     * @param string $nombre
-     * @return Client
+     * @param string $transport
+     * @return Transport
      */
-    public function setNombre($nombre)
+    public function setTransport($transport)
     {
-        $this->nombre = $nombre;
+        $this->transport = $transport;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get transport
      *
      * @return string 
      */
-    public function getNombre()
+    public function getTransport()
     {
-        return $this->nombre;
+        return $this->transport;
     }
 }
