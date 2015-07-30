@@ -16,3 +16,7 @@ main_client:
 main_home:
     path:     /
     defaults: { _controller: MainBundle:Default:index }
+
+main_product:
+    resource: "@MainBundle/Resources/config/routing/product.yml"
+    prefix:   /product

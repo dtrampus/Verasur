@@ -1,10 +1,9 @@
-
 {% extends 'base.html.twig' %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Proveedores <span>&gt; Listado de Proveedores </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Productos <span>&gt; Listado de Productos </span></h1>
         </div>
     </div>
     
@@ -39,7 +38,7 @@
                     -->
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Listado de Proveedores </h2>
+                        <h2>Listado de Productos </h2>
 
                     </header>
 
@@ -59,7 +58,10 @@
                                 <thead>
                                     <tr>
                                         <th data-hide="phone">Código</th>
-                                        <th data-hide="phone">Nombre</th>
+                                        <th data-hide="phone">Descripción</th>
+                                        <th data-hide="phone">Nro. Fórmula Producción</th>
+                                        <th data-hide="phone">Cálculo Crudo-Lar</th>
+                                        <th data-hide="phone">Ingreso/Egreso</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -67,9 +69,12 @@
                                     {% for entity in entities %}
                                         <tr>
                                             <td>{{ entity.code }}</td>
-                                            <td>{{ entity.name }}</td>
+                                            <td>{{ entity.description }}</td>
+                                            <td>{{ entity.numFormulaProduction }}</td>
+                                            <td>{{ entity.crudeLar ? 'Si':'No' }}</td>
+                                            <td>{{ entity.typeEntry }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ path('provider_show', { 'id': entity.id }) }}">Ver</a>
+                                                <a class="btn btn-primary" href="{{ path('product_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -145,7 +150,7 @@
                     }
                 }
             });
-            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('provider_new') }}">Nuevo</a>');
+            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('product_new') }}">Nuevo</a>');
         });
     </script>
 {% endblock %}

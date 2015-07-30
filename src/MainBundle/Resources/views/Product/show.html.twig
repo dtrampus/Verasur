@@ -5,7 +5,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Proveedores <span>&gt; Mostrar Proveedor </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Productos <span>&gt; Mostrar Producto </span></h1>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
 
                 -->
                 <header>
-                    <h2>Proveedor</h2>
+                    <h2>Producto</h2>
                 </header>
 
                 <!-- widget div-->
@@ -50,12 +50,15 @@
                     <!-- widget content -->
                     <div class="widget-body">
                         <p>Código: {{ entity.code }}</p>
-                        <p>Nombre: {{ entity.name }}</p>
+                        <p>Descripcion: {{ entity.description }}</p>
+                        <p>Nro. Formula Produccion: {{ entity.numFormulaProduction }}</p>
+                        <p>Calculo Crudo-Lar: {{ entity.crudeLar ? 'Si':'No' }}</p>
+                        <p>Ingreso/Egreso: {{ entity.typeEntry }}</p>
 
                         <hr class="simple">
 
-                        <a href="{{ path('provider') }}" class="btn btn-default">Volver</a>
-                        <a href="{{ path('provider_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
+                        <a href="{{ path('product') }}" class="btn btn-default">Volver</a>
+                        <a href="{{ path('product_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
                         <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
 
                     </div>
@@ -93,3 +96,4 @@
     {{ form_end(delete_form) }}
     
 {% endblock %}
+
