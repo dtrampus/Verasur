@@ -5,12 +5,14 @@ namespace MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Provider
  *
  * @ORM\Table(name="providers")
  * @ORM\Entity(repositoryClass="MainBundle\Entity\ProviderRepository")
+ * @UniqueEntity("code")
  */
 class Provider
 {
