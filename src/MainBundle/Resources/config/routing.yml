@@ -1,3 +1,11 @@
+main_tank:
+    resource: "@MainBundle/Resources/config/routing/tank.yml"
+    prefix:   /tank
+
+main_transport:
+    resource: "@MainBundle/Resources/config/routing/transport.yml"
+    prefix:   /transport
+
 main_provider:
     resource: "@MainBundle/Resources/config/routing/provider.yml"
     prefix:   /provider
