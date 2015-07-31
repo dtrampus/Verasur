@@ -41,6 +41,7 @@ class ProductController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setActive(true);
             $em->persist($entity);
             $em->flush();
             
@@ -208,7 +209,7 @@ class ProductController extends Controller
                 throw $this->createNotFoundException('Unable to find Product entity.');
             }
 
-            $em->remove($entity);
+            $em->getRepository('MainBundle:Product')->remove($entity);
             $em->flush();
         }
             $this->addFlash(

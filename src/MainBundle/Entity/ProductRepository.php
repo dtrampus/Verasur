@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
+    public function remove(Product $p){
+        $p->setActive(false);
+    }
 }

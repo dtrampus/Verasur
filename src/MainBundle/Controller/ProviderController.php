@@ -41,6 +41,7 @@ class ProviderController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setActive(true);
             $em->persist($entity);
             $em->flush();
             
@@ -208,7 +209,7 @@ class ProviderController extends Controller
                 throw $this->createNotFoundException('Unable to find Provider entity.');
             }
 
-            $em->remove($entity);
+            $em->getRepository('MainBundle:Provider')->remove($entity);
             $em->flush();
         }
         
