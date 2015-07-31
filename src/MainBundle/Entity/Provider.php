@@ -149,6 +149,7 @@ class Provider
     public function getIngresess()
     {
         return $this->ingresess;
+    }
 
     /**
      * Set active

@@ -285,6 +285,9 @@ class Product
     public function getMovements()
     {
         return $this->movements;
+    }
+    
+    /*
      * Set active
      *
      * @param boolean $active
