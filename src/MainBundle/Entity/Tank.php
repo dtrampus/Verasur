@@ -3,12 +3,16 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MainBundle\Entity\Product;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Tank
  *
  * @ORM\Table(name="tanks")
  * @ORM\Entity(repositoryClass="MainBundle\Entity\TankRepository")
+ * @UniqueEntity("code")
  */
 class Tank
 {
@@ -84,6 +88,13 @@ class Tank
      */
     private $totalCapacity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="tanks")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @Assert\NotBlank()
+     * 
+     */
+    private $product;
 
     /**
      * Get id
@@ -300,5 +311,28 @@ class Tank
     public function getTotalCapacity()
     {
         return $this->totalCapacity;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \MainBundle\Entity\Product $product
+     * @return Tank
+     */
+    public function setProduct(\MainBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \MainBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

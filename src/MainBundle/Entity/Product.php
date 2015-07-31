@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\Tank;
 
 /**
  * Product
@@ -67,6 +68,15 @@ class Product
      */
     private $typeEntry;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Tank", mappedBy="product")
+     */
+    private $tanks;
+    
+    public function __construct()
+    {
+        $this->tanks = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -191,5 +201,42 @@ class Product
     public function getTypeEntry()
     {
         return $this->typeEntry;
+    }
+
+    /**
+     * Add tanks
+     *
+     * @param \MainBundle\Entity\Tank $tanks
+     * @return Product
+     */
+    public function addTank(\MainBundle\Entity\Tank $tanks)
+    {
+        $this->tanks[] = $tanks;
+
+        return $this;
+    }
+
+    /**
+     * Remove tanks
+     *
+     * @param \MainBundle\Entity\Tank $tanks
+     */
+    public function removeTank(\MainBundle\Entity\Tank $tanks)
+    {
+        $this->tanks->removeElement($tanks);
+    }
+
+    /**
+     * Get tanks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTanks()
+    {
+        return $this->tanks;
+    }
+    
+    public function __toString() {
+        return $this->code;
     }
 }
