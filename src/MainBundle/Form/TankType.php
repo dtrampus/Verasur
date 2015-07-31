@@ -24,6 +24,7 @@ class TankType extends AbstractType
             ->add('diameter','text', array('label'=>'Diametro Interno'))
             ->add('liter','text', array('label'=>'Litro / CM'))
             ->add('totalCapacity','text', array('label'=>'Capacidad Total'))
+            ->add('product', 'entity', array('label' => 'Producto','placeholder' => 'Elige una opción','class' => 'MainBundle\Entity\Product'))
         ;
     }
     
