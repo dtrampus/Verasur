@@ -5,6 +5,7 @@ namespace MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\Egress;
 
 /**
  * Client
@@ -44,6 +45,17 @@ class Client
      */
     private $nombre;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Egress", mappedBy="client")
+     */
+    private $egresses;
 
     /**
      * Get id
@@ -99,5 +111,68 @@ class Client
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Client
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->egresses = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add egresses
+     *
+     * @param \MainBundle\Entity\Egress $egresses
+     * @return Client
+     */
+    public function addEgress(\MainBundle\Entity\Egress $egresses)
+    {
+        $this->egresses[] = $egresses;
+
+        return $this;
+    }
+
+    /**
+     * Remove egresses
+     *
+     * @param \MainBundle\Entity\Egress $egresses
+     */
+    public function removeEgress(\MainBundle\Entity\Egress $egresses)
+    {
+        $this->egresses->removeElement($egresses);
+    }
+
+    /**
+     * Get egresses
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEgresses()
+    {
+        return $this->egresses;
     }
 }

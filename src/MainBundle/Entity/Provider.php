@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\Ingress;
 
 /**
  * Provider
@@ -48,6 +49,11 @@ class Provider
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+    
+    /*
+     * @ORM\OneToMany(targetEntity="Ingress", mappedBy="provider")
+     */
+    private $ingresess;
 
     /**
      * Get id
@@ -103,6 +109,46 @@ class Provider
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ingresess = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ingresess
+     *
+     * @param \MainBundle\Entity\Ingress $ingresess
+     * @return Provider
+     */
+    public function addIngresess(\MainBundle\Entity\Ingress $ingresess)
+    {
+        $this->ingresess[] = $ingresess;
+
+        return $this;
+    }
+
+    /**
+     * Remove ingresess
+     *
+     * @param \MainBundle\Entity\Ingress $ingresess
+     */
+    public function removeIngresess(\MainBundle\Entity\Ingress $ingresess)
+    {
+        $this->ingresess->removeElement($ingresess);
+    }
+
+    /**
+     * Get ingresess
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresess()
+    {
+        return $this->ingresess;
     }
 
     /**
