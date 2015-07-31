@@ -62,6 +62,7 @@
                                         <th data-hide="phone">Nro. Fórmula Producción</th>
                                         <th data-hide="phone">Cálculo Crudo-Lar</th>
                                         <th data-hide="phone">Ingreso/Egreso</th>
+                                        <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -73,6 +74,7 @@
                                             <td>{{ entity.numFormulaProduction }}</td>
                                             <td>{{ entity.crudeLar ? 'Si':'No' }}</td>
                                             <td>{{ entity.typeEntry }}</td>
+                                            <td>{{ entity.active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('product_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>
@@ -113,6 +115,7 @@
             };
 	
             $('#tableUser').DataTable({
+                "order": [[ 5, "desc" ],[ 0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",

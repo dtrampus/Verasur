@@ -5,6 +5,7 @@ namespace MainBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use MainBundle\Entity\ProductRepository;
 
 class TankType extends AbstractType
 {
@@ -24,7 +25,18 @@ class TankType extends AbstractType
             ->add('diameter','text', array('label'=>'Diametro Interno'))
             ->add('liter','text', array('label'=>'Litro / CM'))
             ->add('totalCapacity','text', array('label'=>'Capacidad Total'))
-            ->add('product', 'entity', array('label' => 'Producto','placeholder' => 'Elige una opción','class' => 'MainBundle\Entity\Product'))
+            ->add('product', 'entity', array(
+                    'label' => 'Producto',
+                    'placeholder' => 'Elige una opción',
+                    'class' => 'MainBundle\Entity\Product',
+                    'query_builder' => function (ProductRepository $repository)
+                             {
+                                 return $repository->createQueryBuilder('p')
+                                        ->where('p.active = ?1')
+                                        ->setParameter(1, true);
+                             }
+                
+                ))
         ;
     }
     
