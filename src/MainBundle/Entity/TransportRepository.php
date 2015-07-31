@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransportRepository extends EntityRepository
 {
+    public function remove(Transport $t){
+        $t->setActive(false);
+}
 }

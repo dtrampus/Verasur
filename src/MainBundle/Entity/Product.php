@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Tank;
+use MainBundle\Entity\Movement;
 
 /**
  * Product
@@ -72,6 +73,11 @@ class Product
      * @ORM\OneToMany(targetEntity="Tank", mappedBy="product")
      */
     private $tanks;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="transport")
+     */
+    private $movements;
     
     public function __construct()
     {
@@ -238,5 +244,38 @@ class Product
     
     public function __toString() {
         return $this->code;
+    }
+
+    /**
+     * Add movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     * @return Product
+     */
+    public function addMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements[] = $movements;
+
+        return $this;
+    }
+
+    /**
+     * Remove movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     */
+    public function removeMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements->removeElement($movements);
+    }
+
+    /**
+     * Get movements
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovements()
+    {
+        return $this->movements;
     }
 }

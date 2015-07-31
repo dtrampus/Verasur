@@ -40,6 +40,7 @@ class TransportController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $entity->setActive(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -207,14 +208,17 @@ class TransportController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Transport entity.');
             }
+            
+            $em->getRepository('MainBundle:Transport')->remove($entity);
+            $em->flush();
 
             $this->addFlash(
                 'success',
                 'El transporte se ha eliminado correctamente.'
             );
             
-            $em->remove($entity);
-            $em->flush();
+            //$em->remove($entity);
+            //$em->flush();
         }
 
         return $this->redirect($this->generateUrl('transport'));

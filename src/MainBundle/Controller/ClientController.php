@@ -41,6 +41,7 @@ class ClientController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setActive(true);
             $em->persist($entity);
             $em->flush();
 
@@ -207,14 +208,17 @@ class ClientController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Client entity.');
             }
-
+            
+            $em->getRepository('MainBundle:Client')->remove($entity);
+            $em->flush();
+            
             $this->addFlash(
                 'success',
                 'El cliente se ha eliminado correctamente.'
             );
             
-            $em->remove($entity);
-            $em->flush();
+            //$em->remove($entity);
+            //$em->flush();
         }
 
         return $this->redirect($this->generateUrl('client'));

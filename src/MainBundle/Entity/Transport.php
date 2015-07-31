@@ -5,6 +5,7 @@ namespace MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\Movement;
 
 /**
  * Transport
@@ -44,6 +45,17 @@ class Transport
      */
     private $transport;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="transport")
+     */
+    private $movements;
 
     /**
      * Get id
@@ -99,5 +111,68 @@ class Transport
     public function getTransport()
     {
         return $this->transport;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Transport
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movements = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     * @return Transport
+     */
+    public function addMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements[] = $movements;
+
+        return $this;
+    }
+
+    /**
+     * Remove movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     */
+    public function removeMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements->removeElement($movements);
+    }
+
+    /**
+     * Get movements
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovements()
+    {
+        return $this->movements;
     }
 }
