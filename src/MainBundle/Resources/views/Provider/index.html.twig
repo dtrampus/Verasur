@@ -60,6 +60,7 @@
                                     <tr>
                                         <th data-hide="phone">Código</th>
                                         <th data-hide="phone">Nombre</th>
+                                        <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -68,6 +69,7 @@
                                         <tr>
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.name }}</td>
+                                            <td>{{ entity.active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('provider_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>
@@ -108,6 +110,7 @@
             };
 	
             $('#tableUser').DataTable({
+                "order": [[ 2, "desc" ],[ 0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",

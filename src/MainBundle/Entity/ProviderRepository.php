@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProviderRepository extends EntityRepository
 {
+    public function remove(Provider $p){
+        $p->setActive(false);
+    }
 }

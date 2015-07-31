@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Tank;
 use MainBundle\Entity\Movement;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product
@@ -68,6 +69,13 @@ class Product
      * @Assert\Length(min=2)
      */
     private $typeEntry;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 
     /**
      * @ORM\OneToMany(targetEntity="Tank", mappedBy="product")
@@ -277,5 +285,25 @@ class Product
     public function getMovements()
     {
         return $this->movements;
+     * Set active
+     *
+     * @param boolean $active
+     * @return Product
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }
