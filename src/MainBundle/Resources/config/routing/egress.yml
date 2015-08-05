@@ -1,0 +1,30 @@
+egress:
+    path:     /
+    defaults: { _controller: "MainBundle:Egress:index" }
+
+egress_show:
+    path:     /{id}/show
+    defaults: { _controller: "MainBundle:Egress:show" }
+
+egress_new:
+    path:     /new
+    defaults: { _controller: "MainBundle:Egress:new" }
+
+egress_create:
+    path:     /create
+    defaults: { _controller: "MainBundle:Egress:create" }
+    methods:  POST
+
+egress_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MainBundle:Egress:edit" }
+
+egress_update:
+    path:     /{id}/update
+    defaults: { _controller: "MainBundle:Egress:update" }
+    methods:  [POST, PUT]
+
+egress_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MainBundle:Egress:delete" }
+    methods:  [POST, DELETE]

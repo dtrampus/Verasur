@@ -57,6 +57,10 @@ class Transport
      */
     private $movements;
 
+     public function __toString() {
+        return $this->code.' - '.$this->transport;
+    }
+    
     /**
      * Get id
      *
