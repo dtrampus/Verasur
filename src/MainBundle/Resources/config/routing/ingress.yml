@@ -1,0 +1,34 @@
+ingress:
+    path:     /
+    defaults: { _controller: "MainBundle:Ingress:index" }
+
+ingress_show:
+    path:     /{id}/show
+    defaults: { _controller: "MainBundle:Ingress:show" }
+
+ingress_new:
+    path:     /new
+    defaults: { _controller: "MainBundle:Ingress:new" }
+
+ingress_create:
+    path:     /create
+    defaults: { _controller: "MainBundle:Ingress:create" }
+    methods:  POST
+
+ingress_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MainBundle:Ingress:edit" }
+
+ingress_update:
+    path:     /{id}/update
+    defaults: { _controller: "MainBundle:Ingress:update" }
+    methods:  [POST, PUT]
+
+ingress_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MainBundle:Ingress:delete" }
+    methods:  [POST, DELETE]
+
+ingress_export:
+    path:     /{type}/export
+    defaults: { _controller: "MainBundle:Ingress:export" }

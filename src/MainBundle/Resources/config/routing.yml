@@ -20,3 +20,7 @@ main_home:
 main_product:
     resource: "@MainBundle/Resources/config/routing/product.yml"
     prefix:   /product
+
+main_ingress:
+    resource: "@MainBundle/Resources/config/routing/ingress.yml"
+    prefix:  /ingress

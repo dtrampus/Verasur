@@ -19,7 +19,12 @@ class ProductType extends AbstractType
             ->add('description','text',array('label'=>'Descripción'))
             ->add('numFormulaProduction','text',array('label'=>'Nro. Fórmula Producción'))
             ->add('crudeLar','checkbox',array('label'=>'Cálculo Crudo-Lar', 'required' => false))
-            ->add('typeEntry','choice',array('label' => 'Ingreso/Egreso','placeholder' => 'Elige una opción','choices'  => array('Ingreso' => 'Ingreso', 'Egreso' => 'Egreso')))
+            ->add('typeEntry','choice',array(
+                'label' => 'Ingreso/Egreso',
+                'placeholder' => 'Elige una opción',
+                'choices'  => array('Ingreso' => 'Ingreso', 'Egreso' => 'Egreso'),
+                'attr' => array('class' => 'select2', 'style' => "width:100%")
+             ))
         ;
     }
     

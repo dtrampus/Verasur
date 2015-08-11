@@ -173,4 +173,8 @@ class Provider
     {
         return $this->active;
     }
+    
+    public function __toString() {
+        return $this->code.' - '.$this->name;
+    }
 }
