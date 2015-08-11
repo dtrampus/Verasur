@@ -1,3 +1,31 @@
+main_tank:
+    resource: "@MainBundle/Resources/config/routing/tank.yml"
+    prefix:   /tank
+
+main_transport:
+    resource: "@MainBundle/Resources/config/routing/transport.yml"
+    prefix:   /transport
+
+main_provider:
+    resource: "@MainBundle/Resources/config/routing/provider.yml"
+    prefix:   /provider
+    
+main_client:
+    resource: "@MainBundle/Resources/config/routing/client.yml"
+    prefix:   /client
+
+main_product:
+    resource: "@MainBundle/Resources/config/routing/product.yml"
+    prefix:   /product
+    
+main_egress:
+    resource: "@MainBundle/Resources/config/routing/egress.yml"
+    prefix:   /egress
+    
 main_home:
     path:     /
     defaults: { _controller: MainBundle:Default:index }
+
+main_ingress:
+    resource: "@MainBundle/Resources/config/routing/ingress.yml"
+    prefix:  /ingress
