@@ -128,8 +128,7 @@ abstract class Movement
      * @ORM\Column(name="remitNumber", type="float")
      */
     private $remitNumber;
-
-
+    
     /**
      * Get id
      *

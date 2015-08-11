@@ -1,14 +1,12 @@
-{% extends 'base.html.twig' %}
-
-{% trans_default_domain 'FOSUserBundle' %}
+{% extends '::base.html.twig' %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Tanques <span>&gt; Editar Tanque </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Egresos <span>&gt; Crear Egreso </span></h1>
         </div>
     </div>
-
+    
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -27,8 +25,8 @@
 
                 -->
                 <header>
-                    <span class="widget-icon"> <i class="fa fa-database"></i> </span>
-                    <h2>Formulario de edición de Tanque</h2>
+                    <span class="widget-icon"> <i class="fa fa-sign-out"></i> </span>
+                    <h2>Formulario de declaracion de egresos</h2>
                 </header>
 
                 <!-- widget div-->
@@ -41,7 +39,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(edit_form) }}
+                        {{ form(form) }}
                     </div>
                     <!-- end widget content -->
 
@@ -53,16 +51,12 @@
         </article>
     </div>
 {% endblock %}
-
 {% block javascripts %}
-   {{ parent() }}
-    
-
-<script type="text/javascript">
-    // START AND FINISH DATE
-    $(document).ready(function(){
-        $("select").removeClass("form-control");
-    });
-
-</script>
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function () {
+            $('.datepicker').datepicker('setDate', new Date());
+            $('select').removeClass('form-control');
+        });
+    </script>
 {% endblock %}

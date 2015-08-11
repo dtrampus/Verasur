@@ -9,17 +9,22 @@ main_transport:
 main_provider:
     resource: "@MainBundle/Resources/config/routing/provider.yml"
     prefix:   /provider
+    
 main_client:
     resource: "@MainBundle/Resources/config/routing/client.yml"
     prefix:   /client
 
-main_home:
-    path:     /
-    defaults: { _controller: MainBundle:Default:index }
-
 main_product:
     resource: "@MainBundle/Resources/config/routing/product.yml"
     prefix:   /product
+    
+main_egress:
+    resource: "@MainBundle/Resources/config/routing/egress.yml"
+    prefix:   /egress
+    
+main_home:
+    path:     /
+    defaults: { _controller: MainBundle:Default:index }
 
 main_ingress:
     resource: "@MainBundle/Resources/config/routing/ingress.yml"

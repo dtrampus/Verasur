@@ -57,6 +57,10 @@ class Client
      */
     private $egresses;
 
+    public function __toString() {
+        return $this->code.' - '.$this->nombre;
+    }
+    
     /**
      * Get id
      *
