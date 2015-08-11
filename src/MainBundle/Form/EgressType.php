@@ -65,7 +65,9 @@ class EgressType extends AbstractType
                              {
                                  return $repository->createQueryBuilder('p')
                                         ->where('p.active = ?1')
-                                        ->setParameter(1, true);
+                                        ->andWhere('p.typeEntry = ?2')
+                                        ->setParameter(1, true)
+                                        ->setParameter(2, 'Egreso');
                              }
             ))
             ->add('density','text', array('label'=>'Densidad'))

@@ -21,7 +21,7 @@ class TankType extends AbstractType
             ->add('vertical','checkbox', array('label'=>'Vertical','required' => false))
             ->add('circumference','text', array('label'=>'Circunsferencia'))
             ->add('reference','text', array('label'=>'Punto de Referencia'))
-            ->add('coordinates','text', array('label'=>'Punto de Coordenadas'))
+            ->add('coordinates','text', array('label'=>'Punto de Corte'))
             ->add('diameter','text', array('label'=>'Diametro Interno'))
             ->add('liter','text', array('label'=>'Litro / CM'))
             ->add('totalCapacity','text', array('label'=>'Capacidad Total'))

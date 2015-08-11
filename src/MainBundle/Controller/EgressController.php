@@ -4,9 +4,16 @@ namespace MainBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
+
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Fill;
+use PHPExcel_Worksheet;
+use PHPExcel_Worksheet_PageSetup;
+use PHPExcel_Style_NumberFormat;
+use PHPExcel_Cell_DataType;
+use PHPExcel_Style_Alignment;
 
 /**
  * Egress controller.
@@ -239,5 +246,121 @@ class EgressController extends Controller
             ->getForm()
         ;
     }
+    
+ 
+    
+    /**
+    * Función para generar reportes en excel.
+    */
+    public function exportAction($type) 
+    {
+        $em = $this->getDoctrine()->getManager();
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $registros = $em->getRepository('MainBundle:Egress')->findAll();
+        $num_registros = count($registros);
+
+        $styleArrayRows = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            ),
+        );
+        
+        $styleArrayHeader = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'D3D3D3')
+            )
+        );
+        
+        $styleAlign = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+            )
+        );
+        
+        $count = 2;
+        
+        $count++;
+            foreach($registros as $registro) {
+                $j = 0;
+                    foreach($registro->getExportLine() as $egresos){
+                        $phpExcelObject->setActiveSheetIndex(0)->setCellValueByColumnAndRow($j, $count, $egresos);
+                        $phpExcelObject->getActiveSheet()->getStyleByColumnAndRow($j, $count)->applyFromArray($styleArrayRows);
+                        $j++;
+                    }          
+            $count++;
+            }
+        
+            for($variable = 'A' ; $variable != 'O'; $variable++){
+                $phpExcelObject->getActiveSheet()->getColumnDimension($variable)->setAutoSize(true);
+            }
+        
+        $phpExcelObject->getActiveSheet()->setShowGridLines(false);
+        $phpExcelObject->getActiveSheet()
+                        ->setCellValue('A1', 'Listado de Egresos')
+                        ->setCellValue('A2', 'BALN')
+                        ->setCellValue('B2', 'Fecha')
+                        ->setCellValue('C2', 'Cliente')
+                        ->setCellValue('D2', 'Dominio Camion')
+                        ->setCellValue('E2', 'Dominio Acoplado')
+                        ->setCellValue('F2', 'Transporte')
+                        ->setCellValue('G2', 'Chofer')
+                        ->setCellValue('H2', 'Peso Bruto')
+                        ->setCellValue('I2', 'Peso Tara')
+                        ->setCellValue('J2', 'Producto')
+                        ->setCellValue('K2', 'Densidad')
+                        ->setCellValue('L2', 'Neto')
+                        ->setCellValue('M2', 'Litros Reales')
+                        ->setCellValue('N2', 'Numero')
+                        ->setCellValue('A'.$count, 'Mostrando '.$num_registros.' registros');
+        
+        $phpExcelObject->getActiveSheet()->mergeCells('A1:N1');
+        $phpExcelObject->getActiveSheet()->mergeCells('A'.$count.':N'.$count);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':N'.$count)->applyFromArray($styleArrayRows);
+        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':N'.$count)->applyFromArray($styleAlign);
+        $response;
+        
+        switch ($type) {
+            case "excel":
+                $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+                $response = $this->get('phpexcel')->createStreamedResponse($writer);
+                $response->headers->set('Cache-Control','max-age=0');
+                $response->headers->set('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                $response->headers->set('Content-Disposition','attachment;filename=Informe Egresos.xls');
+                break;
+            case "pdf":
+                $rendererLibraryPath = (dirname(__FILE__) . '/../../../vendor/mpdf/mpdf');
+                $rendererName = \PHPExcel_Settings::PDF_RENDERER_MPDF;
+                \PHPExcel_Settings::setPdfRenderer(
+                    $rendererName, $rendererLibraryPath
+                );        
+                $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'PDF');
+                $response = $this->get('phpexcel')->createStreamedResponse($writer);
+                $response->headers->set('Cache-Control','max-age=0');
+                $response->headers->set('Content-Type', 'application/pdf');
+                //$response->headers->set('Content-Disposition', 'attachment;filename=Informe Egresos.pdf');
+                break;
+            default:
+                $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'HTML');
+                $response = $this->get('phpexcel')->createStreamedResponse($writer);
+                break;
+        }
+        
+        return $response;
+    }
+    
+   
+    
 }
 
