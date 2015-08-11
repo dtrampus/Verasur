@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Transporte <span>&gt; Carga de Transporte </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Ingresos <span>&gt; Crear Ingreso </span></h1>
         </div>
     </div>
     
@@ -25,8 +25,8 @@
 
                 -->
                 <header>
-                    <span class="widget-icon"> <i class="fa fa-truck"></i> </span>
-                    <h2>Formulario de carga de transporte</h2>
+                    <span class="widget-icon"> <i class="fa fa-sign-in"></i> </span>
+                    <h2>Formulario de creación de ingreso</h2>
                 </header>
 
                 <!-- widget div-->
@@ -52,3 +52,17 @@
     </div>
 {% endblock %}
 
+
+{% block javascripts %}
+   {{ parent() }}
+    
+
+<script type="text/javascript">
+    // START AND FINISH DATE
+    $(document).ready(function(){
+        $(".datepicker").datepicker('setDate', new Date());
+        $("select").removeClass("form-control");
+    });
+
+</script>
+{% endblock %}

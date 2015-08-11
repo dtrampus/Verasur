@@ -251,7 +251,7 @@ class Product
     }
     
     public function __toString() {
-        return $this->code;
+        return $this->code.' - '.$this->description;
     }
 
     /**

@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new UserBundle\UserBundle(),
             new MainBundle\MainBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             
         );
 

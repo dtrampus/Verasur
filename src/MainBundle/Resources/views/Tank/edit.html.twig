@@ -53,3 +53,16 @@
         </article>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+   {{ parent() }}
+    
+
+<script type="text/javascript">
+    // START AND FINISH DATE
+    $(document).ready(function(){
+        $("select").removeClass("form-control");
+    });
+
+</script>
+{% endblock %}
