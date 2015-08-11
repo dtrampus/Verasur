@@ -179,4 +179,8 @@ class Transport
     {
         return $this->movements;
     }
+    
+    public function __toString() {
+        return $this->code.' - '.$this->transport;
+    }
 }

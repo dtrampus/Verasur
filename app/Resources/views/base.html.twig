@@ -432,6 +432,16 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-lg fa-fw fa fa-sign-in"></i> <span class="menu-item-parent">Gestión de Ingresos</span></a>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('ingress') }}">Listado de Ingresos</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('ingress_new') }}">Carga de Ingresos</a>
+                                </li>
+                            </ul>
+                        </li>                       
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-sign-out"></i> <span class="menu-item-parent">Gestión de Egresos</span></a>
                             <ul>
                                 <li>
@@ -983,14 +993,17 @@
                                           'SmartAdmin/js/plugin/msie-fix/jquery.mb.browser.min.js'
                                           'SmartAdmin/js/plugin/fastclick/fastclick.min.js'
                                           'SmartAdmin/js/app.min.js'
-'SmartAdmin/js/plugin/select2/select2.min.js'
-                                          'SmartAdmin/js/libs/jquery-ui.datepicker.es.js' %}
+                                          'SmartAdmin/js/libs/jquery-ui.datepicker.es.js'
+                                          'SmartAdmin/js/plugin/select2/select2.min.js'
+                %}
                 <script src="{{ asset_url }}" type="text/javascript"></script>
                 {% endjavascripts %}
 
                 <script>
                     $(document).ready(function() {
+
                         pageSetUp();
+                        
                     });
                 </script>   
             {% endblock %}

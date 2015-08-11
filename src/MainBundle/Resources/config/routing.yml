@@ -25,3 +25,7 @@ main_egress:
 main_home:
     path:     /
     defaults: { _controller: MainBundle:Default:index }
+
+main_ingress:
+    resource: "@MainBundle/Resources/config/routing/ingress.yml"
+    prefix:  /ingress

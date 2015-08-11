@@ -28,6 +28,7 @@ class TankType extends AbstractType
             ->add('product', 'entity', array(
                     'label' => 'Producto',
                     'placeholder' => 'Elige una opción',
+                    'attr' => array('class' => 'select2', 'style' => "width:100%"),
                     'class' => 'MainBundle\Entity\Product',
                     'query_builder' => function (ProductRepository $repository)
                              {
