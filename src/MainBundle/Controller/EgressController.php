@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
-
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Worksheet;
@@ -19,29 +18,27 @@ use PHPExcel_Style_Alignment;
  * Egress controller.
  *
  */
-class EgressController extends Controller
-{
+class EgressController extends Controller {
 
     /**
      * Lists all Egress entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MainBundle:Egress')->findAll();
         session_destroy();
         return $this->render('MainBundle:Egress:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Egress entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Egress();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -52,16 +49,15 @@ class EgressController extends Controller
             $em->flush();
 
             $this->addFlash(
-                'success',
-                'El egreso se ha declarado correctamente.'
+                    'success', 'El egreso se ha declarado correctamente.'
             );
-            
+
             return $this->redirect($this->generateUrl('egress_show', array('id' => $entity->getId())));
         }
 
         return $this->render('MainBundle:Egress:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -72,8 +68,7 @@ class EgressController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Egress $entity)
-    {
+    private function createCreateForm(Egress $entity) {
         $form = $this->createForm(new EgressType(), $entity, array(
             'action' => $this->generateUrl('egress_create'),
             'method' => 'POST',
@@ -88,14 +83,13 @@ class EgressController extends Controller
      * Displays a form to create a new Egress entity.
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Egress();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('MainBundle:Egress:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -103,8 +97,7 @@ class EgressController extends Controller
      * Finds and displays a Egress entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Egress')->find($id);
@@ -116,8 +109,8 @@ class EgressController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Egress:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -125,8 +118,7 @@ class EgressController extends Controller
      * Displays a form to edit an existing Egress entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Egress')->find($id);
@@ -139,21 +131,20 @@ class EgressController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Egress:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Egress entity.
-    *
-    * @param Egress $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Egress $entity)
-    {
+     * Creates a form to edit a Egress entity.
+     *
+     * @param Egress $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Egress $entity) {
         $form = $this->createForm(new EgressType(), $entity, array(
             'action' => $this->generateUrl('egress_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -163,12 +154,12 @@ class EgressController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Egress entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Egress')->find($id);
@@ -185,25 +176,24 @@ class EgressController extends Controller
             $em->flush();
 
             $this->addFlash(
-                'success',
-                'El egreso se ha grabado correctamente.'
+                    'success', 'El egreso se ha grabado correctamente.'
             );
-            
+
             return $this->redirect($this->generateUrl('egress_show', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Egress:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Egress entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -214,15 +204,14 @@ class EgressController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Egress entity.');
             }
-            
+
             $em->remove($entity);
             $em->flush();
-            
+
             $this->addFlash(
-                'success',
-                'El egresso se ha eliminado correctamente.'
+                    'success', 'El egresso se ha eliminado correctamente.'
             );
-            
+
             //$em->remove($entity);
             //$em->flush();
         }
@@ -237,23 +226,19 @@ class EgressController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('egress_delete', array('id' => $id)))
-            ->setMethod('DELETE')
+                        ->setAction($this->generateUrl('egress_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
 //            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->getForm()
         ;
     }
-    
- 
-    
+
     /**
-    * Función para generar reportes en excel.
-    */
-    public function exportAction($type) 
-    {
+     * Función para generar reportes en excel.
+     */
+    public function exportAction($type) {
         $em = $this->getDoctrine()->getManager();
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
         $registros = $em->getRepository('MainBundle:Egress')->findAll();
@@ -266,7 +251,7 @@ class EgressController extends Controller
                 )
             ),
         );
-        
+
         $styleArrayHeader = array(
             'borders' => array(
                 'allborders' => array(
@@ -278,76 +263,76 @@ class EgressController extends Controller
                 'color' => array('rgb' => 'D3D3D3')
             )
         );
-        
+
         $styleAlign = array(
             'alignment' => array(
                 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
             )
         );
-        
+
         $count = 2;
-        
+
         $count++;
-            foreach($registros as $registro) {
-                $j = 0;
-                    foreach($registro->getExportLine() as $egresos){
-                        $phpExcelObject->setActiveSheetIndex(0)->setCellValueByColumnAndRow($j, $count, $egresos);
-                        $phpExcelObject->getActiveSheet()->getStyleByColumnAndRow($j, $count)->applyFromArray($styleArrayRows);
-                        $j++;
-                    }          
+        foreach ($registros as $registro) {
+            $j = 0;
+            foreach ($registro->getExportLine() as $egresos) {
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValueByColumnAndRow($j, $count, $egresos);
+                $phpExcelObject->getActiveSheet()->getStyleByColumnAndRow($j, $count)->applyFromArray($styleArrayRows);
+                $j++;
+            }
             $count++;
-            }
-        
-            for($variable = 'A' ; $variable != 'O'; $variable++){
-                $phpExcelObject->getActiveSheet()->getColumnDimension($variable)->setAutoSize(true);
-            }
-        
+        }
+
+        for ($variable = 'A'; $variable != 'O'; $variable++) {
+            $phpExcelObject->getActiveSheet()->getColumnDimension($variable)->setAutoSize(true);
+        }
+
         $phpExcelObject->getActiveSheet()->setShowGridLines(false);
         $phpExcelObject->getActiveSheet()
-                        ->setCellValue('A1', 'Listado de Egresos')
-                        ->setCellValue('A2', 'BALN')
-                        ->setCellValue('B2', 'Fecha')
-                        ->setCellValue('C2', 'Cliente')
-                        ->setCellValue('D2', 'Dominio Camion')
-                        ->setCellValue('E2', 'Dominio Acoplado')
-                        ->setCellValue('F2', 'Transporte')
-                        ->setCellValue('G2', 'Chofer')
-                        ->setCellValue('H2', 'Peso Bruto')
-                        ->setCellValue('I2', 'Peso Tara')
-                        ->setCellValue('J2', 'Producto')
-                        ->setCellValue('K2', 'Densidad')
-                        ->setCellValue('L2', 'Neto')
-                        ->setCellValue('M2', 'Litros Reales')
-                        ->setCellValue('N2', 'Numero')
-                        ->setCellValue('A'.$count, 'Mostrando '.$num_registros.' registros');
-        
+                ->setCellValue('A1', 'Listado de Egresos')
+                ->setCellValue('A2', 'BALN')
+                ->setCellValue('B2', 'Fecha')
+                ->setCellValue('C2', 'Cliente')
+                ->setCellValue('D2', 'Dominio Camion')
+                ->setCellValue('E2', 'Dominio Acoplado')
+                ->setCellValue('F2', 'Transporte')
+                ->setCellValue('G2', 'Chofer')
+                ->setCellValue('H2', 'Peso Bruto')
+                ->setCellValue('I2', 'Peso Tara')
+                ->setCellValue('J2', 'Producto')
+                ->setCellValue('K2', 'Densidad')
+                ->setCellValue('L2', 'Neto')
+                ->setCellValue('M2', 'Litros Reales')
+                ->setCellValue('N2', 'Numero')
+                ->setCellValue('A' . $count, 'Mostrando ' . $num_registros . ' registros');
+
         $phpExcelObject->getActiveSheet()->mergeCells('A1:N1');
-        $phpExcelObject->getActiveSheet()->mergeCells('A'.$count.':N'.$count);
+        $phpExcelObject->getActiveSheet()->mergeCells('A' . $count . ':N' . $count);
         $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleArrayHeader);
         $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleAlign);
         $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleArrayHeader);
         $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleAlign);
-        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':N'.$count)->applyFromArray($styleArrayRows);
-        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':N'.$count)->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':N' . $count)->applyFromArray($styleArrayRows);
+        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':N' . $count)->applyFromArray($styleAlign);
         $response;
-        
+
         switch ($type) {
             case "excel":
                 $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
                 $response = $this->get('phpexcel')->createStreamedResponse($writer);
-                $response->headers->set('Cache-Control','max-age=0');
-                $response->headers->set('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                $response->headers->set('Content-Disposition','attachment;filename=Informe Egresos.xls');
+                $response->headers->set('Cache-Control', 'max-age=0');
+                $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                $response->headers->set('Content-Disposition', 'attachment;filename=Informe Egresos.xls');
                 break;
             case "pdf":
                 $rendererLibraryPath = (dirname(__FILE__) . '/../../../vendor/mpdf/mpdf');
                 $rendererName = \PHPExcel_Settings::PDF_RENDERER_MPDF;
                 \PHPExcel_Settings::setPdfRenderer(
-                    $rendererName, $rendererLibraryPath
-                );        
+                        $rendererName, $rendererLibraryPath
+                );
                 $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'PDF');
                 $response = $this->get('phpexcel')->createStreamedResponse($writer);
-                $response->headers->set('Cache-Control','max-age=0');
+                $response->headers->set('Cache-Control', 'max-age=0');
                 $response->headers->set('Content-Type', 'application/pdf');
                 //$response->headers->set('Content-Disposition', 'attachment;filename=Informe Egresos.pdf');
                 break;
@@ -356,11 +341,46 @@ class EgressController extends Controller
                 $response = $this->get('phpexcel')->createStreamedResponse($writer);
                 break;
         }
-        
+
         return $response;
     }
-    
-   
-    
-}
 
+    public function usersListAction(Request $request) {
+        $get = $request->query->all();
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        $columns = array('BALN', 'Fecha', 'Cliente', 'Dominio Camnion', 'Dominio Acoplado', 'Transporte', 'Chofer', 'Peso Bruto', 'Tara', 'Producto', 'Densidad', 'Neto', 'Litros Reales', 'Numero');
+        $get['columns'] = &$columns;
+        $em = $this->getDoctrine()->getEntityManager();
+        $rResult = $em->getRepository('MainBundle:Egress')->ajaxTable($get, true)->getArrayResult();
+        /* Data set length after filtering */
+        $iFilteredTotal = count($rResult);
+        /*
+         * Output
+         */
+        $output = array(
+            "sEcho" => intval($get['sEcho']),
+            "iTotalRecords" => $em->getRepository('MainBundle:Egress')->getCount(),
+            "iTotalDisplayRecords" => $iFilteredTotal,
+            "aaData" => array()
+        );
+        foreach ($rResult as $aRow) {
+            $row = array();
+            for ($i = 0; $i < count($columns); $i++) {
+                if ($columns[$i] == "version") {
+                    /* Special output formatting for 'version' column */
+                    $row[] = ($aRow[$columns[$i]] == "0") ? '-' : $aRow[$columns[$i]];
+                } elseif ($columns[$i] != ' ') {
+                    /* General output */
+                    $row[] = $aRow[$columns[$i]];
+                }
+            }
+            $output['aaData'][] = $row;
+        }
+        unset($rResult);
+        return new Response(
+                json_encode($output)
+        );
+    }
+}    
