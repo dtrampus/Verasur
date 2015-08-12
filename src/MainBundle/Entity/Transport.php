@@ -56,10 +56,6 @@ class Transport
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="transport")
      */
     private $movements;
-
-     public function __toString() {
-        return $this->code.' - '.$this->transport;
-    }
     
     /**
      * Get id
