@@ -66,15 +66,18 @@
                             <div class="tab-pane active" id="hb1">    
                                 <p>BALN: {{ entity.baln }}</p>
                                 <p>Fecha: {{ entity.date|date("d/m/Y") }}</p>
+                                <p>Hora: {{ entity.time }}</p>
                                 <p>Dominio Camion: {{ entity.truckDomain }}</p>
                                 <p>Dominio Acoplado: {{ entity.coupledDomain }}</p>
                                 <p>Chofer: {{ entity.driver }}</p>
                                 <p>Peso Bruto: {{ entity.grossWeight }}</p>
                                 <p>Peso Tara: {{ entity.tareWeight }}</p>
                                 <p>Densidad: {{ entity.density }}</p>
+                                <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                 <p>Neto: {{ entity.clean }}</p>
                                 <p>Litros Reales: {{ entity.realLiter }}</p>
                                 <p>Número: {{ entity.branchNumber }} - {{ entity.remitNumber }}</p>
+                                <p>Observación: {{ entity.observation }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <ul class="list-group">
@@ -94,9 +97,6 @@
                                 <ul class="list-group">
                                     <p>Código: {{ entity.product.code }}</p>
                                     <p>Descripcion: {{ entity.product.description }}</p>
-                                    <p>Nro. Formula Produccion: {{ entity.product.numFormulaProduction }}</p>
-                                    <p>Calculo Crudo-Lar: {{ entity.product.crudeLar ? 'Si':'No' }}</p>
-                                    <p>Ingreso/Egreso: {{ entity.product.typeEntry }}</p>
                                     <p>Activo: {{ entity.product.active ? 'Si':'No' }}</p>
                                 </ul>
                             </div>

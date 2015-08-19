@@ -42,7 +42,43 @@ class Provider
      * @Assert\Length(min=3)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observation", type="text")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
+     */
+    private $observation;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
+     */
+    private $contact;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="score", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
+     */
+    private $score;    
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
+     */
+    private $category; 
+    
     /**
      * @var boolean
      *
@@ -110,6 +146,99 @@ class Provider
     {
         return $this->name;
     }
+    
+    /**
+     * Set observation
+     *
+     * @param string $observation
+     * @return Provider
+     */
+    public function setObservation($observation)
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return string 
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
+    
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     * @return Provider
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string 
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }    
+    
+    /**
+     * Set score
+     *
+     * @param string $score
+     * @return Provider
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return string 
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }    
+    
+    /**
+     * Set category
+     *
+     * @param string $category
+     * @return Provider
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+    
     /**
      * Constructor
      */

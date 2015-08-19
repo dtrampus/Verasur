@@ -40,7 +40,8 @@ abstract class Movement
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-
+   
+    
     /**
      * @var string
      *
@@ -75,6 +76,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="grossWeight", type="float")
+     * @Assert\Regex(
+        * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+        * match=true,
+        * message = "El campo solo admite numeros"
+    *   )
      */
     private $grossWeight;
 
@@ -82,6 +88,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="tareWeight", type="float")
+     * @Assert\Regex(
+        * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+        * match=true,
+        * message = "El campo solo admite numeros"
+    *   )
      */
     private $tareWeight;
 
@@ -98,13 +109,30 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="density", type="float")
+     * @Assert\Regex(
+        * pattern="/^\d(\.\d{1,3})?$/", 
+        * match=true,
+        * message = "El campo solo admite numeros"
+    *   )
      */
     private $density;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tested", type="boolean")
+     */
+    private $tested;    
 
     /**
      * @var float
      *
      * @ORM\Column(name="clean", type="float")
+     * @Assert\Regex(
+        * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+        * match=true,
+        * message = "El campo solo admite numeros"
+    *   )
      */
     private $clean;
 
@@ -112,6 +140,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="realLiter", type="float")
+     * @Assert\Regex(
+        * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+        * match=true,
+        * message = "El campo solo admite numeros"
+    *   ))
      */
     private $realLiter;
 
@@ -128,6 +161,15 @@ abstract class Movement
      * @ORM\Column(name="remitNumber", type="float")
      */
     private $remitNumber;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observation", type="text")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
+     */
+    private $observation;
     
     /**
      * Get id
@@ -184,6 +226,7 @@ abstract class Movement
     {
         return $this->date;
     }
+    
 
     /**
      * Set truckDomain
@@ -322,6 +365,29 @@ abstract class Movement
     {
         return $this->density;
     }
+    
+    /**
+     * Set tested
+     *
+     * @param boolean $tested
+     * @return Movement
+     */
+    public function setTested($tested)
+    {
+        $this->tested = $tested;
+
+        return $this;
+    }
+
+    /**
+     * Get tested
+     *
+     * @return boolean 
+     */
+    public function getTested()
+    {
+        return $this->tested;
+    }    
 
     /**
      * Set clean
@@ -413,6 +479,29 @@ abstract class Movement
     public function getRemitNumber()
     {
         return $this->remitNumber;
+    }
+    
+    /**
+     * Set observation
+     *
+     * @param string $observation
+     * @return Movement
+     */
+    public function setObservation($observation)
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return string 
+     */
+    public function getObservation()
+    {
+        return $this->observation;
     }
 
     /**

@@ -41,7 +41,60 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(edit_form) }}
+                        {{ form_start(form) }}
+                            {{ form_errors(form) }}
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    {{ form_row(form.baln) }}
+                                </div>
+                                <div class='col-md-5'>
+                                    {{ form_row(form.date) }}
+                                </div>
+                                <div class='col-md-5'>
+                                    {{ form_row(form.time) }}
+                                </div>
+                            </div>
+                            <hr width=100% align="center">
+                            {{form_row(form.provider)}}
+                            <h6>Dominio:</h6>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.truckDomain) }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.coupledDomain) }}
+                                </div>
+                            </div>
+                            {{form_row(form.transport)}}
+                            {{form_row(form.driver)}}
+                            <hr width=100% align="center">
+                            <h6>Peso:</h6>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.grossWeight) }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.tareWeight) }}
+                                </div>
+                            </div>
+                            <hr width=100% align="center">
+                            {{form_row(form.product)}}
+                            {{form_row(form.density)}}
+                            {{form_row(form.tested)}}
+                            {{form_row(form.clean)}}
+                            {{form_row(form.realLiter)}}
+                            <hr width=100% align="center">
+                            <h6>Remito:</h6>
+                            <div class='row'>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.branchNumber) }}
+                                </div>
+                                
+                                <div class='col-md-9'>
+                                    {{ form_row(form.remitNumber) }}
+                                </div>
+                            </div>                            
+                        {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
 
@@ -56,12 +109,16 @@
 
 {% block javascripts %}
    {{ parent() }}
+    {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js' %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
     
 
 <script type="text/javascript">
     // START AND FINISH DATE
     $(document).ready(function(){
         $("select").removeClass("form-control");
+        $('.timepicker').timepicker();
     });
 
 </script>

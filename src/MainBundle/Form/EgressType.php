@@ -27,6 +27,10 @@ class EgressType extends AbstractType
                     
                     'attr' => array( 'id' => 'currDate', 'class' => 'datepicker', 'data-dateformat' => 'dd/mm/yy')
             ))
+            ->add('time', 'text', array(
+                'label'=>'Hora',
+                'attr' => array('class' => 'timepicker')
+            ))                
             ->add('client','entity', array(
                     'label' => 'Cliente',
                     'attr' => array('class' => 'select2', 'style' => 'width:100%'),
@@ -65,16 +69,16 @@ class EgressType extends AbstractType
                              {
                                  return $repository->createQueryBuilder('p')
                                         ->where('p.active = ?1')
-                                        ->andWhere('p.typeEntry = ?2')
-                                        ->setParameter(1, true)
-                                        ->setParameter(2, 'Egreso');
+                                        ->setParameter(1, true);
                              }
             ))
-            ->add('density','text', array('label'=>'Densidad'))
+            ->add('density','text', array('label'=>'Densidad corregida a 15'))
+            ->add('tested','checkbox',array('label'=>'Densidad analizada','required' => false))        
             ->add('clean','text', array('label'=>'Neto'))
             ->add('realLiter','text', array('label'=>'Litros Reales'))
             ->add('branchNumber','text', array('label'=>'Número'))
             ->add('remitNumber','text', array('label'=>'-'))
+            ->add('observation','textarea', array('label'=>'Observación'))        
         ;
     }
     
