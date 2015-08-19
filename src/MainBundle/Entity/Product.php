@@ -44,31 +44,6 @@ class Product
      * @Assert\Length(min=2)
      */
     private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num_formula_production", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     */
-    private $numFormulaProduction;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="crude_lar", type="boolean")
-     */
-    private $crudeLar;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type_entry", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     */
-    private $typeEntry;
     
     /**
      * @var boolean
@@ -146,75 +121,6 @@ class Product
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set numFormulaProduction
-     *
-     * @param string $numFormulaProduction
-     * @return Product
-     */
-    public function setNumFormulaProduction($numFormulaProduction)
-    {
-        $this->numFormulaProduction = $numFormulaProduction;
-
-        return $this;
-    }
-
-    /**
-     * Get numFormulaProduction
-     *
-     * @return string 
-     */
-    public function getNumFormulaProduction()
-    {
-        return $this->numFormulaProduction;
-    }
-
-    /**
-     * Set crudeLar
-     *
-     * @param boolean $crudeLar
-     * @return Product
-     */
-    public function setCrudeLar($crudeLar)
-    {
-        $this->crudeLar = $crudeLar;
-
-        return $this;
-    }
-
-    /**
-     * Get crudeLar
-     *
-     * @return boolean 
-     */
-    public function getCrudeLar()
-    {
-        return $this->crudeLar;
-    }
-
-    /**
-     * Set typeEntry
-     *
-     * @param string $typeEntry
-     * @return Product
-     */
-    public function setTypeEntry($typeEntry)
-    {
-        $this->typeEntry = $typeEntry;
-
-        return $this;
-    }
-
-    /**
-     * Get typeEntry
-     *
-     * @return string 
-     */
-    public function getTypeEntry()
-    {
-        return $this->typeEntry;
     }
 
     /**

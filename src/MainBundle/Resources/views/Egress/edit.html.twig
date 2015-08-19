@@ -55,9 +55,13 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js' %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
     <script>
         jQuery(document).ready(function () {
             $('select').removeClass('form-control');
+            $('.timepicker').timepicker();
         });
     </script>
 {% endblock %}

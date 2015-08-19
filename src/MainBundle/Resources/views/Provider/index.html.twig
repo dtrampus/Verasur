@@ -60,6 +60,10 @@
                                     <tr>
                                         <th data-hide="phone">Código</th>
                                         <th data-hide="phone">Nombre</th>
+                                        <th data-hide="phone">Observación</th>
+                                        <th data-hide="phone">Contacto</th>
+                                        <th data-hide="phone">Puntuación</th>
+                                        <th data-hide="phone">Rubro</th>
                                         <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
@@ -69,6 +73,10 @@
                                         <tr>
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.name }}</td>
+                                            <td>{{ entity.observation }}</td>
+                                            <td>{{ entity.contact }}</td>
+                                            <td>{{ entity.score }}</td>
+                                            <td>{{ entity.category }}</td>
                                             <td>{{ entity.active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('provider_show', { 'id': entity.id }) }}">Ver</a>

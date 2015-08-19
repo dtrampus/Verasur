@@ -20,13 +20,16 @@ class IngressType extends AbstractType
     {
         $builder
             ->add('baln','text',array('label'=>'BALN'))
-            ->add('date','date',array(
+            ->add('date','datetime',array(
                 'label'=>'Fecha',
-                'html5' => false,
-                'format' => 'dd/MM/yyy',
-                'widget' => 'single_text',
-                'attr' => array('class' => 'datepicker', "data-dateformat" => "dd/mm/yy")
+                'date_widget'=>'single_text',
+                'time_widget'=>'single_text',
+                'format' => 'dd/MM/yyy hh:mm'
             ))
+//            ->add('time', 'text', array(
+//                'label'=>'Hora',
+//                'attr' => array('class' => 'timepicker')
+//            ))
             ->add('provider','entity',array(
                 'label'=>'Proveedor',
                 'placeholder' => 'Elige una opción',
@@ -40,8 +43,8 @@ class IngressType extends AbstractType
                              }
                 
             ))
-            ->add('truckDomain','text',array('label'=>'Dominio de camión'))
-            ->add('coupledDomain','text',array('label'=>'Dominio de acoplado'))
+            ->add('truckDomain','text',array('label'=>'Camión'))
+            ->add('coupledDomain','text',array('label'=>'Acoplado'))
             ->add('transport','entity',array(
                 'label'=>'Transporte',
                 'placeholder' => 'Elige una opción',
@@ -55,7 +58,7 @@ class IngressType extends AbstractType
                              }
             ))
             ->add('driver','text',array('label'=>'Chofer'))
-            ->add('grossWeight','text',array('label'=>'Peso Bruto'))
+            ->add('grossWeight','text',array('label'=>'Bruto'))
             ->add('tareWeight','text',array('label'=>'Tara'))
             ->add('product','entity',array(
                 'label' => 'Producto',
@@ -69,11 +72,13 @@ class IngressType extends AbstractType
                                     ->setParameter(1, true);
                          }
             ))
-            ->add('density','text',array('label'=>'Densidad'))
+            ->add('density','text',array('label'=>'Densidad corregida a 15'))
+            ->add('tested','checkbox',array('label'=>'Densidad analizada','required' => false))        
             ->add('clean','text',array('label'=>'Neto'))
             ->add('realLiter','text',array('label'=>'Litros Reales'))   
-            ->add('branchNumber','text',array('label'=>'Número'))
-            ->add('remitNumber','text',array('label'=>'-'))
+            ->add('branchNumber','text',array('label'=>'Número de sucursal'))
+            ->add('remitNumber','text',array('label'=>'Número de remito'))
+            ->add('observation','textarea', array('label'=>'Observación'))
         ;
     }
     

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Ingress;
 use MainBundle\Form\IngressType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 use PHPExcel_Style_Border;
@@ -364,5 +365,38 @@ class IngressController extends Controller
         
         return $response;
     }
+    
+    public function listAjaxAction(Request $request) {
+        $get = $request->query->all();
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        $em = $this->getDoctrine()->getEntityManager();
+        $rResult = $em->getRepository('MainBundle:Ingress')->ajaxTable($get, true)->getArrayResult();
+        /*
+         * Output
+         */
+        $output = array(
+            "draw" => intval($get['draw']),
+            "recordsTotal" => (int)$em->getRepository("MainBundle:Ingress")->getCount(),
+            "recordsFiltered" => (int)$em->getRepository("MainBundle:Ingress")->getFilteredCount($get),
+            "data" => array()
+        );
+        foreach ($rResult as $aRow) {
+            $row = array();
+            foreach ($aRow as $value) {
+                if($value instanceof \DateTime){
+                    $row[]=$value->format("d/m/Y H:i");
+                }else{
+                    $row[]=$value;  
+                }
+            }
+            $row[] = '';
+            $output['data'][] = $row;
+        }
+        unset($rResult);
+        return new JsonResponse($output);
+    }
+    
     
 }

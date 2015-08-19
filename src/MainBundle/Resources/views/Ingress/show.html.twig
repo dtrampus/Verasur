@@ -70,20 +70,27 @@
                                 <div class="tab-pane active" id="hb1">
                                     <p>BALN: {{ entity.baln }}</p>
                                     <p>Fecha: {{ entity.date|date("d/m/Y") }}</p>
+                                    <p>Hora: {{ entity.time }}</p>
                                     <p>Dominio de camión: {{ entity.truckDomain }}</p>
                                     <p>Dominio de acoplado: {{ entity.coupledDomain }}</p>
                                     <p>Chofer: {{ entity.driver }}</p>
                                     <p>Peso Bruto: {{ entity.grossWeight|number_format(2, '.', ',') }}</p>
                                     <p>Tara: {{ entity.tareWeight|number_format(2, '.', ',') }}</p>
                                     <p>Densidad: {{ entity.density }}</p>
+                                    <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                     <p>Neto: {{ entity.clean|number_format(2, '.', ',') }}</p>
                                     <p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p>
                                     <p>Número: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
+                                    <p>Observación: {{ entity.observation }}</p>
                                     
                                 </div>
                                 <div class="tab-pane" id="hb2">
                                     <p>Código: {{ entity.provider.code }}</p>
                                     <p>Nombre: {{ entity.provider.name }}</p>
+                                    <p>Observación: {{ entity.provider.observation }}</p>
+                                    <p>Contacto: {{ entity.provider.contact }}</p>
+                                    <p>Puntuación: {{ entity.provider.score }}</p>
+                                    <p>Rubro: {{ entity.provider.category }}</p>                                    
                                     <p>Activo: {{ entity.provider.active ? 'Si':'No' }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb3">
@@ -94,9 +101,6 @@
                                 <div class="tab-pane" id="hb4">
                                     <p>Código: {{ entity.product.code }}</p>
                                     <p>Descripcion: {{ entity.product.description }}</p>
-                                    <p>Nro. Formula Produccion: {{ entity.product.numFormulaProduction }}</p>
-                                    <p>Calculo Crudo-Lar: {{ entity.product.crudeLar ? 'Si':'No' }}</p>
-                                    <p>Ingreso/Egreso: {{ entity.product.typeEntry }}</p>
                                 </div>
                             </div>
 
