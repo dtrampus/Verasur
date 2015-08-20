@@ -14,7 +14,7 @@ class EgressRepository extends EntityRepository {
 
     public function ajaxTable(array $get, $flag = false) {
         /* Indexed column (used for fast and accurate table cardinality) */
-        $alias = 'a';
+        $alias = 'e';
         /* DB table to use */
         $tableObjectName = 'MainBundle:Egress';
         /**
@@ -24,11 +24,14 @@ class EgressRepository extends EntityRepository {
             $get['columns'] = array('id');
         $aColumns = array();
         foreach ($get['columns'] as $value)
-            $aColumns[] = $alias . '.' . $value;
+            $aColumns[] = $value;
         $cb = $this->getEntityManager()
-                ->getRepository($tableObjectName)
                 ->createQueryBuilder($alias)
-                ->select(str_replace(" , ", " ", implode(", ", $aColumns)));
+                ->select('e.baln', 'e.date', 'client.nombre', 'e.truckDomain', 'e.coupledDomain', 'transport.transport', 'e.driver', 'e.grossWeight', 'e.tareWeight', 'product.description', 'e.density', 'e.clean', 'e.realLiter', 'e.branchNumber', 'e.remitNumber')
+                ->from('MainBundle\Entity\Egress', 'e')
+                ->innerJoin('e.client', 'client')
+                ->innerJoin('e.product', 'product')
+                ->innerJoin('e.transport', 'transport');
         if (isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1') {
             $cb->setFirstResult((int) $get['iDisplayStart'])
                     ->setMaxResults((int) $get['iDisplayLength']);
@@ -49,11 +52,11 @@ class EgressRepository extends EntityRepository {
          * word by word on any field. It's possible to do here, but concerned about efficiency
          * on very large tables, and MySQL's regex functionality is very limited
          */
-        if (isset($get['sSearch']) && $get['sSearch'] != '') {
+        if (isset($get['search']) && $get['search'] != '') {
             $aLike = array();
             for ($i = 0; $i < count($aColumns); $i++) {
-                if (isset($get['bSearchable_' . $i]) && $get['bSearchable_' . $i] == "true") {
-                    $aLike[] = $cb->expr()->like($aColumns[$i], '\'%' . $get['sSearch'] . '%\'');
+                if (isset($aColumns[$i.'searchable']) && $aColumns[$i.'searchable'] == "true") {
+                    $aLike[] = $cb->expr()->like($aColumns[$i], '\'%' . $get['search'] . '%\'');
                 }
             }
             if (count($aLike) > 0)

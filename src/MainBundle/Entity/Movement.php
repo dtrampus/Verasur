@@ -75,6 +75,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="grossWeight", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $grossWeight;
 
@@ -82,6 +87,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="tareWeight", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $tareWeight;
 
@@ -98,6 +108,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="density", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $density;
 
@@ -105,6 +120,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="clean", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $clean;
 
@@ -112,6 +132,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="realLiter", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $realLiter;
 
@@ -119,6 +144,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="branchNumber", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $branchNumber;
 
@@ -126,6 +156,11 @@ abstract class Movement
      * @var float
      *
      * @ORM\Column(name="remitNumber", type="float")
+     * @Assert\Regex(
+     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * match=true,
+     * message = "El campo solo admite numeros"
+     * )
      */
     private $remitNumber;
     

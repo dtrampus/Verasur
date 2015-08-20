@@ -26,6 +26,13 @@ class Tank
     private $id;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="plant", type="boolean")
+     */
+    private $plant;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255)
@@ -105,7 +112,30 @@ class Tank
     {
         return $this->id;
     }
+    
+    /**
+     * Set vertical
+     *
+     * @param boolean $plant
+     * @return Tank
+     */
+    public function setPlant($plant)
+    {
+        $this->plant = $plant;
 
+        return $this;
+    }
+
+    /**
+     * Get plant
+     *
+     * @return boolean 
+     */
+    public function getPlant()
+    {
+        return $this->plant;
+    }
+    
     /**
      * Set code
      *

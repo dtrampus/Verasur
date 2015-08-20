@@ -6,25 +6,25 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ClientType extends AbstractType
-{
+class ClientType extends AbstractType {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('code','text', array('label'=>'Codigo'))
-            ->add('nombre','text', array('label'=>'Razon Social'))
+                ->add('code', 'text', array('label' => 'Codigo'))
+                ->add('nombre', 'text', array('label' => 'Razon Social'))
+                ->add('delivery', 'text', array('label' => 'Direccion de Entrega'))
+                ->add('contact', 'text', array('label' => 'Contacto'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'MainBundle\Entity\Client'
         ));
@@ -33,8 +33,8 @@ class ClientType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'mainbundle_client';
     }
+
 }

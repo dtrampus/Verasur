@@ -59,6 +59,8 @@
                                     <tr>
                                         <th data-class="expand">Codigo</th>
                                         <th data-hide="phone">Razon Social</th>
+                                        <th data-hide="phone">Direccion de Entrega</th>
+                                        <th data-hide="phone">Contacto</th>
                                         <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
@@ -68,6 +70,8 @@
                                         <tr>
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.nombre }}</td>
+                                            <td>{{ entity.delivery }}</td>
+                                            <td>{{ entity.contact }}</td>
                                             <td>{{ entity.active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('client_show', { 'id': entity.id }) }}">Ver</a>
@@ -109,7 +113,7 @@
             };
 	
             $('#tableClient').DataTable({
-                "order": [[ 2, "desc"],[ 0, "asc"]],
+                "order": [[ 4, "desc"],[ 0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",

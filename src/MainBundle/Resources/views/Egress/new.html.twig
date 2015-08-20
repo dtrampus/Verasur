@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Egresos <span>&gt; Crear Egreso </span></h1>
         </div>
     </div>
-    
+
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -39,7 +39,55 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                {{ form_row(form.baln) }}
+                            </div>
+                            <div class='col-md-6'>
+                                {{ form_row(form.date) }}
+                            </div>
+                        </div>
+                        <hr>
+                        {{ form_row(form.client) }}
+                        <h5>Dominio:</h5>
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                {{ form_row(form.truckDomain) }}
+                            </div>
+                            <div class='col-md-6'>
+                                {{ form_row(form.coupledDomain) }}
+                            </div>
+                        </div>
+                        {{ form_row(form.transport) }}
+                        {{ form_row(form.driver) }}
+                        <hr>
+                        <h5>Peso(Kg) :</h5>
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                {{ form_row(form.grossWeight) }}
+                            </div>
+                            <div class='col-md-6'>
+                                {{ form_row(form.tareWeight) }}
+                            </div>
+                        </div>
+                        <hr>
+                        {{ form_row(form.product) }}
+                        {{ form_row(form.density) }}
+                        {{ form_row(form.clean) }}
+                        {{ form_row(form.realLiter) }}
+                        <hr>
+                        <h5>Remito:</h5>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                {{ form_row(form.branchNumber) }}
+                            </div>                           
+                            <div class='col-md-9'>
+                                {{ form_row(form.remitNumber)}}
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
 

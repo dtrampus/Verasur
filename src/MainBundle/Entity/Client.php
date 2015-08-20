@@ -44,6 +44,30 @@ class Client
      * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombre;
+    
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      minMessage = "El campo debe llevar minimo {{ limit }} caracteres"
+     * )
+     * @ORM\Column(name="delivery", type="string", length=255)
+     */
+    private $delivery;
+    
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      minMessage = "El campo debe llevar minimo {{ limit }} caracteres"
+     * )
+     * @ORM\Column(name="contact", type="string", length=255)
+     */
+    private $contact;
 
     /**
      * @var boolean
@@ -115,6 +139,52 @@ class Client
     public function getNombre()
     {
         return $this->nombre;
+    }
+    
+    /**
+     * Set delivery
+     *
+     * @param string $delivery
+     * @return Client
+     */
+    public function setDelivery($delivery)
+    {
+        $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    /**
+     * Get delivery
+     *
+     * @return string 
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
+    }
+    
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     * @return Client
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string 
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 
     /**

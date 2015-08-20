@@ -3,6 +3,7 @@
 namespace MainBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
@@ -345,12 +346,12 @@ class EgressController extends Controller {
         return $response;
     }
 
-    public function usersListAction(Request $request) {
+    public function listAjaxAction(Request $request) {
         $get = $request->query->all();
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
-        $columns = array('BALN', 'Fecha', 'Cliente', 'Dominio Camnion', 'Dominio Acoplado', 'Transporte', 'Chofer', 'Peso Bruto', 'Tara', 'Producto', 'Densidad', 'Neto', 'Litros Reales', 'Numero');
+        $columns = array('baln', 'date', 'client', 'truckDomain', 'coupledDomain', 'transport', 'driver', 'grossWeight', 'tareWeight', 'product', 'density', 'clean', 'realLiter', 'branchNumber', 'remitNumber');
         $get['columns'] = &$columns;
         $em = $this->getDoctrine()->getEntityManager();
         $rResult = $em->getRepository('MainBundle:Egress')->ajaxTable($get, true)->getArrayResult();
@@ -360,27 +361,51 @@ class EgressController extends Controller {
          * Output
          */
         $output = array(
-            "sEcho" => intval($get['sEcho']),
-            "iTotalRecords" => $em->getRepository('MainBundle:Egress')->getCount(),
-            "iTotalDisplayRecords" => $iFilteredTotal,
-            "aaData" => array()
+            "draw" => intval($get['draw']),
+            "recordsTotal" => $em->getRepository('MainBundle:Egress')->getCount(),
+            "recordsFiltered" => $iFilteredTotal,
+            "data" => array()
         );
         foreach ($rResult as $aRow) {
             $row = array();
-            for ($i = 0; $i < count($columns); $i++) {
-                if ($columns[$i] == "version") {
-                    /* Special output formatting for 'version' column */
-                    $row[] = ($aRow[$columns[$i]] == "0") ? '-' : $aRow[$columns[$i]];
-                } elseif ($columns[$i] != ' ') {
-                    /* General output */
-                    $row[] = $aRow[$columns[$i]];
-                }
+            foreach ($aRow as $value) {
+                $row[]=$value;
             }
-            $output['aaData'][] = $row;
+            $row[] = '';
+            $output['data'][] = $row;
         }
         unset($rResult);
-        return new Response(
-                json_encode($output)
-        );
+        return new JsonResponse($output);
     }
-}    
+
+}
+
+//public function listAjaxAction(Request $request) {
+//        $get = $request->query->all();
+//        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+//         * you want to insert a non-database field (for example a counter or static image)
+//         */
+//        $em = $this->getDoctrine()->getEntityManager();
+//        $rResult = $em->getRepository('MainBundle:Egress')->ajaxTable($get, true)->getArrayResult();
+//        /* Data set length after filtering */
+//        $iFilteredTotal = count($rResult);
+//        /*
+//         * Output
+//         */
+//        $output = array(
+//            "draw" => intval($get['draw']),
+//            "recordsTotal" => $em->getRepository('MainBundle:Egress')->getCount(),
+//            "recordsFiltered" => $iFilteredTotal,
+//            "data" => array()
+//        );
+//        foreach ($rResult as $aRow) {
+//            $row = array();
+//            foreach ($aRow as $value) {
+//                $row[]=$value;
+//            }
+//            $row[] = '';
+//            $output['data'][] = $row;
+//        }
+//        unset($rResult);
+//        return new JsonResponse($output);
+//    }

@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Tanques <span>&gt; Crear Tanque </span></h1>
         </div>
     </div>
-    
+
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -53,14 +53,68 @@
 {% endblock %}
 
 {% block javascripts %}
-   {{ parent() }}
-    
+    {{ parent() }}
 
-<script type="text/javascript">
-    // START AND FINISH DATE
-    $(document).ready(function(){
-        $("select").removeClass("form-control");
-    });
 
-</script>
+    <script type="text/javascript">
+        // START AND FINISH DATE
+        $(document).ready(function () {
+            $("select").removeClass("form-control");
+
+            $(".plant").click(function () {
+                if ($(".plant").is(':checked')) {
+                    $(".vertical").prop('disabled', true);
+                    $(".circumference").prop('disabled', true);
+                    $(".reference").prop('disabled', true);
+                    $(".coordinates").prop('disabled', true);
+                    $(".totalCapacity").prop('disabled', false);
+                    $(".select2").prop('disabled', true);
+                    $(".vertical").prop('checked', false);
+                    $('.circumference').val(null);
+                    $('.reference').val(null);
+                    $('.coordinates').val(null);
+                    $('.diameter').val(null);
+                    $('.liter').val(null);
+                    $('.totalCapacity').val(null);
+                } else {
+                    $(".vertical").prop('disabled', false);
+                    $(".circumference").prop('disabled', false);
+                    $(".reference").prop('disabled', false);
+                    $(".coordinates").prop('disabled', false);
+                    $(".totalCapacity").prop('disabled', true);
+                    $(".select2").prop('disabled', false);
+                    $('.totalCapacity').val(null);
+                }
+            });
+
+            $(".circumference").focusout(function () {
+                var val = $('.circumference').val();
+                var pi = "3.1416";
+                var result_d = val / pi;
+                var result_diameter = result_d.toFixed(2);
+                var divicion = result_diameter / 1000;
+                var result_l = (divicion * divicion) / 4 * pi * 10;
+                var result_liter = result_l.toFixed(2);
+                if ($.isNumeric($('.circumference').val())) {
+                    $('.diameter').val(result_diameter);
+                    $('.liter').val(result_liter);
+                }else{
+                    
+                }
+            });
+
+            $(".reference").focusout(function () {
+                var result_liter = $('.liter').val();
+                var val_2 = $('.reference').val();
+                var result_Capacity = result_liter * (val_2 - 80);
+                var result_totalCapacity = result_Capacity.toFixed(2);
+                $('.totalCapacity').val(result_totalCapacity);
+                 
+            });
+
+        });
+
+
+
+    </script>
 {% endblock %}

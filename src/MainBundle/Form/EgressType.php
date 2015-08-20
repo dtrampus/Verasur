@@ -39,8 +39,8 @@ class EgressType extends AbstractType
                                         ->setParameter(1, true);
                              }
             ))
-            ->add('truckDomain','text', array('label'=>'Dominio Camion'))
-            ->add('coupledDomain','text', array('label'=>'Dominio Acoplado'))
+            ->add('truckDomain','text', array('label'=>'Camion'))
+            ->add('coupledDomain','text', array('label'=>'Acoplado'))
             ->add('transport','entity', array(
                     'label' => 'Transporte',
                     'attr' => array('class' => 'select2', 'style' => 'width:100%'),
@@ -54,8 +54,8 @@ class EgressType extends AbstractType
                              }
             ))
             ->add('driver','text', array('label'=>'Chofer'))
-            ->add('grossWeight','text', array('label'=>'Peso Bruto'))
-            ->add('tareWeight','text', array('label'=>'Peso Tara'))
+            ->add('grossWeight','text', array('label'=>'Bruto'))
+            ->add('tareWeight','text', array('label'=>'Tara'))
             ->add('product','entity', array(
                     'label' => 'Producto',
                     'attr' => array('class' => 'select2', 'style' => 'width:100%'),
@@ -73,8 +73,8 @@ class EgressType extends AbstractType
             ->add('density','text', array('label'=>'Densidad'))
             ->add('clean','text', array('label'=>'Neto'))
             ->add('realLiter','text', array('label'=>'Litros Reales'))
-            ->add('branchNumber','text', array('label'=>'Número'))
-            ->add('remitNumber','text', array('label'=>'-'))
+            ->add('branchNumber','text', array('label'=>'Serie'))
+            ->add('remitNumber','text', array('label'=>'Sucursal'))
         ;
     }
     
