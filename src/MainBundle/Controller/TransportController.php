@@ -21,12 +21,17 @@ class TransportController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MainBundle:Transport')->findAll();
+        $em = $this->getDoctrine()->getRepository('MainBundle:Transport');
+        
+        $query = $em->createQueryBuilder('t')
+                    ->where('t.active = ?1')
+                    ->setParameter(1, true)
+                    ->getQuery();
+        
+        $transports = $query->getResult();
 
         return $this->render('MainBundle:Transport:index.html.twig', array(
-            'entities' => $entities,
+            'entities' => $transports,
         ));
     }
     /**

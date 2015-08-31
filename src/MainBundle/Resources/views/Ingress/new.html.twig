@@ -49,9 +49,9 @@
                                     {{ form_row(form.date) }}
                                 </div>                                
                             </div>
-                            <hr width=100% align="center">
+                            <hr>
                             {{form_row(form.provider)}}
-                            <h6>Dominio:</h6>
+                            <h5>Dominio:</h5>
                             <div class='row'>
                                 <div class='col-md-6'>
                                     {{ form_row(form.truckDomain) }}
@@ -62,8 +62,8 @@
                             </div>
                             {{form_row(form.transport)}}
                             {{form_row(form.driver)}}
-                            <hr width=100% align="center">
-                            <h6>Peso:</h6>
+                            <hr>
+                            <h5>Peso(Kg):</h5>
                             <div class='row'>
                                 <div class='col-md-6'>
                                     {{ form_row(form.grossWeight) }}
@@ -78,8 +78,8 @@
                             {{form_row(form.tested)}}
                             {{form_row(form.clean)}}
                             {{form_row(form.realLiter)}}
-                            <hr width=100% align="center">
-                            <h6>Remito:</h6>
+                            <hr>
+                            <h5>Remito:</h5>
                             <div class='row'>
                                 <div class='col-md-3'>
                                     {{ form_row(form.branchNumber) }}
@@ -88,7 +88,26 @@
                                 <div class='col-md-9'>
                                     {{ form_row(form.remitNumber) }}
                                 </div>
-                            </div>                            
+                            </div>
+                            {{form_row(form.observation)}}    
+                            <hr>
+                            <h5>Muestra:</h5>
+                            {{form_row(form.distillationGout)}}
+                            {{form_row(form.fivePercent)}}
+                            {{form_row(form.tenPercent)}}
+                            {{form_row(form.twentyPercent)}}
+                            {{form_row(form.thirtyPercent)}}
+                            {{form_row(form.fortyPercent)}}
+                            {{form_row(form.fiftyPercent)}}
+                            {{form_row(form.sixtyPercent)}}
+                            {{form_row(form.seventyPercent)}}
+                            {{form_row(form.eightyPercent)}}
+                            {{form_row(form.ninetyPercent)}}
+                            {{form_row(form.ninetyFivePercent)}}
+                            {{form_row(form.pDry)}}
+                            {{form_row(form.pFinal)}}
+                            {{form_row(form.recovered)}}
+                            
                         {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
@@ -105,16 +124,15 @@
 
 {% block javascripts %}
    {{ parent() }}
-    {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js' %}
+    {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js'
+                   '@MainBundle/Resources/public/js/verasur_new_edit_movement.js' %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 
 <script type="text/javascript">
     // START AND FINISH DATE
     $(document).ready(function(){
-        $(".datepicker").datepicker('setDate', new Date());
-        $("select").removeClass("form-control");
-        $('.timepicker').timepicker();
+        verasurNewEditMovement.init();
     });
 
 </script>

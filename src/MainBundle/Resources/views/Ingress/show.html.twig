@@ -69,8 +69,7 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="hb1">
                                     <p>BALN: {{ entity.baln }}</p>
-                                    <p>Fecha: {{ entity.date|date("d/m/Y") }}</p>
-                                    <p>Hora: {{ entity.time }}</p>
+                                    <p>Fecha y Hora: {{ entity.date|date("d/m/Y h:m") }}</p>
                                     <p>Dominio de camión: {{ entity.truckDomain }}</p>
                                     <p>Dominio de acoplado: {{ entity.coupledDomain }}</p>
                                     <p>Chofer: {{ entity.driver }}</p>
@@ -82,6 +81,23 @@
                                     <p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p>
                                     <p>Número: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
                                     <p>Observación: {{ entity.observation }}</p>
+                                    <p>Destilación la gota: {{ entity.distillationGout }}</p>
+                                    <p>5%: {{ entity.fivePercent }}</p>
+                                    <p>10%: {{ entity.tenPercent }}</p>
+                                    <p>20%: {{ entity.twentyPercent }}</p>
+                                    <p>30%: {{ entity.thirtyPercent }}</p>
+                                    <p>40%: {{ entity.fortyPercent }}</p>
+                                    <p>50%: {{ entity.fiftyPercent }}</p>
+                                    <p>60%: {{ entity.sixtyPercent }}</p>
+                                    <p>70%: {{ entity.seventyPercent }}</p>
+                                    <p>80%: {{ entity.eightyPercent }}</p>
+                                    <p>90%: {{ entity.ninetyPercent }}</p>
+                                    <p>95%: {{ entity.ninetyFivePercent }}</p>
+                                    <p>P. Seco: {{ entity.pDry }}</p>
+                                    <p>P. Final: {{ entity.pFinal }}</p>
+                                    <p>Recuperado: {{ entity.recovered }}</p>
+                                    
+                                    <p>Usuario Asociado: {{ entity.user.username }}</p>
                                     
                                 </div>
                                 <div class="tab-pane" id="hb2">
@@ -90,13 +106,11 @@
                                     <p>Observación: {{ entity.provider.observation }}</p>
                                     <p>Contacto: {{ entity.provider.contact }}</p>
                                     <p>Puntuación: {{ entity.provider.score }}</p>
-                                    <p>Rubro: {{ entity.provider.category }}</p>                                    
-                                    <p>Activo: {{ entity.provider.active ? 'Si':'No' }}</p>
+                                    <p>Rubro: {{ entity.provider.category }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb3">
                                     <p>Cogido: {{ entity.transport.code }}</p>
                                     <p>Transporte: {{ entity.transport.transport }}</p>
-                                    <p>Activo: {{ entity.transport.Active ? 'Si':'No' }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb4">
                                     <p>Código: {{ entity.product.code }}</p>

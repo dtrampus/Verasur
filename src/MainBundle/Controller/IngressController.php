@@ -50,6 +50,9 @@ class IngressController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            //set user y despues get user
+            $entity->setUser($this->getUser());
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -313,19 +316,38 @@ class IngressController extends Controller
                        ->setCellValue('I2', 'Tara')
                        ->setCellValue('J2', 'Producto')
                        ->setCellValue('K2', 'Densidad')
-                       ->setCellValue('L2', 'Neto')
-                       ->setCellValue('M2', 'Litros Reales')
-                       ->setCellValue('N2', 'Número')
+                       ->setCellValue('L2', 'Testeado')
+                       ->setCellValue('M2', 'Neto')
+                       ->setCellValue('N2', 'Litros Reales')
+                       ->setCellValue('O2', 'Número')
+                       ->setCellValue('P2', 'Observación')
+                       ->setCellValue('Q2', 'Usuario Asociado')
+                       ->setCellValue('R2', 'Destilación la gota')
+                       ->setCellValue('S2', '5%')
+                       ->setCellValue('T2', '10%')
+                       ->setCellValue('U2', '20%')
+                       ->setCellValue('V2', '30%')
+                       ->setCellValue('W2', '40%')
+                       ->setCellValue('X2', '50%')
+                       ->setCellValue('Y2', '60%')
+                       ->setCellValue('Z2', '70%')
+                       ->setCellValue('AA2', '80%')
+                       ->setCellValue('AB2', '90%')
+                       ->setCellValue('AC2', '95%')
+                       ->setCellValue('AD2', 'P. Seco')
+                       ->setCellValue('AE2', 'P. Final')
+                       ->setCellValue('AF2', 'Recuperado')
+                       
                        ->setCellValue('A'.$count, 'Mostrando '.$countReg.' registros');
         
-        $phpExcelObject->getActiveSheet()->mergeCells('A1:N1');
-        $phpExcelObject->getActiveSheet()->mergeCells('A'.$count.':N'.$count);
+        $phpExcelObject->getActiveSheet()->mergeCells('A1:AF1');
+        $phpExcelObject->getActiveSheet()->mergeCells('A'.$count.':AF'.$count);
         
-        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleArrayHeader);
-        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleArrayHeader);
-        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleCenter);
-        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':N'.$count)->applyFromArray($styleCenter);
-        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleCenter);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:AF1")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:AF2")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:AF1")->applyFromArray($styleCenter);
+        $phpExcelObject->getActiveSheet()->getStyle('A'.$count.':AF'.$count)->applyFromArray($styleCenter);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:AF2")->applyFromArray($styleCenter);
         
         
         for($col = 'A'; $col !== 'O'; $col++) {

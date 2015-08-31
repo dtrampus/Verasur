@@ -21,12 +21,18 @@ class ClientController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getRepository('MainBundle:Client');
 
-        $entities = $em->getRepository('MainBundle:Client')->findAll();
+        $query = $em->createQueryBuilder('c')
+                    ->where('c.active = ?1')
+                    ->setParameter(1, true)
+                    ->getQuery();
+        
+        $clients = $query->getResult();
+        
         session_destroy();
         return $this->render('MainBundle:Client:index.html.twig', array(
-            'entities' => $entities,
+            'entities' => $clients,
         ));
     }
     /**
