@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Clientes <span>&gt; Mostrar Cliente </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Choferes <span>&gt; Mostrar Chofer </span></h1>
         </div>
     </div>
 
@@ -32,7 +32,16 @@
 
                 -->
                 <header>
-                    <h2>Cliente</h2>
+                    <h2>Choferes</h2>
+                    <ul class="nav nav-tabs pull-right in">
+
+                        <li class="active">
+                            <a data-toggle="tab" href="#hb1"> <i class="fa fa-lg fa-align-left"></i> <span class="hidden-mobile hidden-tablet"> Información Básica </span> </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#hb2"> <i class="fa fa-lg fa-truck"></i> <span class="hidden-mobile hidden-tablet"> Transporte </span> </a>
+                        </li>
+                    </ul>
                 </header>
 
                 <!-- widget div-->
@@ -47,19 +56,25 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-
-                            <div class="tab-content">
-                                <p>Cogido: {{ entity.code }}</p>
-                                <p>Razon Social: {{ entity.nombre }}</p
-                                <p>Direccion de entrega: {{ entity.delivery }}</p>
-                                <p>Contacto: {{ entity.contact }}</p>
-                                <p>Activo: {{ entity.active ? 'Si':'No' }}</p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="hb1">    
+                                <p>Nombre: {{ entity.name }}</p>
+                                <p>Apellido: {{ entity.surname }}</p>
+                                <p>DNI: {{ entity.dni }}</p>
+                                <p>Telefono: {{ entity.phone }}</p>
                             </div>
+                            <div class="tab-pane" id="hb2">
+                                <ul class="list-group">
+                                    <p>Cogido: {{ entity.transport.code }}</p>
+                                    <p>Transporte: {{ entity.transport.transport }}</p>
+                                </ul>
+                            </div>
+                        </div>
 
                         <hr class="simple">
 
-                        <a href="{{ path('client') }}" class="btn btn-default">Volver</a>
-                        <a href="{{ path('client_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
+                        <a href="{{ path('driver') }}" class="btn btn-default">Volver</a>
+                        <a href="{{ path('driver_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
                         <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
 
                     </div>

@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Tanques <span>&gt; Crear Tanque </span></h1>
         </div>
     </div>
-    
+
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -53,14 +53,116 @@
 {% endblock %}
 
 {% block javascripts %}
-   {{ parent() }}
-    
+    {{ parent() }}
 
-<script type="text/javascript">
-    // START AND FINISH DATE
-    $(document).ready(function(){
-        $("select").removeClass("form-control");
-    });
 
-</script>
+    <script type="text/javascript">
+        // START AND FINISH DATE
+        $(document).ready(function () {
+            $("select").removeClass("form-control");
+
+
+            $('.circumference,.reference,.coordinates,.totalCapacity').keyup(function () {
+                this.value = (this.value + '').replace(/[^0-9\.]+$/g, '');
+            });
+
+            $("select").select2({
+                maximumSelectionSize: 1,
+                formatSelectionTooBig: function (limit) {
+                    return 'Los tanques solo pueden contener 1 producto!';
+                }
+            });
+
+            $(".plant").click(function () {
+                if ($(".plant").is(':checked')) {
+                    $(".vertical").prop('disabled', true);
+                    $(".circumference").prop('disabled', true);
+                    $(".reference").prop('disabled', true);
+                    $(".coordinates").prop('disabled', true);
+                    $(".totalCapacity").prop('readonly', false);
+                    $(".vertical").prop('checked', false);
+                    $('.circumference').val(null);
+                    $('.reference').val(null);
+                    $('.coordinates').val(null);
+                    $('.diameter').val(null);
+                    $('.liter').val(null);
+                    $('.totalCapacity').val(null);
+                    $('.select2').val(null);
+                    $("select").select2({
+                        maximumSelectionSize: 100,
+                    });
+                } else {
+                    $(".vertical").prop('disabled', false);
+                    $(".circumference").prop('disabled', false);
+                    $(".reference").prop('disabled', false);
+                    $(".coordinates").prop('disabled', false);
+                    $(".totalCapacity").prop('readonly', true);
+                    $('.totalCapacity').val(null);
+                    $('.select2').val(null);
+                    $("select").select2({
+                        maximumSelectionSize: 1,
+                        formatSelectionTooBig: function (limit) {
+                            return 'Los tanques solo pueden contener 1 producto!';
+                        }
+                    });
+                }
+            });
+
+
+            $(".circumference").focusout(function () {
+                var val = $('.circumference').val();
+                if (val != 0) {
+                    var newVal = parseFloat($('.circumference').val(), 10).toFixed(2);
+                    var pi = "3.1416";
+                    var result_d = val / pi;
+                    var result_diameter = result_d.toFixed(2);
+                    var divicion = result_diameter / 1000;
+                    var result_l = (divicion * divicion) / 4 * pi * 10;
+                    var result_liter = result_l.toFixed(2);
+                    $('.circumference').val(newVal);
+                    $('.diameter').val(result_diameter);
+                    $('.liter').val(result_liter);
+                } else {
+                    $('.circumference').val(null);
+                    $('.diameter').val(null);
+                    $('.liter').val(null);
+                }
+            });
+
+            $(".reference").focusout(function () {
+                var result_liter = $('.liter').val();
+                var val_2 = $('.reference').val();
+                if (val_2 != 0) {
+                    var newVal_2 = parseFloat($('.reference').val(), 10).toFixed(2);
+                    var result_Capacity = result_liter * (val_2 - 80);
+                    var result_totalCapacity = result_Capacity.toFixed(1);
+                    $('.reference').val(newVal_2);
+                    $('.totalCapacity').val(result_totalCapacity);
+                } else {
+                    $('.reference').val(null);
+                    $('.totalCapacity').val(null);
+                }
+            });
+
+            $(".coordinates").focusout(function () {
+                var val_3 = $('.coordinates').val();
+                if (val_3 != 0) {
+                    var newVal_3 = parseFloat($('.coordinates').val(), 10).toFixed(2);
+                    $('.coordinates').val(newVal_3);
+                } else {
+                    $('.coordinates').val(null);
+                }
+            });
+
+            $(".totalCapacity").focusout(function () {
+                var val_4 = $('.totalCapacity').val();
+                if (val_4 != 0) {
+                    var newVal_4 = parseFloat($('.totalCapacity').val(), 10).toFixed(2);
+                    $('.totalCapacity').val(newVal_4);
+                } else {
+                    $('.totalCapacity').val(null);
+                }
+            });
+        });
+    </script>
 {% endblock %}

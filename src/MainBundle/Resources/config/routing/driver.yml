@@ -1,0 +1,37 @@
+driver:
+    path:     /
+    defaults: { _controller: "MainBundle:Driver:index" }
+
+driver_show:
+    path:     /{id}/show
+    defaults: { _controller: "MainBundle:Driver:show" }
+
+driver_new:
+    path:     /new
+    defaults: { _controller: "MainBundle:Driver:new" }
+
+driver_create:
+    path:     /create
+    defaults: { _controller: "MainBundle:Driver:create" }
+    methods:  POST
+
+driver_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MainBundle:Driver:edit" }
+
+driver_update:
+    path:     /{id}/update
+    defaults: { _controller: "MainBundle:Driver:update" }
+    methods:  [POST, PUT]
+
+driver_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MainBundle:Driver:delete" }
+    methods:  [POST, DELETE]
+    
+        
+getDriverAjax:
+    pattern: /{id}/getbytransport
+    defaults: { _controller: "MainBundle:Driver:getDriverByTransportAjax" }
+    options:
+        expose: true
