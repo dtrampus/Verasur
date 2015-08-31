@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 use PHPExcel_Style_Border;

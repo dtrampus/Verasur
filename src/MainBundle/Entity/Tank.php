@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use MainBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\MovementDetail;
 
 /**
  * Tank
@@ -105,6 +106,11 @@ class Tank {
      * 
      */
     protected $products;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="tank")
+     */
+    private $movementDetails;    
 
     /**
      * Get id
@@ -366,4 +372,37 @@ class Tank {
         return $this->products;
     }
 
+
+    /**
+     * Add movementDetails
+     *
+     * @param \MainBundle\Entity\MovementDetail $movementDetails
+     * @return Tank
+     */
+    public function addMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
+    {
+        $this->movementDetails[] = $movementDetails;
+
+        return $this;
+    }
+
+    /**
+     * Remove movementDetails
+     *
+     * @param \MainBundle\Entity\MovementDetail $movementDetails
+     */
+    public function removeMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
+    {
+        $this->movementDetails->removeElement($movementDetails);
+    }
+
+    /**
+     * Get movementDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovementDetails()
+    {
+        return $this->movementDetails;
+    }
 }

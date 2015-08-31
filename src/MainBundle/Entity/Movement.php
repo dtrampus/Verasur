@@ -8,13 +8,14 @@ use MainBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use MainBundle\Entity\Egress;
 use MainBundle\Entity\Ingress;
+use MainBundle\Entity\MovementDetail;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="movements")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"egress" = "Egress", "ingress" = "Ingress"})
+ * @ORM\DiscriminatorMap({"egress" = "Egress", "ingress" = "Ingress", "passes" = "Pass"})
  */
 abstract class Movement
 {
@@ -188,6 +189,13 @@ abstract class Movement
      * 
      */
     private $user;
+    
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="movements")
+     * 
+     */
+    private $movementDetails;
     
     /**
      * @var float
@@ -369,7 +377,12 @@ abstract class Movement
      */
     private $recovered;
     
-    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255, nullable=false)
+     */
+    private $status;
     
     /**
      * Get id
@@ -1123,4 +1136,67 @@ abstract class Movement
         return $this->recovered;
     }    
     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movementDetails = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add movementDetails
+     *
+     * @param \MainBundle\Entity\MovementDetail $movementDetails
+     * @return Movement
+     */
+    public function addMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
+    {
+        $this->movementDetails[] = $movementDetails;
+
+        return $this;
+    }
+
+    /**
+     * Remove movementDetails
+     *
+     * @param \MainBundle\Entity\MovementDetail $movementDetails
+     */
+    public function removeMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
+    {
+        $this->movementDetails->removeElement($movementDetails);
+    }
+
+    /**
+     * Get movementDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovementDetails()
+    {
+        return $this->movementDetails;
+    }
+    
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Movement
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }
