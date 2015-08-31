@@ -74,23 +74,17 @@
                                 <thead>
                                     <tr>
                                         <th data-class="expand">BALN</th>
-                                        <th data-hide="phone">Fecha</th>
+                                        <th data-hide="phone">Fecha y Hora</th>
                                         <th data-hide="phone">Proveedor</th>
-                                        <th data-hide="phone">Dom. Camión</th>
-                                        <th data-hide="phone">Dom. Acoplado</th>
                                         <th data-hide="phone">Transporte</th>
-                                        <th data-hide="phone">Chofer</th>
-                                        <th data-hide="phone">Peso Bruto</th>
-                                        <th data-hide="phone">Tara</th>
                                         <th data-hide="phone">Producto</th>
-                                        <th data-hide="phone">Densidad</th>
-                                        <th data-hide="phone">Neto</th>
                                         <th data-hide="phone">Litros Reales</th>
-                                        <th data-hide="phone">Número</th>
+                                        <th data-hide="phone">Número Sucursal</th>
+                                        <th data-hide="phone">Número Remito</th>
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+{#                                <tbody>
                                     {% for entity in entities %}
                                         <tr>
                                             <td>{{ entity.baln }}</td>
@@ -112,7 +106,7 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                </tbody>
+                                </tbody>#}
                             </table>
                         </div>
                         <!-- end widget content -->
@@ -147,15 +141,26 @@
             };
 	
             $('#tableClient').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "pageLength": 2,
+                "ajax": "{{ path('ingress_list') }}",
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "columnDefs": [
-                    {
-                        "targets": -1,
-                        "orderable": false,
-                        "searchable": false,
-                        "className": "text-center"
+                    { "name": "i.baln","targets": 0,"className": "text-center" },
+                    { "name": "i.date","targets": 1,"className": "text-center" },
+                    { "name": "provider.name","targets": 2,"className": "text-center" },
+                    { "name": "transport.transport","targets": 3,"className": "text-center" },
+                    { "name": "product.description","targets": 4,"className": "text-center" },
+                    { "name": "i.realLiter","targets": 5,"className": "text-center" },
+                    { "name": "i.branchNumber","targets": 6,"className": "text-center" },
+                    { "name": "i.remitNumber","targets": 7,"className": "text-center" },
+                    { "name": "i.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
+                        "render": function ( data, type, row ) {
+                            return '<a href="'+Routing.generate('ingress_show', { id: row[8] })+'" class="btn btn-primary">Ver</a>';
+                        } 
                     }
                 ],
                 "preDrawCallback" : function() {

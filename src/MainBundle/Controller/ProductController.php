@@ -21,12 +21,19 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getRepository('MainBundle:Product');
+        
+        $query = $em->createQueryBuilder('p')
+                    ->where('p.active = ?1')
+                    ->setParameter(1, true)
+                    ->getQuery();
+        
+        $products = $query->getResult();
 
-        $entities = $em->getRepository('MainBundle:Product')->findAll();
+//        $entities = $em->getRepository('MainBundle:Provider')->findAll();
 
         return $this->render('MainBundle:Product:index.html.twig', array(
-            'entities' => $entities,
+            'entities' => $products,
         ));
     }
     /**

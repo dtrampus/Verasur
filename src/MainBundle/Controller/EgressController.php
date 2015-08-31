@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Worksheet;
@@ -45,6 +48,9 @@ class EgressController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            //set user y despues get user
+            $entity->setUser($this->getUser());
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -294,27 +300,46 @@ class EgressController extends Controller {
                 ->setCellValue('A2', 'BALN')
                 ->setCellValue('B2', 'Fecha')
                 ->setCellValue('C2', 'Cliente')
-                ->setCellValue('D2', 'Dominio Camion')
+                ->setCellValue('D2', 'Dominio Camión')
                 ->setCellValue('E2', 'Dominio Acoplado')
                 ->setCellValue('F2', 'Transporte')
                 ->setCellValue('G2', 'Chofer')
                 ->setCellValue('H2', 'Peso Bruto')
-                ->setCellValue('I2', 'Peso Tara')
+                ->setCellValue('I2', 'Tara')
                 ->setCellValue('J2', 'Producto')
                 ->setCellValue('K2', 'Densidad')
-                ->setCellValue('L2', 'Neto')
-                ->setCellValue('M2', 'Litros Reales')
-                ->setCellValue('N2', 'Numero')
+                ->setCellValue('L2', 'Testeado')
+                ->setCellValue('M2', 'Neto')
+                ->setCellValue('N2', 'Litros Reales')
+                ->setCellValue('O2', 'Número')
+                ->setCellValue('P2', 'Observación')
+                ->setCellValue('Q2', 'Usuario Asociado')
+                ->setCellValue('R2', 'Destilación la gota')
+                ->setCellValue('S2', '5%')
+                ->setCellValue('T2', '10%')
+                ->setCellValue('U2', '20%')
+                ->setCellValue('V2', '30%')
+                ->setCellValue('W2', '40%')
+                ->setCellValue('X2', '50%')
+                ->setCellValue('Y2', '60%')
+                ->setCellValue('Z2', '70%')
+                ->setCellValue('AA2', '80%')
+                ->setCellValue('AB2', '90%')
+                ->setCellValue('AC2', '95%')
+                ->setCellValue('AD2', 'P. Seco')
+                ->setCellValue('AE2', 'P. Final')
+                ->setCellValue('AF2', 'Recuperado')
+                
                 ->setCellValue('A' . $count, 'Mostrando ' . $num_registros . ' registros');
 
-        $phpExcelObject->getActiveSheet()->mergeCells('A1:N1');
-        $phpExcelObject->getActiveSheet()->mergeCells('A' . $count . ':N' . $count);
-        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleArrayHeader);
-        $phpExcelObject->getActiveSheet()->getStyle("A1:N1")->applyFromArray($styleAlign);
-        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleArrayHeader);
-        $phpExcelObject->getActiveSheet()->getStyle("A2:N2")->applyFromArray($styleAlign);
-        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':N' . $count)->applyFromArray($styleArrayRows);
-        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':N' . $count)->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->mergeCells('A1:AF1');
+        $phpExcelObject->getActiveSheet()->mergeCells('A' . $count . ':AF' . $count);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:AF1")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A1:AF1")->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:AF2")->applyFromArray($styleArrayHeader);
+        $phpExcelObject->getActiveSheet()->getStyle("A2:AF2")->applyFromArray($styleAlign);
+        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':AF' . $count)->applyFromArray($styleArrayRows);
+        $phpExcelObject->getActiveSheet()->getStyle('A' . $count . ':AF' . $count)->applyFromArray($styleAlign);
         $response;
 
         switch ($type) {
@@ -351,25 +376,25 @@ class EgressController extends Controller {
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
-        $columns = array('baln', 'date', 'client', 'truckDomain', 'coupledDomain', 'transport', 'driver', 'grossWeight', 'tareWeight', 'product', 'density', 'clean', 'realLiter', 'branchNumber', 'remitNumber');
-        $get['columns'] = &$columns;
         $em = $this->getDoctrine()->getEntityManager();
         $rResult = $em->getRepository('MainBundle:Egress')->ajaxTable($get, true)->getArrayResult();
-        /* Data set length after filtering */
-        $iFilteredTotal = count($rResult);
         /*
          * Output
          */
         $output = array(
             "draw" => intval($get['draw']),
-            "recordsTotal" => $em->getRepository('MainBundle:Egress')->getCount(),
-            "recordsFiltered" => $iFilteredTotal,
+            "recordsTotal" => (int)$em->getRepository("MainBundle:Egress")->getCount(),
+            "recordsFiltered" => (int)$em->getRepository("MainBundle:Egress")->getFilteredCount($get),
             "data" => array()
         );
         foreach ($rResult as $aRow) {
             $row = array();
             foreach ($aRow as $value) {
-                $row[]=$value;
+                if($value instanceof \DateTime){
+                    $row[]=$value->format("d/m/Y H:i");
+                }else{
+                    $row[]=$value;  
+                }
             }
             $row[] = '';
             $output['data'][] = $row;
@@ -377,35 +402,5 @@ class EgressController extends Controller {
         unset($rResult);
         return new JsonResponse($output);
     }
-
-}
-
-//public function listAjaxAction(Request $request) {
-//        $get = $request->query->all();
-//        /* Array of database columns which should be read and sent back to DataTables. Use a space where
-//         * you want to insert a non-database field (for example a counter or static image)
-//         */
-//        $em = $this->getDoctrine()->getEntityManager();
-//        $rResult = $em->getRepository('MainBundle:Egress')->ajaxTable($get, true)->getArrayResult();
-//        /* Data set length after filtering */
-//        $iFilteredTotal = count($rResult);
-//        /*
-//         * Output
-//         */
-//        $output = array(
-//            "draw" => intval($get['draw']),
-//            "recordsTotal" => $em->getRepository('MainBundle:Egress')->getCount(),
-//            "recordsFiltered" => $iFilteredTotal,
-//            "data" => array()
-//        );
-//        foreach ($rResult as $aRow) {
-//            $row = array();
-//            foreach ($aRow as $value) {
-//                $row[]=$value;
-//            }
-//            $row[] = '';
-//            $output['data'][] = $row;
-//        }
-//        unset($rResult);
-//        return new JsonResponse($output);
-//    }
+    
+}    

@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Orx;
 
 /**
  * ClientRepository
@@ -13,39 +14,40 @@ use Doctrine\ORM\EntityRepository;
 class EgressRepository extends EntityRepository {
 
     public function ajaxTable(array $get, $flag = false) {
-        /* Indexed column (used for fast and accurate table cardinality) */
-        $alias = 'e';
         /* DB table to use */
         $tableObjectName = 'MainBundle:Egress';
         /**
          * Set to default
          */
-        if (!isset($get['columns']) || empty($get['columns']))
-            $get['columns'] = array('id');
-        $aColumns = array();
-        foreach ($get['columns'] as $value)
-            $aColumns[] = $value;
+        $arrayColumns = array();
+        foreach ($get['columns'] as $value) {
+            if ($value['name'] != "") {
+                $arrayColumns[] = $value['name'];
+            }
+        }
         $cb = $this->getEntityManager()
-                ->createQueryBuilder($alias)
-                ->select('e.baln', 'e.date', 'client.nombre', 'e.truckDomain', 'e.coupledDomain', 'transport.transport', 'e.driver', 'e.grossWeight', 'e.tareWeight', 'product.description', 'e.density', 'e.clean', 'e.realLiter', 'e.branchNumber', 'e.remitNumber')
+                ->createQueryBuilder("e")
+                ->select($arrayColumns)
                 ->from('MainBundle\Entity\Egress', 'e')
                 ->innerJoin('e.client', 'client')
                 ->innerJoin('e.product', 'product')
                 ->innerJoin('e.transport', 'transport');
-        if (isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1') {
-            $cb->setFirstResult((int) $get['iDisplayStart'])
-                    ->setMaxResults((int) $get['iDisplayLength']);
+        if (isset($get['start']) && $get['length'] != '-1') {
+            $cb->setFirstResult((int) $get['start'])
+                    ->setMaxResults((int) $get['length']);
         }
         /*
          * Ordering
          */
-        if (isset($get['iSortCol_0'])) {
-            for ($i = 0; $i < intval($get['iSortingCols']); $i++) {
-                if ($get['bSortable_' . intval($get['iSortCol_' . $i])] == "true") {
-                    $cb->orderBy($aColumns[(int) $get['iSortCol_' . $i]], $get['sSortDir_' . $i]);
+        if (isset($get['order'])) {
+            for ($i = 0; $i < count($get['order']); $i++) {
+                $order = $get['order'][$i];
+                if ($get['columns'][$order['column']]['orderable'] == "true") {
+                    $cb->orderBy($get['columns'][$order['column']]['name'], $order['dir']);
                 }
             }
         }
+        
         /*
          * Filtering
          * NOTE this does not match the built-in DataTables filtering which does it
@@ -53,14 +55,15 @@ class EgressRepository extends EntityRepository {
          * on very large tables, and MySQL's regex functionality is very limited
          */
         if (isset($get['search']) && $get['search'] != '') {
+            $columns = $get['columns'];
             $aLike = array();
-            for ($i = 0; $i < count($aColumns); $i++) {
-                if (isset($aColumns[$i.'searchable']) && $aColumns[$i.'searchable'] == "true") {
-                    $aLike[] = $cb->expr()->like($aColumns[$i], '\'%' . $get['search'] . '%\'');
+            for ($i = 0; $i < count($columns); $i++) {
+                if (isset($columns[$i]['searchable']) && $columns[$i]['searchable'] == "true") {
+                    $aLike[] = $cb->expr()->like($columns[$i]["name"], '\'%' . $get['search']["value"] . '%\'');
                 }
             }
             if (count($aLike) > 0)
-                $cb->andWhere(new Expr\Orx($aLike));
+                $cb->andWhere(new Orx($aLike));
             else
                 unset($aLike);
         }
@@ -86,4 +89,49 @@ class EgressRepository extends EntityRepository {
         return $aResultTotal[0][1];
     }
 
+    public function getFilteredCount(array $get) {
+        $arrayColumns = array();
+        foreach ($get['columns'] as $value) {
+            if ($value['name'] != "") {
+                $arrayColumns[] = $value['name'];
+            }
+        }
+        
+        /* DB table to use */
+        $cb = $this->getEntityManager()
+                ->createQueryBuilder("e")
+                ->select("count(e.id)")
+                ->from('MainBundle\Entity\Egress', 'e')
+                ->innerJoin('e.client', 'client')
+                ->innerJoin('e.product', 'product')
+                ->innerJoin('e.transport', 'transport');
+
+        /*
+         * Filtering
+         * NOTE this does not match the built-in DataTables filtering which does it
+         * word by word on any field. It's possible to do here, but concerned about efficiency
+         * on very large tables, and MySQL's regex functionality is very limited
+         */
+        if (isset($get['search']) && $get['search'] != '') {
+            $columns = $get['columns'];
+            $aLike = array();
+            for ($i = 0; $i < count($columns); $i++) {
+                if (isset($columns[$i]['searchable']) && $columns[$i]['searchable'] == "true") {
+                    $aLike[] = $cb->expr()->like($columns[$i]["name"], '\'%' . $get['search']["value"] . '%\'');
+                }
+            }
+            if (count($aLike) > 0)
+                $cb->andWhere(new Orx($aLike));
+            else
+                unset($aLike);
+        }
+
+        /*
+         * SQL queries
+         * Get data to display
+         */
+        $query = $cb->getQuery();
+        $aResultTotal = $query->getResult();
+        return $aResultTotal[0][1];
+    }
 }

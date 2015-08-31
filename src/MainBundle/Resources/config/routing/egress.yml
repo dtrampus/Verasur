@@ -5,6 +5,8 @@ egress:
 egress_show:
     path:     /{id}/show
     defaults: { _controller: "MainBundle:Egress:show" }
+    options:
+        expose: true
 
 egress_new:
     path:     /new

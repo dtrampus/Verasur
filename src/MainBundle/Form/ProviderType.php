@@ -17,6 +17,34 @@ class ProviderType extends AbstractType
         $builder
             ->add('code','text',array('label'=>'Código'))
             ->add('name','text',array('label'=>'Nombre'))
+            ->add('observation','textarea',array('label'=>'Observación'))
+            ->add('contact','text',array('label'=>'Contacto'))
+            ->add('score','choice',array(
+                'label'=>'Puntuación',
+                'placeholder' => 'Elige una opción',
+                'choices' => array(
+                    '1'   => '1',
+                    '2' => '2',
+                    '3'   => '3',
+                    '4'   => '4',
+                    '5'   => '5',
+                    '6'   => '6',
+                    '7'   => '7',
+                    '8'   => '8',
+                    '9'   => '9',
+                    '10'   => '10',
+                )
+                ))
+            ->add('category','choice',array(
+                'label'=>'Rubro',
+                'placeholder' => 'Elige una opción',
+                'choices' => array(
+                    'rubro1'   => 'Rubro 1',
+                    'rubro2' => 'Rubro 2',
+                    'rubro3'   => 'Rubro 3',
+                    'rubro4'   => 'Rubro 4',
+                    'rubro5'   => 'Rubro 5',
+                )))
         ;
     }
     

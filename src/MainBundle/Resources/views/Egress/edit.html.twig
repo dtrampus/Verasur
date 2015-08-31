@@ -41,7 +41,75 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(edit_form) }}
+                        {{ form_start(form) }}
+                            {{ form_errors(form) }}
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.baln) }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.date) }}
+                                </div>
+                            </div>
+                            <hr width=100% align="center">
+                            {{form_row(form.provider)}}
+                            <h6>Dominio:</h6>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.truckDomain) }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.coupledDomain) }}
+                                </div>
+                            </div>
+                            {{form_row(form.transport)}}
+                            {{form_row(form.driver)}}
+                            <hr width=100% align="center">
+                            <h6>Peso:</h6>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.grossWeight) }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form_row(form.tareWeight) }}
+                                </div>
+                            </div>
+                            <hr width=100% align="center">
+                            {{form_row(form.product)}}
+                            {{form_row(form.density)}}
+                            {{form_row(form.tested)}}
+                            {{form_row(form.clean)}}
+                            {{form_row(form.realLiter)}}
+                            <hr width=100% align="center">
+                            <h6>Remito:</h6>
+                            <div class='row'>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.branchNumber) }}
+                                </div>
+                                
+                                <div class='col-md-9'>
+                                    {{ form_row(form.remitNumber) }}
+                                </div>
+                            </div>
+                            {{form_row(form.observation)}}    
+                            <hr>
+                            <h5>Muestra:</h5>
+                            {{form_row(form.distillationGout)}}
+                            {{form_row(form.fivePercent)}}
+                            {{form_row(form.tenPercent)}}
+                            {{form_row(form.twentyPercent)}}
+                            {{form_row(form.thirtyPercent)}}
+                            {{form_row(form.fortyPercent)}}
+                            {{form_row(form.fiftyPercent)}}
+                            {{form_row(form.sixtyPercent)}}
+                            {{form_row(form.seventyPercent)}}
+                            {{form_row(form.eightyPercent)}}
+                            {{form_row(form.ninetyPercent)}}
+                            {{form_row(form.ninetyFivePercent)}}
+                            {{form_row(form.pDry)}}
+                            {{form_row(form.pFinal)}}
+                            {{form_row(form.recovered)}}                                
+                        {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
 
@@ -55,9 +123,13 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js'
+                   '@MainBundle/Resources/public/js/verasur_new_edit_movement.js' %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
     <script>
         jQuery(document).ready(function () {
-            $('select').removeClass('form-control');
+            verasurNewEditMovement.init();
         });
     </script>
 {% endblock %}

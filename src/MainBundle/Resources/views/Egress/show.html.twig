@@ -66,38 +66,52 @@
                             <div class="tab-pane active" id="hb1">    
                                 <p>BALN: {{ entity.baln }}</p>
                                 <p>Fecha: {{ entity.date|date("d/m/Y") }}</p>
+                                <p>Hora: {{ entity.time }}</p>
                                 <p>Dominio Camion: {{ entity.truckDomain }}</p>
                                 <p>Dominio Acoplado: {{ entity.coupledDomain }}</p>
                                 <p>Chofer: {{ entity.driver }}</p>
                                 <p>Peso Bruto: {{ entity.grossWeight }}</p>
                                 <p>Peso Tara: {{ entity.tareWeight }}</p>
                                 <p>Densidad: {{ entity.density }}</p>
+                                <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                 <p>Neto: {{ entity.clean }}</p>
                                 <p>Litros Reales: {{ entity.realLiter }}</p>
                                 <p>Número: {{ entity.branchNumber }} - {{ entity.remitNumber }}</p>
+                                <p>Observación: {{ entity.observation }}</p>
+                                <p>Destilación la gota: {{ entity.distillationGout }}</p>
+                                <p>5%: {{ entity.fivePercent }}</p>
+                                <p>10%: {{ entity.tenPercent }}</p>
+                                <p>20%: {{ entity.twentyPercent }}</p>
+                                <p>30%: {{ entity.thirtyPercent }}</p>
+                                <p>40%: {{ entity.fortyPercent }}</p>
+                                <p>50%: {{ entity.fiftyPercent }}</p>
+                                <p>60%: {{ entity.sixtyPercent }}</p>
+                                <p>70%: {{ entity.seventyPercent }}</p>
+                                <p>80%: {{ entity.eightyPercent }}</p>
+                                <p>90%: {{ entity.ninetyPercent }}</p>
+                                <p>95%: {{ entity.ninetyFivePercent }}</p>
+                                <p>P. Seco: {{ entity.pDry }}</p>
+                                <p>P. Final: {{ entity.pFinal }}</p>
+                                <p>Recuperado: {{ entity.recovered }}</p>
+                                
+                                <p>Usuario Asociado: {{ entity.user.username }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <ul class="list-group">
-                                    <p>Cogido: {{ entity.client.code }}</p>
+                                    <p>Código: {{ entity.client.code }}</p>
                                     <p>Razon Social: {{ entity.client.nombre }}</p>
-                                    <p>Activo: {{ entity.client.active ? 'Si':'No' }}</p>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="hb3">
                                 <ul class="list-group">
-                                    <p>Cogido: {{ entity.transport.code }}</p>
+                                    <p>Código: {{ entity.transport.code }}</p>
                                     <p>Transporte: {{ entity.transport.transport }}</p>
-                                    <p>Activo: {{ entity.transport.Active ? 'Si':'No' }}</p>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="hb4">
                                 <ul class="list-group">
                                     <p>Código: {{ entity.product.code }}</p>
                                     <p>Descripcion: {{ entity.product.description }}</p>
-                                    <p>Nro. Formula Produccion: {{ entity.product.numFormulaProduction }}</p>
-                                    <p>Calculo Crudo-Lar: {{ entity.product.crudeLar ? 'Si':'No' }}</p>
-                                    <p>Ingreso/Egreso: {{ entity.product.typeEntry }}</p>
-                                    <p>Activo: {{ entity.product.active ? 'Si':'No' }}</p>
                                 </ul>
                             </div>
                         </div>

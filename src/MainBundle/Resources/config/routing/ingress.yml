@@ -5,6 +5,8 @@ ingress:
 ingress_show:
     path:     /{id}/show
     defaults: { _controller: "MainBundle:Ingress:show" }
+    options:
+        expose: true
 
 ingress_new:
     path:     /new
@@ -32,3 +34,7 @@ ingress_delete:
 ingress_export:
     path:     /{type}/export
     defaults: { _controller: "MainBundle:Ingress:export" }
+    
+ingress_list:
+    path:     /list
+    defaults: { _controller: "MainBundle:Ingress:listAjax" }
