@@ -5,6 +5,8 @@ ingress:
 ingress_show:
     path:     /{id}/show
     defaults: { _controller: "MainBundle:Ingress:show" }
+    options:
+        expose: true
 
 ingress_new:
     path:     /new

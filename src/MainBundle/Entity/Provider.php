@@ -66,7 +66,6 @@ class Provider
      *
      * @ORM\Column(name="score", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min=3)
      */
     private $score;    
 
@@ -75,7 +74,6 @@ class Provider
      *
      * @ORM\Column(name="category", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min=3)
      */
     private $category; 
     

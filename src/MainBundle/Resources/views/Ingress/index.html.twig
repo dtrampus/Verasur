@@ -157,7 +157,11 @@
                     { "name": "i.realLiter","targets": 5,"className": "text-center" },
                     { "name": "i.branchNumber","targets": 6,"className": "text-center" },
                     { "name": "i.remitNumber","targets": 7,"className": "text-center" },
-                    { "targets": 8,"className": "text-center", "searchable": false,"orderable":false }
+                    { "name": "i.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
+                        "render": function ( data, type, row ) {
+                            return '<a href="'+Routing.generate('ingress_show', { id: row[8] })+'" class="btn btn-primary">Ver</a>';
+                        } 
+                    }
                 ],
                 "preDrawCallback" : function() {
                     // Initialize the responsive datatables helper once.
