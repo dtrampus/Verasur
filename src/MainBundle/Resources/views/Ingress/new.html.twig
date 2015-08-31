@@ -134,37 +134,5 @@
     $(document).ready(function(){
         verasurNewEditMovement.init();
     });
-
-    <script type="text/javascript">
-        // START AND FINISH DATE
-        $(document).ready(function () {
-            $(".datepicker").datepicker('setDate', new Date());
-            $("select").removeClass("form-control");
-
-            $('#mainbundle_ingress_driver').html("");
-            $("#mainbundle_ingress_transport").change(function () {
-                var value = $("#mainbundle_ingress_transport").select2('val');
-                if (value != 0) {
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('getDriverAjax', {id: value}),
-                        dataType: "json",
-                        success: function (jsonDrivers) {
-                            $('#mainbundle_ingress_driver').html("");
-                            for (var driver in jsonDrivers) {
-                                var arrayDriver = jsonDrivers[driver];
-                                $('#mainbundle_ingress_driver').append("<option value=" + arrayDriver[0] + ">" + arrayDriver[1] + " - " + arrayDriver[2] + " " + arrayDriver[3] + "</option>");
-                            }
-                        }
-                    });
-                } else {
-                    $('#mainbundle_ingress_driver').html("");
-                }
-
-
-            });
-        });
-
-
-    </script>
+</script>
 {% endblock %}

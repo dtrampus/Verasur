@@ -151,7 +151,7 @@ abstract class Movement
     /**
      * @var float
      *
-     * @ORM\Column(name="branchNumber", type="float")
+     * @ORM\Column(name="branchNumber", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
@@ -163,7 +163,7 @@ abstract class Movement
     /**
      * @var float
      *
-     * @ORM\Column(name="remitNumber", type="float")
+     * @ORM\Column(name="remitNumber", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
