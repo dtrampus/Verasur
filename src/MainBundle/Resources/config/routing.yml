@@ -1,3 +1,7 @@
+main_driver:
+    resource: "@MainBundle/Resources/config/routing/driver.yml"
+    prefix:   /driver
+
 main_tank:
     resource: "@MainBundle/Resources/config/routing/tank.yml"
     prefix:   /tank

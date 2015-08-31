@@ -14,8 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="MainBundle\Entity\TankRepository")
  * @UniqueEntity("code")
  */
-class Tank
-{
+class Tank {
+
     /**
      * @var integer
      *
@@ -24,6 +24,13 @@ class Tank
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="plant", type="boolean")
+     */
+    private $plant;
 
     /**
      * @var string
@@ -35,7 +42,7 @@ class Tank
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="string")
      */
     private $description;
 
@@ -89,21 +96,44 @@ class Tank
     private $totalCapacity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="tanks")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\JoinTable(name="tanks_products",
+     *      joinColumns={@ORM\JoinColumn(name="tank_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
+     *  )
      * @Assert\NotBlank()
      * 
      */
-    private $product;
+    protected $products;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
+    }
+
+    /**
+     * Set vertical
+     *
+     * @param boolean $plant
+     * @return Tank
+     */
+    public function setPlant($plant) {
+        $this->plant = $plant;
+
+        return $this;
+    }
+
+    /**
+     * Get plant
+     *
+     * @return boolean 
+     */
+    public function getPlant() {
+        return $this->plant;
     }
 
     /**
@@ -112,8 +142,7 @@ class Tank
      * @param string $code
      * @return Tank
      */
-    public function setCode($code)
-    {
+    public function setCode($code) {
         $this->code = $code;
 
         return $this;
@@ -124,8 +153,7 @@ class Tank
      *
      * @return string 
      */
-    public function getCode()
-    {
+    public function getCode() {
         return $this->code;
     }
 
@@ -135,8 +163,7 @@ class Tank
      * @param string $description
      * @return Tank
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -147,8 +174,7 @@ class Tank
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -158,8 +184,7 @@ class Tank
      * @param boolean $vertical
      * @return Tank
      */
-    public function setVertical($vertical)
-    {
+    public function setVertical($vertical) {
         $this->vertical = $vertical;
 
         return $this;
@@ -170,8 +195,7 @@ class Tank
      *
      * @return boolean 
      */
-    public function getVertical()
-    {
+    public function getVertical() {
         return $this->vertical;
     }
 
@@ -181,8 +205,7 @@ class Tank
      * @param float $circumference
      * @return Tank
      */
-    public function setCircumference($circumference)
-    {
+    public function setCircumference($circumference) {
         $this->circumference = $circumference;
 
         return $this;
@@ -193,8 +216,7 @@ class Tank
      *
      * @return float 
      */
-    public function getCircumference()
-    {
+    public function getCircumference() {
         return $this->circumference;
     }
 
@@ -204,8 +226,7 @@ class Tank
      * @param float $reference
      * @return Tank
      */
-    public function setReference($reference)
-    {
+    public function setReference($reference) {
         $this->reference = $reference;
 
         return $this;
@@ -216,8 +237,7 @@ class Tank
      *
      * @return float 
      */
-    public function getReference()
-    {
+    public function getReference() {
         return $this->reference;
     }
 
@@ -227,8 +247,7 @@ class Tank
      * @param float $coordinates
      * @return Tank
      */
-    public function setCoordinates($coordinates)
-    {
+    public function setCoordinates($coordinates) {
         $this->coordinates = $coordinates;
 
         return $this;
@@ -239,8 +258,7 @@ class Tank
      *
      * @return float 
      */
-    public function getCoordinates()
-    {
+    public function getCoordinates() {
         return $this->coordinates;
     }
 
@@ -250,8 +268,7 @@ class Tank
      * @param float $diameter
      * @return Tank
      */
-    public function setDiameter($diameter)
-    {
+    public function setDiameter($diameter) {
         $this->diameter = $diameter;
 
         return $this;
@@ -262,8 +279,7 @@ class Tank
      *
      * @return float 
      */
-    public function getDiameter()
-    {
+    public function getDiameter() {
         return $this->diameter;
     }
 
@@ -273,8 +289,7 @@ class Tank
      * @param float $liter
      * @return Tank
      */
-    public function setLiter($liter)
-    {
+    public function setLiter($liter) {
         $this->liter = $liter;
 
         return $this;
@@ -285,8 +300,7 @@ class Tank
      *
      * @return float 
      */
-    public function getLiter()
-    {
+    public function getLiter() {
         return $this->liter;
     }
 
@@ -296,8 +310,7 @@ class Tank
      * @param float $totalCapacity
      * @return Tank
      */
-    public function setTotalCapacity($totalCapacity)
-    {
+    public function setTotalCapacity($totalCapacity) {
         $this->totalCapacity = $totalCapacity;
 
         return $this;
@@ -308,31 +321,49 @@ class Tank
      *
      * @return float 
      */
-    public function getTotalCapacity()
-    {
+    public function getTotalCapacity() {
         return $this->totalCapacity;
     }
-
+    
     /**
-     * Set product
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add product
      *
      * @param \MainBundle\Entity\Product $product
-     * @return Tank
+     * @return Product
      */
-    public function setProduct(\MainBundle\Entity\Product $product = null)
+    public function addProduct(\MainBundle\Entity\Product $product)
     {
-        $this->product = $product;
+        $this->products[] = $product;
 
         return $this;
     }
 
     /**
+     * Remove product
+     *
+     * @param \MainBundle\Entity\Product $product
+     */
+    public function removeProduct(\MainBundle\Entity\Product $product)
+    {
+        $this->products->removeElement($product);
+    }
+
+    /**
      * Get product
      *
-     * @return \MainBundle\Entity\Product 
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getProduct()
+    public function getProducts()
     {
-        return $this->product;
+        return $this->products;
     }
+
 }

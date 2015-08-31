@@ -53,7 +53,7 @@ class Product
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tank", mappedBy="product")
+     * @ORM\ManyToMany(targetEntity="Tank", mappedBy="product")
      */
     private $tanks;
     
