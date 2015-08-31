@@ -1,9 +1,11 @@
-{% extends '::base.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Ingresos <span>&gt; Crear Ingreso </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Egreso <span>&gt; Editar Chofer </span></h1>
         </div>
     </div>
 
@@ -25,8 +27,8 @@
 
                 -->
                 <header>
-                    <span class="widget-icon"> <i class="fa fa-sign-in"></i> </span>
-                    <h2>Formulario de creación de ingreso</h2>
+                    <span class="widget-icon"> <i class="fa fa-car"></i> </span>
+                    <h2>Formulario de edición de choferes</h2>
                 </header>
 
                 <!-- widget div-->
@@ -39,7 +41,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}
+                        {{ form(edit_form) }}
                     </div>
                     <!-- end widget content -->
 
@@ -51,42 +53,11 @@
         </article>
     </div>
 {% endblock %}
-
-
 {% block javascripts %}
     {{ parent() }}
-
-
-    <script type="text/javascript">
-        // START AND FINISH DATE
-        $(document).ready(function () {
-            $(".datepicker").datepicker('setDate', new Date());
-            $("select").removeClass("form-control");
-
-            $('#mainbundle_ingress_driver').html("");
-            $("#mainbundle_ingress_transport").change(function () {
-                var value = $("#mainbundle_ingress_transport").select2('val');
-                if (value != 0) {
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('getDriverAjax', {id: value}),
-                        dataType: "json",
-                        success: function (jsonDrivers) {
-                            $('#mainbundle_ingress_driver').html("");
-                            for (var driver in jsonDrivers) {
-                                var arrayDriver = jsonDrivers[driver];
-                                $('#mainbundle_ingress_driver').append("<option value=" + arrayDriver[0] + ">" + arrayDriver[1] + " - " + arrayDriver[2] + " " + arrayDriver[3] + "</option>");
-                            }
-                        }
-                    });
-                } else {
-                    $('#mainbundle_ingress_driver').html("");
-                }
-
-
-            });
+    <script>
+        jQuery(document).ready(function () {
+            $('select').removeClass('form-control');
         });
-
-
     </script>
 {% endblock %}

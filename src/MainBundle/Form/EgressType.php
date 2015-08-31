@@ -53,7 +53,12 @@ class EgressType extends AbstractType
                                         ->setParameter(1, true);
                              }
             ))
-            ->add('driver','text', array('label'=>'Chofer'))
+            ->add('driver','entity',array(
+                'label'=>'Chofer',
+                'placeholder' => 'Elige una opción',
+                'attr' => array('class' => 'select2', 'style' => "width:100%"),
+                'class' => 'MainBundle\Entity\Driver'
+            ))
             ->add('grossWeight','text', array('label'=>'Bruto'))
             ->add('tareWeight','text', array('label'=>'Tara'))
             ->add('product','entity', array(

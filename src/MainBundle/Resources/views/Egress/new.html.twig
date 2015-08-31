@@ -105,6 +105,29 @@
         jQuery(document).ready(function () {
             $('.datepicker').datepicker('setDate', new Date());
             $('select').removeClass('form-control');
+            
+            $('#mainbundle_egress_driver').html("");
+            $("#mainbundle_egress_transport").change(function() {
+                var value = $("#mainbundle_egress_transport").select2('val');
+                if (value != 0) {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('getDriverAjax', {id: value}),
+                        dataType: "json",
+                        success: function (jsonDrivers) {
+                            $('#mainbundle_egress_driver').html("");
+                            for (var driver in jsonDrivers) {
+                                var arrayDriver = jsonDrivers[driver];
+                                $('#mainbundle_egress_driver').append("<option value=" + arrayDriver[0] + ">" + arrayDriver[1]+" - "+arrayDriver[2]+" "+arrayDriver[3] +"</option>");
+                            }
+                        }
+                    });
+                } else {
+                    $('#mainbundle_egress_driver').html("");
+                }
+
+
+            });
         });
     </script>
 {% endblock %}

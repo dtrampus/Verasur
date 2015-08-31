@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use MainBundle\Entity\ProviderRepository;
 use MainBundle\Entity\TransportRepository;
+use MainBundle\Entity\DriverRepository;
 use MainBundle\Entity\ProductRepository;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -54,7 +55,17 @@ class IngressType extends AbstractType
                                         ->setParameter(1, true);
                              }
             ))
-            ->add('driver','text',array('label'=>'Chofer'))
+            ->add('driver','entity',array(
+                'label'=>'Chofer',
+                'placeholder' => 'Elige una opción',
+                'attr' => array('class' => 'select2', 'style' => "width:100%"),
+                'class' => 'MainBundle\Entity\Driver',
+                'query_builder' => function (DriverRepository $repository)
+                             {
+                                 return $repository->createQueryBuilder('d');
+                                        //->where('d.transport = ');
+                             }
+            ))
             ->add('grossWeight','text',array('label'=>'Peso Bruto'))
             ->add('tareWeight','text',array('label'=>'Tara'))
             ->add('product','entity',array(

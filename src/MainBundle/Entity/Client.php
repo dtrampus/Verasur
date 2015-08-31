@@ -209,6 +209,7 @@ class Client
     {
         return $this->active;
     }
+    
     /**
      * Constructor
      */
