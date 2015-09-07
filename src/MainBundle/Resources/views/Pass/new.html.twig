@@ -134,7 +134,7 @@
                 if (value != 0) {
                     $.ajax({
                         type: 'GET',
-                        url: Routing.generate('getTankAjax', {id: value}),
+                        url: Routing.generate('getProductAjax', {id: value}),
                         dataType: "json",
                         success: function (jsonTanks) {
                             $('#mainbundle_pass_product').html("");
@@ -222,6 +222,12 @@
                 } 
                 return response;
             }, "La cantidad no puede superar a la del tanque de destino.");
+            
+            jQuery.validator.addMethod("heigherThan0", function (value, element, param) {                
+                var quant = parseFloat($("#mainbundle_pass_quantity").val());
+                var response = quant >= 0.01;
+                return response;
+            }, "La cantidad tiene que ser mayor a 0");
 
             $('#pass-form').validate({
                 highlight: function (element) {
@@ -248,7 +254,8 @@
                         required: true,
                         number: true,
                         maxOriginQuantity: true,
-                        maxDestinyQuantity: true
+                        maxDestinyQuantity: true,
+                        heigherThan0: true
                     },
                     tank_2: {
                         required: true,
@@ -276,7 +283,8 @@
                         required: "Este campo es requerido",
                         number: "El valor ingresado debe ser un número",
                         maxOriginQuantity: "La cantidad no puede superar a la del tanque de origen",
-                        maxDestinyQuantity: "La cantidad no puede superar a la del tanque de destino"
+                        maxDestinyQuantity: "La cantidad no puede superar a la del tanque de destino",
+                        heigherThan0: "La cantidad tiene que ser mayor que 0"
                     },
                     tank_2: {
                         required: "Este campo es requerido",
