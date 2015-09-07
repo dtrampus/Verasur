@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Ingress;
 use MainBundle\Form\IngressType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use \MainBundle\Entity\MovementDetail;
 
 
 use PHPExcel_Style_Border;
@@ -52,6 +53,7 @@ class IngressController extends Controller
         if ($form->isValid()) {
             //set user y despues get user
             $entity->setUser($this->getUser());
+            $entity->setStatus("En plaza");
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -146,7 +148,7 @@ class IngressController extends Controller
 
         return $this->render('MainBundle:Ingress:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -420,5 +422,71 @@ class IngressController extends Controller
         return new JsonResponse($output);
     }
     
+    //-------------Download Actions-----------------
+    
+    /**
+     * Creates a new download.
+     *
+     */
+    public function downloadCreateAction(Request $request)
+    {
+        $movement = $request->request->get('ingressId');
+        $tank1 = $request->request->get('tanque1');
+        $quantity1 = $request->request->get('cantidad1');
+        $tank2 = $request->request->get('tanque2');
+        $quantity2 = $request->request->get('cantidad2');
+        
+        $em = $this->getDoctrine()->getManager();
+        $ingress = $em->getRepository('MainBundle:Ingress')->find($movement);
+        
+        //1 o 2
+        if ($tank1 != ""){
+            $tank = $em->getRepository('MainBundle:Tank')->find($tank1);
+            $entity = new MovementDetail();
+            $entity ->setMovement($ingress)
+                    ->setQuantity($quantity1)
+                    ->setTank($tank);
+            
+            $ingress->setStatus("Descargado");
+            $em->persist($entity);
+                    
+        }
+        if ($tank2 != ""){
+            $tank = $em->getRepository('MainBundle:Tank')->find($tank2);
+            $entity = new MovementDetail();
+            $entity ->setMovement($ingress)
+                    ->setQuantity($quantity2)
+                    ->setTank($tank);
+            
+            $ingress->setStatus("Descargado");
+            $em->persist($entity);
+                    
+        }
+        
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            'La descarga se realizó correctamente.'
+        );
+        return $this->redirect($this->generateUrl('ingress'));
+    }
+
+    /**
+     * Displays a form to create a new download.
+     *
+     */
+    public function downloadNewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('MainBundle:Tank')->findAll();
+        
+        $ingress = $em->getRepository('MainBundle:Ingress')->find($id);
+
+        return $this->render('MainBundle:Ingress:download.html.twig', array(
+            'entities' => $entities,
+            'ingressInfo' => $ingress
+        ));
+    }
     
 }

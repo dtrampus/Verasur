@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Egress;
 use MainBundle\Form\EgressType;
-
+use MainBundle\Entity\MovementDetail;
 
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
@@ -43,15 +43,43 @@ class EgressController extends Controller {
      */
     public function createAction(Request $request) {
         $entity = new Egress();
+        
+        $tank1 = $request->request->get('tanque1');
+        $quantity1 = $request->request->get('cantidad1');
+        $tank2 = $request->request->get('tanque2');
+        $quantity2 = $request->request->get('cantidad2');
+        
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             //set user y despues get user
             $entity->setUser($this->getUser());
-            
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            //1 o 2
+            if ($tank1 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank1);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity(($quantity1)*(-1));
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }
+            if ($tank2 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank2);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity(($quantity2)*(-1));
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }            
+            
             $em->flush();
 
             $this->addFlash(
@@ -92,9 +120,13 @@ class EgressController extends Controller {
     public function newAction() {
         $entity = new Egress();
         $form = $this->createCreateForm($entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
 
         return $this->render('MainBundle:Egress:new.html.twig', array(
                     'entity' => $entity,
+                    'tanks' => $tanks,
                     'form' => $form->createView(),
         ));
     }
