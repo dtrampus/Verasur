@@ -1,0 +1,95 @@
+<?php
+
+namespace MainBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use MainBundle\Entity\Pass;
+
+/**
+ * Pass controller.
+ *
+ */
+class PassController extends Controller {
+
+    /**
+     * Lists all Pass entities.
+     *
+     */
+    public function indexAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('MainBundle:Pass')->findAll();
+
+        return $this->render('MainBundle:Pass:index.html.twig', array(
+            'entities' => $entities
+        ));
+    }
+
+    /**
+     * Creates a new Pass entity.
+     *
+     */
+    public function createAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        
+        $tank_1 = $request->request->get('tank_1');
+        $tank1 = $em->getRepository('MainBundle:Tank')->find($tank_1);
+        $tank_2 = $request->request->get('tank_2');
+        $tank2 = $em->getRepository('MainBundle:Tank')->find($tank_2);
+        $productId = $request->request->get('product');
+        $quantity = $request->request->get('quantity');
+        
+        $product = $this->getDoctrine()->getRepository('MainBundle:Product')->find($productId);
+        
+        $date = $request->request->get('date');
+        $date = $request->request->get('time');
+        $observation = $request->request->get('observation');
+        
+        $entity = new Pass();
+        $entity->setObservation($observation);
+        $entity->setDate(new \DateTime($date));
+        $entity->setRealLiter($quantity);
+        $entity->setProduct($product);
+
+        
+        $detail_1 = new \MainBundle\Entity\MovementDetail();
+        $detail_1->setTank($tank1);
+        $detail_1->setQuantity(-$quantity);
+        $detail_1->setMovement($entity);
+        $entity->addMovementDetail($detail_1);
+    
+        $detail_2 = new \MainBundle\Entity\MovementDetail();
+        $detail_2->setTank($tank2);
+        $detail_2->setQuantity($quantity);
+        $detail_2->setMovement($entity);
+        $entity->addMovementDetail($detail_2);
+
+
+        //crear objeto
+        $em->persist($entity);
+        $em->flush();
+
+        $this->addFlash(
+            'success', 'El pase se ha declarado correctamente.'
+        );
+
+        return $this->redirect($this->generateUrl('pass'));
+    }
+
+    /**
+     * Displays a form to create a new Pass entity.
+     *
+     */
+    public function newAction() {
+        $em = $this->getDoctrine()->getManager();
+        $entity = new Pass();
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
+
+        return $this->render('MainBundle:Pass:new.html.twig', array(
+                    'entity' => $entity,
+                    'tanks' => $tanks
+        ));
+    }
+
+}

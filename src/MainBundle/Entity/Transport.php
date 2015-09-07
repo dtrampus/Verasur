@@ -186,4 +186,37 @@ class Transport
     public function __toString() {
         return $this->code.' - '.$this->transport;
     }
+
+    /**
+     * Add drivers
+     *
+     * @param \MainBundle\Entity\Driver $drivers
+     * @return Transport
+     */
+    public function addDriver(\MainBundle\Entity\Driver $drivers)
+    {
+        $this->drivers[] = $drivers;
+
+        return $this;
+    }
+
+    /**
+     * Remove drivers
+     *
+     * @param \MainBundle\Entity\Driver $drivers
+     */
+    public function removeDriver(\MainBundle\Entity\Driver $drivers)
+    {
+        $this->drivers->removeElement($drivers);
+    }
+
+    /**
+     * Get drivers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDrivers()
+    {
+        return $this->drivers;
+    }
 }

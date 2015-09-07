@@ -29,8 +29,14 @@ tank_delete:
     defaults: { _controller: "MainBundle:Tank:delete" }
     methods:  [POST, DELETE]
     
+getTankAjax:
+    pattern: /{id}/getbyproduct
+    defaults: { _controller: "MainBundle:Tank:getTankByProductAjax" }
+    options:
+        expose: true
+        
 calculateCapacity:
-   pattern: /{id}/calculateTank
-   defaults: { _controller: "MainBundle:Tank:calculateCapacity" }
-   options:
-       expose: true
+    pattern: /{id}/calculateCapacity
+    defaults: { _controller: "MainBundle:Tank:calculateCapacity" }
+    options:
+        expose: true
