@@ -58,7 +58,7 @@ class EgressType extends AbstractType {
                     'attr' => array('class' => 'select2', 'style' => "width:100%"),
                     'class' => 'MainBundle\Entity\Driver'
                 ))
-                ->add('grossWeight', 'text', array('label' => 'Bruto'))
+                ->add('grossWeight', 'text', array('label' => 'Peso Bruto'))
                 ->add('tareWeight', 'text', array('label' => 'Tara'))
                 ->add('product', 'entity', array(
                     'label' => 'Producto',

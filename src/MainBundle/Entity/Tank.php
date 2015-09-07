@@ -7,6 +7,7 @@ use MainBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\MovementDetail;
+use MainBundle\Entity\Inventory;
 
 /**
  * Tank
@@ -111,6 +112,11 @@ class Tank {
      * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="tank")
      */
     private $movementDetails;    
+ 
+    /**
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="tank")
+     */
+    private $inventories;
 
     /**
      * Get id
@@ -405,4 +411,9 @@ class Tank {
     {
         return $this->movementDetails;
     }
+    
+    public function __toString() {
+        return $this->code.' - '.$this->description;
+    }
+
 }

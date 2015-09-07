@@ -32,7 +32,7 @@ class MovementDetail {
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Movement", inversedBy="movementDetails")
+     * @ORM\ManyToOne(targetEntity="Movement", inversedBy="movementDetails", cascade={"persist"})
      * @ORM\JoinColumn(name="movement_id", referencedColumnName="id", nullable = false)
      * 
      */
