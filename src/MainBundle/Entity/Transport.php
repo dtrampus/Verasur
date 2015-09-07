@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Movement;
+use MainBundle\Entity\Driver;
 
 /**
  * Transport
@@ -44,6 +45,11 @@ class Transport
      * @ORM\Column(name="transport", type="string", length=255)
      */
     private $transport;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Driver", mappedBy="transport")
+     */
+    private $drivers;
 
     /**
      * @var boolean
@@ -175,8 +181,42 @@ class Transport
     {
         return $this->movements;
     }
+   
     
     public function __toString() {
         return $this->code.' - '.$this->transport;
+    }
+
+    /**
+     * Add drivers
+     *
+     * @param \MainBundle\Entity\Driver $drivers
+     * @return Transport
+     */
+    public function addDriver(\MainBundle\Entity\Driver $drivers)
+    {
+        $this->drivers[] = $drivers;
+
+        return $this;
+    }
+
+    /**
+     * Remove drivers
+     *
+     * @param \MainBundle\Entity\Driver $drivers
+     */
+    public function removeDriver(\MainBundle\Entity\Driver $drivers)
+    {
+        $this->drivers->removeElement($drivers);
+    }
+
+    /**
+     * Get drivers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDrivers()
+    {
+        return $this->drivers;
     }
 }

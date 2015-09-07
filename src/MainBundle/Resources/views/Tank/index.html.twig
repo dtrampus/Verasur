@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Tanques <span>&gt; Listado de Tanques </span></h1>
         </div>
     </div>
-    
+
     <section id="widget-grid" class="">
         <!-- row -->
         <div class="row">
@@ -20,7 +20,7 @@
                         <strong>Éxito:</strong> {{ flashMessage }}
                     </div>
                 {% endfor %}
-                
+
                 <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget jarviswidget-color-white" id="wid-id-0" data-widget-editbutton="false">
                     <!-- widget options:
@@ -58,34 +58,35 @@
                                 <thead>
                                     <tr>
                                         <th data-class="expand">Codigo</th>
-                                        <th data-hide="phone">Vertical</th>
-                                        <th data-hide="phone">Circunsferencia</th>
-                                        <th data-hide="phone">Punto de Referencia</th>
-                                        <th data-hide="phone">Punto de Corte</th>
-                                        <th data-hide="phone">Diametro Interno</th>
-                                        <th data-hide="phone">Litro / CM</th>
+                                        <th data-hide="phone">Descripcion</th>
                                         <th data-hide="phone">Producto</th>
                                         <th data-hide="phone">Capacidad Total</th>
+                                        <th data-hide="phone">Planta</th>
+                                        <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for entity in entities %}
-                                        <tr>
-                                            <td>{{ entity.code }}</td>
-                                            <td>{{ entity.vertical ? 'si':'no' }}</td>
-                                            <td>{{ entity.circumference|number_format(2, '.', ',') }}</td>
-                                            <td>{{ entity.reference }}</td>
-                                            <td>{{ entity.coordinates }}</td>
-                                            <td>{{ entity.diameter }}</td>
-                                            <td>{{ entity.liter }}</td>
-                                            <td>{{ entity.product.code }}</td>
-                                            <td>{{ entity.totalCapacity }}</td>
-                                            <td>
-                                                <a class="btn btn-primary" href="{{ path('tank_show', { 'id': entity.id }) }}">Ver</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
+                                    <td>{{ entity.code }}</td>
+                                    <td>{{ entity.description }}</td>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            {% for product in entity.products %}
+                                                <li><span class="label label-primary">{{ product.code }}</span></li>
+                                                {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>{{ entity.totalCapacity }}</td>
+                                    <td>{{ entity.plant ? 'Si':'No' }}</td>
+                                    <td>
+                                        <a class="btn btn-primary" href="{{ path('tank_show', { 'id': entity.id }) }}">Ver</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="{{ path('inventory', { 'id': entity.id }) }}">Inventario</a>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -108,18 +109,18 @@
                    'SmartAdmin/js/plugin/datatables/dataTables.tableTools.min.js'
                    'SmartAdmin/js/plugin/datatables/dataTables.bootstrap.min.js'
                    'SmartAdmin/js/plugin/datatable-responsive/datatables.responsive.min.js' %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
     <script type="text/javascript">
         jQuery(document).ready(function () {
-            
+
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
-                tablet : 1024,
-                phone : 480
+                tablet: 1024,
+                phone: 480
             };
-	
+
             $('#tableClient').DataTable({
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
@@ -132,16 +133,16 @@
                         "className": "text-center"
                     }
                 ],
-                "preDrawCallback" : function() {
+                "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
                         responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#tableClient'), breakpointDefinition);
                     }
                 },
-                "rowCallback" : function(nRow) {
+                "rowCallback": function (nRow) {
                     responsiveHelper_dt_basic.createExpandIcon(nRow);
                 },
-                "drawCallback" : function(oSettings) {
+                "drawCallback": function (oSettings) {
                     responsiveHelper_dt_basic.respond();
                 },
                 "language": {
@@ -151,10 +152,10 @@
                     "infoEmpty": "No hay registros disponibles",
                     "infoFiltered": "(filtrado de _MAX_ registros totales)",
                     "paginate": {
-                        "first":      "Primera",
-                        "last":       "Última",
-                        "next":       "Siguiente",
-                        "previous":   "Anterior"
+                        "first": "Primera",
+                        "last": "Última",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
                     }
                 }
             });

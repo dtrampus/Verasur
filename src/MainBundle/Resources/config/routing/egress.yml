@@ -5,6 +5,8 @@ egress:
 egress_show:
     path:     /{id}/show
     defaults: { _controller: "MainBundle:Egress:show" }
+    options:
+        expose: true
 
 egress_new:
     path:     /new
@@ -32,3 +34,7 @@ egress_delete:
 egress_export:
     path:     /{type}/export
     defaults: { _controller: "MainBundle:Egress:export" }
+
+egress_list:
+    path:     /list
+    defaults: { _controller: "MainBundle:Egress:listAjax" }

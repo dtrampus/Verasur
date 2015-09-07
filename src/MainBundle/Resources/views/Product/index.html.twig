@@ -59,10 +59,6 @@
                                     <tr>
                                         <th data-hide="phone">Código</th>
                                         <th data-hide="phone">Descripción</th>
-                                        <th data-hide="phone">Nro. Fórmula Producción</th>
-                                        <th data-hide="phone">Cálculo Crudo-Lar</th>
-                                        <th data-hide="phone">Ingreso/Egreso</th>
-                                        <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -71,10 +67,6 @@
                                         <tr>
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.description }}</td>
-                                            <td>{{ entity.numFormulaProduction }}</td>
-                                            <td>{{ entity.crudeLar ? 'Si':'No' }}</td>
-                                            <td>{{ entity.typeEntry }}</td>
-                                            <td>{{ entity.active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('product_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>

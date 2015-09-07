@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Egresos <span>&gt; Listado de Egresos </span></h1>
         </div>
     </div>
-    
+
     <section id="widget-grid" class="">
         <!-- row -->
         <div class="row">
@@ -20,7 +20,7 @@
                         <strong>Éxito:</strong> {{ flashMessage }}
                     </div>
                 {% endfor %}
-                
+
                 <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget jarviswidget-color-white" id="wid-id-0" data-widget-editbutton="false">
                     <!-- widget options:
@@ -36,25 +36,25 @@
                     data-widget-sortable="false"
 
                     -->
-                    
+
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>Listado de Egresos </h2>
-                        
+
                         <div class="widget-toolbar" role="menu">								
-                                <div class="btn-group">
-                                        <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
-                                                Exportar <i class="fa fa-caret-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu pull-right">
-                                                <li>
-                                                        <a href="{{ path('egress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
-                                                </li>
-                                                <li>
-                                                        <a class="fa fa-file-pdf-o" href="{{ path('egress_export', { 'type': 'pdf' }) }}">PDF</a>
-                                                </li>
-                                        </ul>
-                                </div>
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
+                                    Exportar <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="{{ path('egress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
+                                    </li>
+                                    <li>
+                                        <a class="fa fa-file-pdf-o" href="{{ path('egress_export', { 'type': 'pdf' }) }}">PDF</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </header>
 
@@ -74,23 +74,17 @@
                                 <thead>
                                     <tr>
                                         <th data-class="expand">BALN</th>
-                                        <th data-hide="phone">Fecha</th>
+                                        <th data-hide="phone">Fecha y Hora</th>
                                         <th data-hide="phone">Cliente</th>
-                                        <th data-hide="phone">Dominio Camion</th>
-                                        <th data-hide="phone">Dominio Acoplado</th>
                                         <th data-hide="phone">Transporte</th>
-                                        <th data-hide="phone">Chofer</th>
-                                        <th data-hide="phone">Peso Bruto</th>
-                                        <th data-hide="phone">Peso Tara</th>
                                         <th data-hide="phone">Producto</th>
-                                        <th data-hide="phone">Densidad</th>
-                                        <th data-hide="phone">Neto</th>
                                         <th data-hide="phone">Litros Reales</th>
-                                        <th data-hide="phone">Número</th>
+                                        <th data-hide="phone">Número Sucursal</th>
+                                        <th data-hide="phone">Número Remito</th>
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+{#                                <tbody>
                                     {% for entity in entities %}
                                         <tr>
                                             <td>{{ entity.baln }}</td>
@@ -112,7 +106,7 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                </tbody>
+                                </tbody>#}
                             </table>
                         </div>
                         <!-- end widget content -->
@@ -134,41 +128,51 @@
                    'SmartAdmin/js/plugin/datatables/dataTables.tableTools.min.js'
                    'SmartAdmin/js/plugin/datatables/dataTables.bootstrap.min.js'
                    'SmartAdmin/js/plugin/datatable-responsive/datatables.responsive.min.js' %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
     <script type="text/javascript">
         jQuery(document).ready(function () {
-            
+
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
-                tablet : 1024,
-                phone : 480
+                tablet: 1024,
+                phone: 480
             };
-	
+
             $('#tableClient').DataTable({
-                "order": [[ 0, "asc"]],
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ path('egress_list') }}",
+                        "order": [[0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "columnDefs": [
-                    {
-                        "targets": -1,
-                        "orderable": false,
-                        "searchable": false,
-                        "className": "text-center"
+                    { "name": "e.baln","targets": 0,"className": "text-center" },
+                    { "name": "e.date","targets": 1,"className": "text-center" },
+                    { "name": "client.nombre","targets": 2,"className": "text-center" },
+                    { "name": "transport.transport","targets": 3,"className": "text-center" },
+                    { "name": "product.description","targets": 4,"className": "text-center" },
+                    { "name": "e.realLiter","targets": 5,"className": "text-center" },
+                    { "name": "e.branchNumber","targets": 6,"className": "text-center" },
+                    { "name": "e.remitNumber","targets": 7,"className": "text-center" },
+                    { "name": "e.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
+                        "render": function ( data, type, row ) {
+                            return '<a href="'+Routing.generate('egress_show', { id: row[8] })+'" class="btn btn-primary">Ver</a>';
+                        } 
                     }
                 ],
-                "preDrawCallback" : function() {
+                "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
                         responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#tableClient'), breakpointDefinition);
                     }
                 },
-                "rowCallback" : function(nRow) {
+                "rowCallback": function (nRow) {
                     responsiveHelper_dt_basic.createExpandIcon(nRow);
                 },
-                "drawCallback" : function(oSettings) {
+                "drawCallback": function (oSettings) {
                     responsiveHelper_dt_basic.respond();
                 },
                 "language": {
@@ -178,10 +182,10 @@
                     "infoEmpty": "No hay registros disponibles",
                     "infoFiltered": "(filtrado de _MAX_ registros totales)",
                     "paginate": {
-                        "first":      "Primera",
-                        "last":       "Última",
-                        "next":       "Siguiente",
-                        "previous":   "Anterior"
+                        "first": "Primera",
+                        "last": "Última",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
                     }
                 }
             });

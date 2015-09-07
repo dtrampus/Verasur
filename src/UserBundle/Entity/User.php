@@ -7,6 +7,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use MainBundle\Entity\Movement;
 
 /**
  * @ORM\Entity
@@ -42,10 +43,17 @@ class User extends BaseUser
      */
     protected $groups;
     
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Movement", mappedBy="users")
+     */
+    protected $movement;
+    
+    
     public function __construct()
     {
         parent::__construct();
         $this->groups = new ArrayCollection();
+        $this->movement = new ArrayCollection();
     }
 
     /**
@@ -102,6 +110,39 @@ class User extends BaseUser
     public function getLastname()
     {
         return $this->lastname;
+    }
+    
+    /**
+     * Add movement
+     *
+     * @param \MainBundle\Entity\Movement $movement
+     * @return User
+     */
+    public function addMovement(\MainBundle\Entity\Movement $movement)
+    {
+        $this->movement[] = $movement;
+
+        return $this;
+    }
+
+    /**
+     * Remove movement
+     *
+     * @param \MainBundle\Entity\Movement $movement
+     */
+    public function removeMovement(\MainBundle\Entity\Movement $movement)
+    {
+        $this->movement->removeElement($movement);
+    }
+
+    /**
+     * Get movement
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovement()
+    {
+        return $this->movement;
     }
 
 }

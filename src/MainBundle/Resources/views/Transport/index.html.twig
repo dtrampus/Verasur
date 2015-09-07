@@ -59,7 +59,6 @@
                                     <tr>
                                         <th data-class="expand">Codigo</th>
                                         <th data-hide="phone">Transporte</th>
-                                        <th data-hide="phone">Activo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -68,7 +67,6 @@
                                         <tr>
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.transport }}</td>
-                                            <td>{{ entity.Active ? 'Si':'No' }}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ path('transport_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Tank;
 use MainBundle\Form\TankType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Tank controller.
@@ -236,4 +237,29 @@ class TankController extends Controller
             ->getForm()
         ;
     }
+    
+    public function getProductByTankAjaxAction($id){
+        $response = array();
+        //id es del tanke getproductsbytank
+        $tank = $this->getDoctrine()->getManager()->getRepository('MainBundle:Tank')->find($id);
+        $products = $tank->getProducts();
+        
+        foreach ($products as $product) {
+            $res = array();
+            $res[0] = $product->getId();
+            $res[1] = $product->getCode();
+            $res[2] = $product->getDescription();
+            array_push($response, $res);
+        }
+             
+        return new JsonResponse($response);
+    }
+    
+     public function calculateCapacityAction($id)
+   {
+       $em = $this->getDoctrine()->getManager();
+       $entity = $em->getRepository('MainBundle:Tank')->find($id);
+       $result = $em->getRepository('MainBundle:Tank')->calculateFreeOcuped($entity);
+       return new JsonResponse($result);
+   }
 }

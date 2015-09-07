@@ -1,3 +1,11 @@
+main_inventory:
+    resource: "@MainBundle/Resources/config/routing/inventory.yml"
+    prefix:   /inventory
+
+main_driver:
+    resource: "@MainBundle/Resources/config/routing/driver.yml"
+    prefix:   /driver
+
 main_tank:
     resource: "@MainBundle/Resources/config/routing/tank.yml"
     prefix:   /tank
@@ -29,3 +37,7 @@ main_home:
 main_ingress:
     resource: "@MainBundle/Resources/config/routing/ingress.yml"
     prefix:  /ingress
+    
+main_pass:
+    resource: "@MainBundle/Resources/config/routing/pass.yml"
+    prefix:  /pass
