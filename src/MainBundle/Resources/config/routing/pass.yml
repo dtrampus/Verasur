@@ -1,0 +1,12 @@
+pass:
+    path:     /
+    defaults: { _controller: "MainBundle:Pass:index" }
+
+pass_new:
+    path:     /new
+    defaults: { _controller: "MainBundle:Pass:new" }
+
+pass_create:
+    path:     /create
+    defaults: { _controller: "MainBundle:Pass:create" }
+    methods:  POST

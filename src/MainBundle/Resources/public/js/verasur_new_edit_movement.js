@@ -39,6 +39,7 @@ var verasurNewEditMovement = function () {
                     }
                 });
             } else {
+                $('#mainbundle_egress_driver,#mainbundle_ingress_driver').select2("val", "");
                 $('#mainbundle_egress_driver,#mainbundle_ingress_driver').html("");
             }
 

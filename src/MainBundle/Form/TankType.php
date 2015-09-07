@@ -35,13 +35,13 @@ class TankType extends AbstractType {
                     'label' => 'Punto de Corte (Solo Números)',
                     'attr' => array('class' => 'coordinates')))
                 ->add('diameter', 'text', array(
-                    'label' => 'Diametro Interno',
+                    'label' => 'Diametro Interno ( m )',
                     'attr' => array('readonly' => 'readonly', 'class' => 'diameter')))
                 ->add('liter', 'text', array(
-                    'label' => 'Litro / CM',
+                    'label' => 'Litro / CM ( l/cm )',
                     'attr' => array('readonly' => 'readonly', 'class' => 'liter')))
                 ->add('totalCapacity', 'text', array(
-                    'label' => 'Capacidad Total',
+                    'label' => 'Capacidad Total ( l )',
                     'attr' => array('readonly' => 'readonly', 'class' => 'totalCapacity')))
                 ->add('products', 'entity', array(
                     'label' => 'Producto',

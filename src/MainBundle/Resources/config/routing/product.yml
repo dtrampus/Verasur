@@ -28,3 +28,4 @@ product_delete:
     path:     /{id}/delete
     defaults: { _controller: "MainBundle:Product:delete" }
     methods:  [POST, DELETE]
+    
