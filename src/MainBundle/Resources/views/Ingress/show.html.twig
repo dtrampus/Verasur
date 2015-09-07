@@ -49,7 +49,9 @@
                         <li>
                             <a data-toggle="tab" href="#hb4"> <i class="fa fa-lg fa-cubes"></i> <span class="hidden-mobile hidden-tablet"> Producto Asociado </span> </a>
                         </li>
-
+                        <li>
+                            <a data-toggle="tab" href="#hb5"> <i class="fa fa-lg fa-truck"></i> <span class="hidden-mobile hidden-tablet"> Descarga </span> </a>
+                        </li>
                     </ul>
                 </header>
 
@@ -98,6 +100,7 @@
                                     <p>Recuperado: {{ entity.recovered }}</p>
                                     
                                     <p>Usuario Asociado: {{ entity.user.username }}</p>
+                                    <p>Estado: {{ entity.status }}</p>
                                     
                                 </div>
                                 <div class="tab-pane" id="hb2">
@@ -115,6 +118,53 @@
                                 <div class="tab-pane" id="hb4">
                                     <p>Código: {{ entity.product.code }}</p>
                                     <p>Descripcion: {{ entity.product.description }}</p>
+                                </div>
+                                <div class="tab-pane" id="hb5">
+                                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <!-- Widget ID (each widget will need unique ID)-->
+                                        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                                            <header>
+                                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                                <h2>Descarga</h2>
+                                            </header>
+                                            <!-- widget div-->
+                                            <div>
+                                                <!-- widget edit box -->
+                                                <div class="jarviswidget-editbox">
+                                                        <!-- This area used as dropdown edit box -->
+
+                                                </div>
+                                                <!-- end widget edit box -->
+
+                                                <!-- widget content -->
+                                                <div class="widget-body">
+                                                    <div class="table-responsive">
+
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tanque</th>
+                                                                    <th>Cantidad</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for movementDetail in entity.getMovementDetails() %}
+                                                                    <tr>
+                                                                        <td>{{ movementDetail.tank.code }}-{{ movementDetail.tank.description }}</td>
+                                                                        <td>{{ movementDetail.quantity }}</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                                <!-- end widget content -->
+                                            </div>
+                                            <!-- end widget div -->
+                                        </div>
+                                        <!-- end widget -->
+                                    </article>
                                 </div>
                             </div>
 

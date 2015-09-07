@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use MainBundle\Entity\MovementDetail;
 
 /**
  * TankRepository

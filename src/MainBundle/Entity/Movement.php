@@ -114,7 +114,7 @@ abstract class Movement
      *
      * @ORM\Column(name="density", type="float", nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * pattern="/^\d(\.\d{1,3})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
@@ -185,8 +185,6 @@ abstract class Movement
      * @var string
      *
      * @ORM\Column(name="observation", type="text", nullable=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3)
      */
     private $observation;
     
@@ -777,7 +775,7 @@ abstract class Movement
      * @param \UserBundle\Entity\User $user
      * @return Movement
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(\UserBundle\Entity\User $user)
     {
         $this->user = $user;
 

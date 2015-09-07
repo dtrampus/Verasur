@@ -38,3 +38,14 @@ ingress_export:
 ingress_list:
     path:     /list
     defaults: { _controller: "MainBundle:Ingress:listAjax" }
+    
+ingress_newDownload:
+    path:     /{id}/newDownlaod
+    defaults: { _controller: "MainBundle:Ingress:downloadNew" }
+    options:
+        expose: true
+
+ingress_createDownload:
+    path:     /createDownload
+    defaults: { _controller: "MainBundle:Ingress:downloadCreate" }
+    methods:  POST

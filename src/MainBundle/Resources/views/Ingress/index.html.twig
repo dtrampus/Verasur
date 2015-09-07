@@ -81,6 +81,7 @@
                                         <th data-hide="phone">Litros Reales</th>
                                         <th data-hide="phone">Número Sucursal</th>
                                         <th data-hide="phone">Número Remito</th>
+                                        <th data-hide="phone">Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -157,9 +158,15 @@
                     { "name": "i.realLiter","targets": 5,"className": "text-center" },
                     { "name": "i.branchNumber","targets": 6,"className": "text-center" },
                     { "name": "i.remitNumber","targets": 7,"className": "text-center" },
-                    { "name": "i.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
+                    { "name": "i.status","targets": 8,"className": "text-center" },
+                    { "name": "i.id", "targets": 9,"className": "text-center", "searchable": false,"orderable":false,
                         "render": function ( data, type, row ) {
-                            return '<a href="'+Routing.generate('ingress_show', { id: row[8] })+'" class="btn btn-primary">Ver</a>';
+                            if (row[8] == "En plaza"){
+                               return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary margin-right-5">Ver</a><a href="'+Routing.generate('ingress_newDownload', { id: row[9] })+'" class="btn btn-danger">Descargar</a>'; 
+                            }else{
+                                return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary">Ver</a>';
+                            }
+                            
                         } 
                     }
                 ],
