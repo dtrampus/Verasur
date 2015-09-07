@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use MainBundle\Entity\Transport;
 use MainBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
+use MainBundle\Entity\Pass;
 use MainBundle\Entity\Egress;
 use MainBundle\Entity\Ingress;
 use MainBundle\Entity\MovementDetail;
@@ -30,7 +31,7 @@ abstract class Movement
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="baln", type="string", length=255, nullable=true)
      */
     private $baln;
@@ -45,22 +46,22 @@ abstract class Movement
     
     /**
      * @var string
-     *
-     * @ORM\Column(name="truckDomain", type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(name="truckDomain", type="string", length=255, nullable=true)
      */
     private $truckDomain;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="coupledDomain", type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(name="coupledDomain", type="string", length=255, nullable=true)
      */
     private $coupledDomain;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="Transport", inversedBy="movements")
-     * @ORM\JoinColumn(name="transport_id", referencedColumnName="id", nullable = false)
+     * @ORM\JoinColumn(name="transport_id", referencedColumnName="id", nullable = true)
      * @Assert\NotBlank()
      * 
      */
@@ -68,39 +69,41 @@ abstract class Movement
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="driver", type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(name="driver", type="string", length=255, nullable=true)
      */
     private $driver;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="grossWeight", type="float")
+     * @ORM\Column(name="grossWeight", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $grossWeight;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="tareWeight", type="float")
+     * @ORM\Column(name="tareWeight", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $tareWeight;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="movements")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable = false)
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable = true)
      * @Assert\NotBlank()
      * 
      */
@@ -109,43 +112,46 @@ abstract class Movement
     /**
      * @var float
      *
-     * @ORM\Column(name="density", type="float")
+     * @ORM\Column(name="density", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $density;
     
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="tested", type="boolean")
+     * @Assert\NotBlank()
+     * @ORM\Column(name="tested", type="boolean", nullable=true)
      */
     private $tested;    
 
     /**
      * @var float
      *
-     * @ORM\Column(name="clean", type="float")
+     * @ORM\Column(name="clean", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $clean;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="realLiter", type="float")
+     * @ORM\Column(name="realLiter", type="float", nullable=true)
      * @Assert\Regex(
      * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $realLiter;
 
@@ -158,6 +164,7 @@ abstract class Movement
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $branchNumber;
 
@@ -170,6 +177,7 @@ abstract class Movement
      * match=true,
      * message = "El campo solo admite numeros"
      * )
+     * @Assert\NotBlank()
      */
     private $remitNumber;
     
@@ -185,14 +193,14 @@ abstract class Movement
     /**
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="movements")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable = false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable = true)
      * 
      */
     private $user;
     
     /**
      *
-     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="movements")
+     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="movement", cascade={"persist"})
      * 
      */
     private $movementDetails;
@@ -380,7 +388,7 @@ abstract class Movement
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255, nullable=false)
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     private $status;
     
@@ -1068,52 +1076,6 @@ abstract class Movement
     }
     
     /**
-     * Set pDry
-     *
-     * @param float $pDry
-     * @return Movement
-     */
-    public function setpDry($pDry)
-    {
-        $this->pDry = $pDry;
-
-        return $this;
-    }
-
-    /**
-     * Get pDry
-     *
-     * @return float 
-     */
-    public function getpDry()
-    {
-        return $this->pDry;
-    }
-    
-    /**
-     * Set pFinal
-     *
-     * @param float $pFinal
-     * @return Movement
-     */
-    public function setpFinal($pFinal)
-    {
-        $this->pFinal = $pFinal;
-
-        return $this;
-    }
-
-    /**
-     * Get pFinal
-     *
-     * @return float 
-     */
-    public function getpFinal()
-    {
-        return $this->pFinal;
-    }
-    
-    /**
      * Set recovered
      *
      * @param float $recovered
@@ -1198,5 +1160,51 @@ abstract class Movement
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set pDry
+     *
+     * @param float $pDry
+     * @return Movement
+     */
+    public function setPDry($pDry)
+    {
+        $this->pDry = $pDry;
+
+        return $this;
+    }
+
+    /**
+     * Get pDry
+     *
+     * @return float 
+     */
+    public function getPDry()
+    {
+        return $this->pDry;
+    }
+
+    /**
+     * Set pFinal
+     *
+     * @param float $pFinal
+     * @return Movement
+     */
+    public function setPFinal($pFinal)
+    {
+        $this->pFinal = $pFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get pFinal
+     *
+     * @return float 
+     */
+    public function getPFinal()
+    {
+        return $this->pFinal;
     }
 }

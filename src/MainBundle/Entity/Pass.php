@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MainBundle\Entity\Movement;
 
 /**
  * Pass
@@ -12,5 +13,5 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Pass extends Movement
 {
-
+    
 }
