@@ -28,3 +28,9 @@ tank_delete:
     path:     /{id}/delete
     defaults: { _controller: "MainBundle:Tank:delete" }
     methods:  [POST, DELETE]
+    
+calculateCapacity:
+   pattern: /{id}/calculateTank
+   defaults: { _controller: "MainBundle:Tank:calculateCapacity" }
+   options:
+       expose: true

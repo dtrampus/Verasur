@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Tank;
 use MainBundle\Form\TankType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Tank controller.
@@ -235,5 +236,13 @@ class TankController extends Controller
             //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    public function calculateCapacityAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MainBundle:Tank')->find($id);
+        $result = $em->getRepository('MainBundle:Tank')->calculateFreeOcuped($entity);
+        return new JsonResponse($result);
     }
 }
