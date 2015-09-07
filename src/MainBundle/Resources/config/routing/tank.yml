@@ -29,9 +29,9 @@ tank_delete:
     defaults: { _controller: "MainBundle:Tank:delete" }
     methods:  [POST, DELETE]
     
-getTankAjax:
-    pattern: /{id}/getbyproduct
-    defaults: { _controller: "MainBundle:Tank:getTankByProductAjax" }
+getProductAjax:
+    pattern: /{id}/getbytank
+    defaults: { _controller: "MainBundle:Tank:getProductByTankAjax" }
     options:
         expose: true
         

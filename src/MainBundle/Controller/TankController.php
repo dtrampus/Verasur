@@ -238,7 +238,7 @@ class TankController extends Controller
         ;
     }
     
-    public function getTankByProductAjaxAction($id){
+    public function getProductByTankAjaxAction($id){
         $response = array();
         //id es del tanke getproductsbytank
         $tank = $this->getDoctrine()->getManager()->getRepository('MainBundle:Tank')->find($id);
