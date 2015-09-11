@@ -10,3 +10,8 @@ pass_create:
     path:     /create
     defaults: { _controller: "MainBundle:Pass:create" }
     methods:  POST
+
+pass_list:
+    path:     /list
+    defaults: { _controller: "MainBundle:Pass:listAjax" }
+    

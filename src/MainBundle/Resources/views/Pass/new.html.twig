@@ -182,11 +182,11 @@
                     });
                 }
             });
-            
+
             jQuery.validator.addMethod("notEqual", function (value, element, param) {
                 return $('#mainbundle_pass_tank_origin').select2('val') != $('#mainbundle_pass_tank_destination').select2('val');
             }, "Los tanques son iguales");
-            
+
             jQuery.validator.addMethod("maxOriginQuantity", function (value, element, param) {
                 var valueT = parseInt($("#mainbundle_pass_tank_origin").select2('val'));
                 var valueQ = parseFloat($("#mainbundle_pass_quantity").val());
@@ -201,10 +201,10 @@
                             response = valueQ <= jsonTank['tankOcupedCapacity'];
                         }
                     });
-                } 
+                }
                 return response;
             }, "La cantidad no puede superar a la del tanque de origen.");
-            
+
             jQuery.validator.addMethod("maxDestinyQuantity", function (value, element, param) {
                 var valueT2 = parseInt($("#mainbundle_pass_tank_destination").select2('val'));
                 var valueQ2 = parseFloat($("#mainbundle_pass_quantity").val());
@@ -219,11 +219,11 @@
                             response = valueQ2 <= jsonTank['tankFreeCapacity'];
                         }
                     });
-                } 
+                }
                 return response;
             }, "La cantidad no puede superar a la del tanque de destino.");
-            
-            jQuery.validator.addMethod("heigherThan0", function (value, element, param) {                
+
+            jQuery.validator.addMethod("heigherThan0", function (value, element, param) {
                 var quant = parseFloat($("#mainbundle_pass_quantity").val());
                 var response = quant >= 0.01;
                 return response;
@@ -271,7 +271,7 @@
                         required: true
                     },
                     observation: {
-                        required: true
+                        required: false
                     }
                 },
                 messages: {
@@ -298,14 +298,11 @@
                     },
                     time: {
                         required: ""
-                    },
-                    observation: {
-                        required: "Este campo es requerido"
                     }
                 }
             });
-            $("select").removeClass("form-control").on("change", function (e) {  
-                $(this).valid(); 
+            $("select").removeClass("form-control").on("change", function (e) {
+                $(this).valid();
             });
         });
     </script>

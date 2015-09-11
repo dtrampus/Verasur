@@ -16,18 +16,14 @@ class InventoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $nowDate = new \DateTime;
         $builder
                 ->add('date', 'datetime', array(
-                    'label' => 'Fecha',
+                    'label' => false,
                     'date_widget' => 'single_text',
                     'time_widget' => 'single_text',
-                    'format' => 'dd/MM/yyy hh:mm'
-                ))
-                ->add('user', 'entity', array(
-                    'label' => 'Usuario',
-                    'placeholder' => 'Elige una opción',
-                    'attr' => array('class' => 'select2', 'placeholder' => 'Elige una opción', 'style' => "width:100%"),
-                    'class' => 'UserBundle\Entity\User'
+                    'format' => 'dd/MM/yyy hh:mm',
+                    'data' => ($options['data']->getDate() != null ? $options['data']->getDate() : $nowDate)
                 ))
                 ->add('product', 'entity', array(
                     'label' => 'Producto',
@@ -41,10 +37,10 @@ class InventoryType extends AbstractType
                         }
                 ))
                 ->add('vacuum', 'text', array(
-                    'label' => 'CM de Vacio (Solo Números)',
+                    'label' => 'CM de Vacio',
                     'attr' => array('class' => 'vacuum')))
                 ->add('liter', 'text', array(
-                    'label' => 'Litros/CM (Solo Números)',
+                    'label' => 'Litros/CM',
                     'attr' => array('class' => 'liter')))
         ;
     }

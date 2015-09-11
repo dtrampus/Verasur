@@ -26,7 +26,7 @@
                 -->
                 <header>
                     <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
-                    <h2>Formulario de carga de inventario</h2>
+                    <h2>Formulario de carga de inventario de {{ tank.plant? "planta":"tanque" }} {{ tank.code }} - {{ tank.description }}</h2>
                 </header>
 
                 <!-- widget div-->
@@ -39,7 +39,20 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}                       
+                        {{ form_start(form, { 'attr': {'id': 'inventory-form'} }) }}
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                {{ form_row(form.date.date, {'label': 'Fecha'}) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.date.time, {'label': 'Hora'}) }}
+                            </div>                                
+                        </div>
+                        <input type="hidden" name="tank_id" id="tankId" value="{{ tank.Id }}">
+                        {{ form_end(form) }}
+                        <input type="hidden" id="tankOrPlant" value="{{ tank.plant }}">
+                        <input type="hidden" id="tankCoordinates" value="{{ tank.coordinates }}">
+                        <input type="hidden" id="tankLiter" value="{{ tank.liter }}">
                     </div>
                     <!-- end widget content -->
 
@@ -53,10 +66,15 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script>
+    {% javascripts '@MainBundle/Resources/public/js/verasur_new_edit_inventory.js'
+                   'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
         jQuery(document).ready(function () {
-            $('select').removeClass('form-control');
-            
+            verasurNewEditInventory.init();
+
         });
     </script>
 {% endblock %}

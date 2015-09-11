@@ -36,14 +36,14 @@ class Tank {
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="code", type="string", length=255)
      */
     private $code;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="description", type="string")
      */
     private $description;
@@ -57,42 +57,42 @@ class Tank {
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="circumference", type="decimal")
+     * 
+     * @ORM\Column(name="circumference", type="decimal", nullable = true)
      */
     private $circumference;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="reference", type="float")
+     * 
+     * @ORM\Column(name="reference", type="float", nullable = true)
      */
     private $reference;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="coordinates", type="float")
+     * 
+     * @ORM\Column(name="coordinates", type="float", nullable = true)
      */
     private $coordinates;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="diameter", type="float")
+     * @ORM\Column(name="diameter", type="float", nullable = true)
      */
     private $diameter;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="liter", type="float")
+     * @ORM\Column(name="liter", type="float", nullable = true)
      */
     private $liter;
 
     /**
      * @var float
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="total_capacity", type="float")
      */
     private $totalCapacity;
@@ -416,4 +416,36 @@ class Tank {
         return $this->code.' - '.$this->description;
     }
 
+    /**
+     * Add inventories
+     *
+     * @param \MainBundle\Entity\Inventory $inventories
+     * @return Tank
+     */
+    public function addInventory(\MainBundle\Entity\Inventory $inventories)
+    {
+        $this->inventories[] = $inventories;
+
+        return $this;
+    }
+
+    /**
+     * Remove inventories
+     *
+     * @param \MainBundle\Entity\Inventory $inventories
+     */
+    public function removeInventory(\MainBundle\Entity\Inventory $inventories)
+    {
+        $this->inventories->removeElement($inventories);
+    }
+
+    /**
+     * Get inventories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventories()
+    {
+        return $this->inventories;
+    }
 }

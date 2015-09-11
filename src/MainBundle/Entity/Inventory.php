@@ -3,7 +3,9 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use MainBundle\Entity\Tank;
+use UserBundle\Entity\User;
 
 /**
  * Inventory
@@ -24,35 +26,28 @@ class Inventory
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="user", type="string", length=255)
-     */
-    private $user;
-
-    /**
-     * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="product", type="string", length=255)
      */
     private $product;
 
     /**
      * @var float
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="vacuum", type="float")
      */
     private $vacuum;
 
     /**
      * @var float
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="liter", type="float")
      */
     private $liter;
@@ -62,7 +57,13 @@ class Inventory
      * @ORM\ManyToOne(targetEntity="Tank", inversedBy="inventories")
      * @ORM\JoinColumn(name="tank_id", referencedColumnName="id")
      **/
-    private $tank;  
+    private $tank;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="inventory")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $users;  
 
 
     /**
@@ -96,29 +97,6 @@ class Inventory
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set user
-     *
-     * @param string $user
-     * @return Inventory
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return string 
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -190,4 +168,50 @@ class Inventory
         return $this->liter;
     }
 
+
+    /**
+     * Set tank
+     *
+     * @param \MainBundle\Entity\Tank $tank
+     * @return Inventory
+     */
+    public function setTank(\MainBundle\Entity\Tank $tank = null)
+    {
+        $this->tank = $tank;
+
+        return $this;
+    }
+
+    /**
+     * Get tank
+     *
+     * @return \MainBundle\Entity\Tank 
+     */
+    public function getTank()
+    {
+        return $this->tank;
+    }
+
+    /**
+     * Set users
+     *
+     * @param \UserBundle\Entity\User $users
+     * @return Inventory
+     */
+    public function setUsers(\UserBundle\Entity\User $users = null)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get users
+     *
+     * @return \UserBundle\Entity\User 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
 }

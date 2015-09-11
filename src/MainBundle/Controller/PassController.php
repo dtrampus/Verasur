@@ -5,6 +5,8 @@ namespace MainBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Pass;
+use MainBundle\Entity\Tank;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Pass controller.
@@ -18,14 +20,44 @@ class PassController extends Controller {
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MainBundle:Pass')->findAll();
-
+        $entities = $em->getRepository("MainBundle:Tank")->findall();
         return $this->render('MainBundle:Pass:index.html.twig', array(
             'entities' => $entities
         ));
     }
 
+    public function listAjaxAction(Request $request) {
+        $get = $request->query->all();
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        $em = $this->getDoctrine()->getEntityManager();
+        $rResult = $em->getRepository('MainBundle:Pass')->ajaxTable($get, true)->getArrayResult();
+        /*
+         * Output
+         */
+        $output = array(
+            "draw" => intval($get['draw']),
+            "recordsTotal" => (int)$em->getRepository("MainBundle:Pass")->getCount(),
+            "recordsFiltered" => (int)$em->getRepository("MainBundle:Pass")->getFilteredCount($get),
+            "data" => array()
+        );
+        foreach ($rResult as $aRow) {
+            $row = array();
+            foreach ($aRow as $value) {
+                if($value instanceof \DateTime){
+                    $row[]=$value->format("d/m/Y H:i");
+                }else{
+                    $row[]=$value;  
+                }
+            }
+            $row[] = '';
+            $output['data'][] = $row;
+        }
+        unset($rResult);
+        return new JsonResponse($output);
+    }
+    
     /**
      * Creates a new Pass entity.
      *

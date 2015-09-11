@@ -26,7 +26,8 @@ class InventoryController extends Controller
         $entities = $em->getRepository('MainBundle:Inventory')->findby(array('tank' => $id));
 
         return $this->render('MainBundle:Inventory:index.html.twig', array(
-            'entities' => $entities
+            'entities' => $entities,
+            'id' => $id
         ));
     }
     /**
@@ -35,21 +36,33 @@ class InventoryController extends Controller
      */
     public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        
+        $tank_id = $request->request->get('tank_id');
+        $tankid = $em->getRepository('MainBundle:Tank')->find($tank_id);
+        
         $entity = new Inventory();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setUsers($this->getUser());
+            $entity->setTank($tankid);
             $em->persist($entity);
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha declarado correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('inventory_show', array('id' => $entity->getId())));
         }
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         ));
     }
 
@@ -76,14 +89,18 @@ class InventoryController extends Controller
      * Displays a form to create a new Inventory entity.
      *
      */
-    public function newAction()
+    public function newAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $tank = $em->getRepository('MainBundle:Tank')->find($id);
+        
         $entity = new Inventory();
         $form   = $this->createCreateForm($entity);
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -96,6 +113,7 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
+        $entity_prod = $em->getRepository('MainBundle:Tank')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Inventory entity.');
@@ -106,6 +124,7 @@ class InventoryController extends Controller
         return $this->render('MainBundle:Inventory:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'entity_prod' => $entity_prod
         ));
     }
 
@@ -118,6 +137,8 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
+        $getTank = $entity->getTank();
+        $tank = $em->getRepository('MainBundle:Tank')->find($getTank);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Inventory entity.');
@@ -130,6 +151,7 @@ class InventoryController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -171,8 +193,13 @@ class InventoryController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha grabado correctamente.'
+            );
 
-            return $this->redirect($this->generateUrl('inventory_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('inventory_show', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Inventory:edit.html.twig', array(
@@ -200,6 +227,11 @@ class InventoryController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha eliminado correctamente.'
+            );
         }
 
         return $this->redirect($this->generateUrl('inventory'));
