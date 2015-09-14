@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Ingresos <span>&gt; Listado de Ingresos </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Inventario <span>&gt; Listado de Inventarios </span></h1>
         </div>
     </div>
     
@@ -38,23 +38,7 @@
                     -->
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Listado de Ingresos </h2>
-                        
-                        <div class="widget-toolbar" role="menu">	
-                               <div class="btn-group">
-                                       <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
-                                               Exportar <i class="fa fa-caret-down"></i>
-                                       </button>
-                                       <ul class="dropdown-menu pull-right">
-                                               <li>
-                                                       <a href="{{ path('ingress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
-                                               </li>
-                                               <li>
-                                                       <a class="fa fa-file-pdf-o" href="{{ path('ingress_export', { 'type': 'pdf' }) }}">PDF</a>
-                                               </li>
-                                       </ul>
-                               </div>
-                       </div>
+                        <h2>Listado de Inventarios</h2>
 
                     </header>
 
@@ -73,41 +57,28 @@
                             <table id="tableClient" class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
                                     <tr>
-                                        <th data-class="expand">BALN</th>
-                                        <th data-hide="phone">Fecha y Hora</th>
-                                        <th data-hide="phone">Proveedor</th>
-                                        <th data-hide="phone">Transporte</th>
+                                        <th data-class="expand">Fecha</th>
+                                        <th data-hide="phone">Usuario</th>
                                         <th data-hide="phone">Producto</th>
-                                        <th data-hide="phone">Litros Reales</th>
-                                        <th data-hide="phone">Número Sucursal</th>
-                                        <th data-hide="phone">Número Remito</th>
-                                        <th data-hide="phone">Estado</th>
+                                        <th data-hide="phone">CM de Vacio</th>
+                                        <th data-hide="phone">Litros / CM</th>
                                         <th></th>
                                     </tr>
                                 </thead>
-{#                                <tbody>
+                                <tbody>
                                     {% for entity in entities %}
                                         <tr>
-                                            <td>{{ entity.baln }}</td>
                                             <td>{{ entity.date|date("d/m/Y") }}</td>
-                                            <td>{{ entity.provider.__toString() }}</td>
-                                            <td>{{ entity.truckDomain }}</td>
-                                            <td>{{ entity.coupledDomain }}</td>
-                                            <td>{{ entity.transport.__toString() }}</td>
-                                            <td>{{ entity.driver }}</td>
-                                            <td>{{ entity.grossWeight }}</td>
-                                            <td>{{ entity.tareWeight }}</td>
-                                            <td>{{ entity.product.__toString() }}</td>
-                                            <td>{{ entity.density }}</td>
-                                            <td>{{ entity.clean }}</td>
-                                            <td>{{ entity.realLiter }}</td>
-                                            <td>{{ entity.branchNumber}} - {{entity.remitNumber}}</td>                                           
+                                            <td>{{ entity.user }}</td>
+                                            <td>{{ entity.product }}</td>
+                                            <td>{{ entity.vacuum }}</td>
+                                            <td>{{ entity.liter}}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ path('ingress_show', { 'id': entity.id }) }}">Ver</a>
+                                                <a class="btn btn-primary" href="{{ path('inventory_show', { 'id': entity.id }) }}">Ver</a>
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                </tbody>#}
+                                </tbody>
                             </table>
                         </div>
                         <!-- end widget content -->
@@ -142,32 +113,16 @@
             };
 	
             $('#tableClient').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "pageLength": 10,
-                "ajax": "{{ path('ingress_list') }}",
+                "order": [ 0, "asc"],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "columnDefs": [
-                    { "name": "i.baln","targets": 0,"className": "text-center" },
-                    { "name": "i.date","targets": 1,"className": "text-center" },
-                    { "name": "provider.name","targets": 2,"className": "text-center" },
-                    { "name": "transport.transport","targets": 3,"className": "text-center" },
-                    { "name": "product.description","targets": 4,"className": "text-center" },
-                    { "name": "i.realLiter","targets": 5,"className": "text-center" },
-                    { "name": "i.branchNumber","targets": 6,"className": "text-center" },
-                    { "name": "i.remitNumber","targets": 7,"className": "text-center" },
-                    { "name": "i.status","targets": 8,"className": "text-center" },
-                    { "name": "i.id", "targets": 9,"className": "text-center", "searchable": false,"orderable":false,
-                        "render": function ( data, type, row ) {
-                            if (row[8] == "En plaza"){
-                               return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary margin-right-5">Ver</a><a href="'+Routing.generate('ingress_newDownload', { id: row[9] })+'" class="btn btn-danger">Descargar</a>'; 
-                            }else{
-                                return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary">Ver</a>';
-                            }
-                            
-                        } 
+                    {
+                        "targets": -1,
+                        "orderable": false,
+                        "searchable": false,
+                        "className": "text-center"
                     }
                 ],
                 "preDrawCallback" : function() {
@@ -196,8 +151,7 @@
                     }
                 }
             });
-            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('ingress_new') }}">Nuevo</a>');
+            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('inventory_new') }}">Nuevo</a>');
         });
     </script>
 {% endblock %}
-

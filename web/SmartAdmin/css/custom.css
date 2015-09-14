@@ -18,3 +18,7 @@
 .jarviswidget .widget-body {
     min-height: 0px;
 }
+
+hr{
+    border-top: 1px solid #B6B7BB;
+}

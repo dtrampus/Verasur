@@ -88,7 +88,7 @@ class EgressController extends Controller {
 
             return $this->redirect($this->generateUrl('egress_show', array('id' => $entity->getId())));
         }
-
+        
         return $this->render('MainBundle:Egress:new.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -160,6 +160,7 @@ class EgressController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Egress')->find($id);
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Egress entity.');
@@ -170,7 +171,8 @@ class EgressController extends Controller {
 
         return $this->render('MainBundle:Egress:edit.html.twig', array(
                     'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
+                    'tanks' => $tanks,
+                    'form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -201,7 +203,18 @@ class EgressController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Egress')->find($id);
+        
+        
+        foreach($entity->getMovementDetails() as $detail){
+          $em->remove($detail);
+        }
+        $em->flush();
 
+        $tank1 = $request->request->get('tanque1');
+        $quantity1 = $request->request->get('cantidad1');
+        $tank2 = $request->request->get('tanque2');
+        $quantity2 = $request->request->get('cantidad2');
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Egress entity.');
         }
@@ -211,6 +224,30 @@ class EgressController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            //1 o 2
+            if ($tank1 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank1);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity(($quantity1)*(-1));
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }
+            if ($tank2 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank2);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity(($quantity2)*(-1));
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }
+            
             $em->flush();
 
             $this->addFlash(

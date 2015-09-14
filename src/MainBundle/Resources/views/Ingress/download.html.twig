@@ -44,8 +44,8 @@
                             <input type="hidden" name="ingressId" value="{{ ingressInfo.id }}">
                             <div class="form-group">
                                 <label>Tanque 1:</label>
-                                <select class="form-control tanque1" id="tanque1" name="tanque1">
-                                    <option value=""></option>
+                                <select class="select2 tanque1" id="tanque1" name="tanque1">
+                                    <option value="" selected="selected">Elige un tanque</option>
                                     {% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
                                     {% endfor %}
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Cantidad:</label>
+                                <label>Cantidad (Litros):</label>
                                 <input class="form-control cantidad1" type="text" name="cantidad1">
                                 <span id="cantidad1"></span><br>
                                 <span id="msg-error1"></span>
@@ -61,8 +61,8 @@
 
                             <div class="form-group">
                                 <label>Tanque 2:</label>
-                                <select class="form-control tanque2" id="tanque2" name="tanque2">
-                                    <option value=""></option>
+                                <select class="select2 tanque2" id="tanque2" name="tanque2">
+                                    <option value="" selected="selected">Elige un tanque</option>
                                     {% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
                                     {% endfor %}
@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Cantidad:</label>
+                                <label>Cantidad (Litros):</label>
                                 <input class="form-control cantidad2" type="text" name="cantidad2">
                                 <span id="cantidad2"></span><br>
                                 <span id="msg-error2"></span>
@@ -191,6 +191,7 @@
                 } else {
                     $('#cantidad2').html("");
                     $('.cantidad1').val({{ingressInfo.realLiter}});
+                    $('.cantidad1').trigger('focusout');
                     $('.cantidad2').val("");
                 }
             });

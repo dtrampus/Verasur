@@ -31,14 +31,13 @@ abstract class Movement
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @ORM\Column(name="baln", type="string", length=255, nullable=true)
      */
     private $baln;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
@@ -47,14 +46,14 @@ abstract class Movement
     /**
      * @var string
      * @Assert\NotBlank()
-     * @ORM\Column(name="truckDomain", type="string", length=255, nullable=true)
+     * @ORM\Column(name="truckDomain", type="string", length=255)
      */
     private $truckDomain;
 
     /**
      * @var string
      * @Assert\NotBlank()
-     * @ORM\Column(name="coupledDomain", type="string", length=255, nullable=true)
+     * @ORM\Column(name="coupledDomain", type="string", length=255)
      */
     private $coupledDomain;
 
@@ -75,26 +74,26 @@ abstract class Movement
     private $driver;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="grossWeight", type="float", nullable=true)
+     * @ORM\Column(name="grossWeight", type="decimal", precision=10, scale=2, nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
      * match=true,
-     * message = "El campo solo admite numeros"
+     * message = "Formato incorrecto"
      * )
      * @Assert\NotBlank()
      */
     private $grossWeight;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="tareWeight", type="float", nullable=true)
+     * @ORM\Column(name="tareWeight", type="decimal", precision=10, scale=2, nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
      * match=true,
-     * message = "El campo solo admite numeros"
+     * message = "Formato incorrecto"
      * )
      * @Assert\NotBlank()
      */
@@ -110,13 +109,13 @@ abstract class Movement
     private $product;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="density", type="float", nullable=true)
+     * @ORM\Column(name="density", type="decimal", precision=4, scale=3, nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d(\.\d{1,3})?$/", 
+     * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
      * match=true,
-     * message = "El campo solo admite numeros"
+     * message = "Formato incorrecto"
      * )
      * @Assert\NotBlank()
      */
@@ -124,60 +123,49 @@ abstract class Movement
     
     /**
      * @var boolean
-     * @Assert\NotBlank()
      * @ORM\Column(name="tested", type="boolean", nullable=true)
      */
     private $tested;    
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="clean", type="float", nullable=true)
+     * @ORM\Column(name="clean", type="decimal", precision=10, scale=2, nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
      * match=true,
-     * message = "El campo solo admite numeros"
+     * message = "Formato incorrecto"
      * )
      * @Assert\NotBlank()
      */
     private $clean;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="realLiter", type="float", nullable=true)
+     * @ORM\Column(name="realLiter", type="decimal", precision=10, scale=2, nullable=true)
      * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
+     * "/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
      * match=true,
-     * message = "El campo solo admite numeros"
+     * message = "Formato incorrecto"
      * )
      * @Assert\NotBlank()
      */
     private $realLiter;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="branchNumber", type="float", nullable=true)
-     * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
-     * match=true,
-     * message = "El campo solo admite numeros"
-     * )
-     * @Assert\NotBlank()
+     * @ORM\Column(name="branchNumber", type="string", length=255, nullable=true)
+     *
      */
     private $branchNumber;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="remitNumber", type="float", nullable=true)
-     * @Assert\Regex(
-     * pattern="/^\d{1,10}(\.\d{1,2})?$/", 
-     * match=true,
-     * message = "El campo solo admite numeros"
-     * )
-     * @Assert\NotBlank()
+     * @ORM\Column(name="remitNumber", type="string", length=255, nullable=true)
+     * 
      */
     private $remitNumber;
     
@@ -204,181 +192,182 @@ abstract class Movement
     private $movementDetails;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="distillationGout", type="float", nullable=true)
+     * @ORM\Column(name="distillationGout", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/",
+        * 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $distillationGout;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="fivePercent", type="float", nullable=true)
+     * @ORM\Column(name="fivePercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $fivePercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="tenPercent", type="float", nullable=true)
+     * @ORM\Column(name="tenPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $tenPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="twentyPercent", type="float", nullable=true)
+     * @ORM\Column(name="twentyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $twentyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="thirtyPercent", type="float", nullable=true)
+     * @ORM\Column(name="thirtyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $thirtyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="fortyPercent", type="float", nullable=true)
+     * @ORM\Column(name="fortyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $fortyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="fiftyPercent", type="float", nullable=true)
+     * @ORM\Column(name="fiftyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $fiftyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="sixtyPercent", type="float", nullable=true)
+     * @ORM\Column(name="sixtyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $sixtyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="seventyPercent", type="float", nullable=true)
+     * @ORM\Column(name="seventyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $seventyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="eightyPercent", type="float", nullable=true)
+     * @ORM\Column(name="eightyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $eightyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="ninetyPercent", type="float", nullable=true)
+     * @ORM\Column(name="ninetyPercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $ninetyPercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="ninetyFivePercent", type="float", nullable=true)
+     * @ORM\Column(name="ninetyFivePercent", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $ninetyFivePercent;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="pDry", type="float", nullable=true)
+     * @ORM\Column(name="pDry", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $pDry;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="pFinal", type="float", nullable=true)
+     * @ORM\Column(name="pFinal", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $pFinal;
     
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="recovered", type="float", nullable=true)
+     * @ORM\Column(name="recovered", type="decimal", precision=10, scale=1, nullable=true)
      * @Assert\Regex(
-        * pattern="/^\d{1,3}(\.\d)?$/", 
+        * pattern="/^(?:[1-9]\d*|0)?(?:\.\d+)?$/", 
         * match=true,
-        * message = "El campo solo admite numeros"
+        * message = "Formato incorrecto"
     *   ))
      */
     private $recovered;
