@@ -16,7 +16,7 @@ use MainBundle\Entity\MovementDetail;
  * @ORM\Table(name="movements")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"egress" = "Egress", "ingress" = "Ingress", "passes" = "Pass"})
+ * @ORM\DiscriminatorMap({"egress" = "Egress", "ingress" = "Ingress", "pass" = "Pass"})
  */
 abstract class Movement
 {
