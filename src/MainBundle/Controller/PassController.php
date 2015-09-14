@@ -5,7 +5,7 @@ namespace MainBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Pass;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Pass controller.
  *
@@ -20,10 +20,19 @@ class PassController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MainBundle:Pass')->findAll();
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
 
         return $this->render('MainBundle:Pass:index.html.twig', array(
-            'entities' => $entities
+            'entities' => $entities,
+            "tanks" => $tanks
         ));
+    }
+    
+    public function listAjaxAction(Request $request) {
+        $get = $request->query->all();
+        $em = $this->getDoctrine()->getEntityManager();
+        $output = $em->getRepository('MainBundle:Pass')->findDataTable($get);
+        return new JsonResponse($output);
     }
 
     /**
