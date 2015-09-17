@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use MainBundle\Entity\ClientRepository;
 use MainBundle\Entity\TransportRepository;
 use MainBundle\Entity\ProductRepository;
+use MainBundle\Entity\DriverRepository;
 
 class EgressType extends AbstractType {
 
@@ -15,6 +16,12 @@ class EgressType extends AbstractType {
      * @param FormBuilderInterface $builder
      * @param array $options
      */
+    private $transport;
+    
+    public function __construct($transport = null) {
+        $this->transport = $transport;
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $nowDate = new \DateTime();
         $builder
@@ -49,16 +56,21 @@ class EgressType extends AbstractType {
                     'placeholder' => 'Elige una opción',
                     'class' => 'MainBundle\Entity\Transport',
                     'query_builder' => function (TransportRepository $repository) {
-                return $repository->createQueryBuilder('t')
-                        ->where('t.active = ?1')
-                        ->setParameter(1, true);
-            }
+                        return $repository->createQueryBuilder('t')
+                                ->where('t.active = ?1')
+                                ->setParameter(1, true);
+                    }
                 ))
                 ->add('driver', 'entity', array(
                     'label' => 'Chofer',
                     'placeholder' => 'Elige una opción',
                     'attr' => array('class' => 'select2', 'style' => "width:100%"),
-                    'class' => 'MainBundle\Entity\Driver'
+                    'class' => 'MainBundle\Entity\Driver',
+                    'query_builder' => function (DriverRepository $repository) {
+                        $transportId = ($this->transport == null ? 0 : $this->transport->getId());
+                        return $repository->createQueryBuilder('d')
+                                ->join("d.transport","t");
+                    }
                 ))
                 ->add('grossWeight', 'text', array('label' => 'Peso Bruto (Kilogramos)'))
                 ->add('tareWeight', 'text', array('label' => 'Tara (Kilogramos)'))
@@ -77,10 +89,12 @@ class EgressType extends AbstractType {
                 ->add('tested', 'checkbox', array('label' => 'Fue analizada?', 'required' => false))
                 ->add('clean', 'text', array(
                     'label' => 'Neto (Kilogramos)',
+                    'required' => false,
                     'attr' => array('readonly' => true)
                 ))
                 ->add('realLiter', 'text', array(
                     'label' => 'Litros Reales',
+                    'required' => false,
                     'attr' => array('readonly' => true)
                 ))
                 ->add('branchNumber', 'text', array('label' => 'Número de sucursal', 'required' => false))

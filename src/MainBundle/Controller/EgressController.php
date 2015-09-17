@@ -89,7 +89,10 @@ class EgressController extends Controller {
             return $this->redirect($this->generateUrl('egress_show', array('id' => $entity->getId())));
         }
         
+        $em = $this->getDoctrine()->getManager();
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
         return $this->render('MainBundle:Egress:new.html.twig', array(
+                    'tanks' => $tanks,
                     'entity' => $entity,
                     'form' => $form->createView(),
         ));
@@ -103,7 +106,7 @@ class EgressController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm(Egress $entity) {
-        $form = $this->createForm(new EgressType(), $entity, array(
+        $form = $this->createForm(new EgressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('egress_create'),
             'method' => 'POST',
         ));
@@ -185,7 +188,7 @@ class EgressController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createEditForm(Egress $entity) {
-        $form = $this->createForm(new EgressType(), $entity, array(
+        $form = $this->createForm(new EgressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('egress_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

@@ -1,5 +1,5 @@
 inventory:
-    path:     /{id}/
+    path:     /{id}/index
     defaults: { _controller: "MainBundle:Inventory:index" }
 
 inventory_show:

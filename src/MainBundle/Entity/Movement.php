@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use MainBundle\Entity\Pass;
 use MainBundle\Entity\Egress;
 use MainBundle\Entity\Ingress;
+use MainBundle\Entity\Driver;
 use MainBundle\Entity\MovementDetail;
 
 /**
@@ -61,17 +62,16 @@ abstract class Movement
      *
      * @ORM\ManyToOne(targetEntity="Transport", inversedBy="movements")
      * @ORM\JoinColumn(name="transport_id", referencedColumnName="id", nullable = true)
-     * @Assert\NotBlank()
      * 
      */
-    private $transport;
+    protected $transport;
 
     /**
-     * @var string
-     * @Assert\NotBlank()
-     * @ORM\Column(name="driver", type="string", length=255, nullable=true)
+     * 
+     * @ORM\ManyToOne(targetEntity="Driver", inversedBy="movements")
+     * @ORM\JoinColumn(name="driver_id", referencedColumnName="id", nullable = true)
      */
-    private $driver;
+    protected $driver;
 
     /**
      * @var decimal
@@ -480,29 +480,6 @@ abstract class Movement
     public function getCoupledDomain()
     {
         return $this->coupledDomain;
-    }
-
-    /**
-     * Set driver
-     *
-     * @param string $driver
-     * @return Movement
-     */
-    public function setDriver($driver)
-    {
-        $this->driver = $driver;
-
-        return $this;
-    }
-
-    /**
-     * Get driver
-     *
-     * @return string 
-     */
-    public function getDriver()
-    {
-        return $this->driver;
     }
 
     /**
@@ -1193,5 +1170,28 @@ abstract class Movement
     public function getPFinal()
     {
         return $this->pFinal;
+    }
+
+    /**
+     * Set driver
+     *
+     * @param \MainBundle\Entity\Driver $driver
+     * @return Movement
+     */
+    public function setDriver(\MainBundle\Entity\Driver $driver = null)
+    {
+        $this->driver = $driver;
+
+        return $this;
+    }
+
+    /**
+     * Get driver
+     *
+     * @return \MainBundle\Entity\Driver 
+     */
+    public function getDriver()
+    {
+        return $this->driver;
     }
 }

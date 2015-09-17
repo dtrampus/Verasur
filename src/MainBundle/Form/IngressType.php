@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class IngressType extends AbstractType {
 
+    private $transport;
+    
+    public function __construct($transport = null) {
+        $this->transport = $transport;
+    }
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -55,7 +60,12 @@ class IngressType extends AbstractType {
                     'label' => 'Chofer',
                     'placeholder' => 'Elige una opción',
                     'attr' => array('class' => 'select2', 'style' => "width:100%"),
-                    'class' => 'MainBundle\Entity\Driver'
+                    'class' => 'MainBundle\Entity\Driver',
+                    'query_builder' => function (DriverRepository $repository) {
+                        $transportId = ($this->transport == null ? 0 : $this->transport->getId());
+                        return $repository->createQueryBuilder('d')
+                                ->join("d.transport","t");
+                    }
                 ))
                 ->add('grossWeight', 'text', array('label' => 'Peso Bruto (Kilogramos)'))
                 ->add('tareWeight', 'text', array('label' => 'Tara (Kilogramos)'))

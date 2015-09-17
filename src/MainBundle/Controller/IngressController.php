@@ -82,7 +82,7 @@ class IngressController extends Controller
      */
     private function createCreateForm(Ingress $entity)
     {
-        $form = $this->createForm(new IngressType(), $entity, array(
+        $form = $this->createForm(new IngressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('ingress_create'),
             'method' => 'POST',
         ));
@@ -164,7 +164,7 @@ class IngressController extends Controller
     */
     private function createEditForm(Ingress $entity)
     {
-        $form = $this->createForm(new IngressType(), $entity, array(
+        $form = $this->createForm(new IngressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('ingress_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

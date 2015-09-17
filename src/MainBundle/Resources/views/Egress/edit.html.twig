@@ -215,29 +215,43 @@
     <script>
         jQuery(document).ready(function () {
             verasurNewEditMovement.init();
-            $("#mainbundle_egress_transport").trigger("change");
-            $("#tanque1").removeClass("form-control");
-            $("#tanque2").removeClass("form-control");
-            $("#tanque1").trigger("change");
-            $("#tanque2").trigger("change");
-            $("#cantidad1").trigger("focusout");
-            
+           
             //Rules
             jQuery.validator.addMethod("notEqual", function (value, element, param) {
                 return $('#tanque1').val() != $('#tanque2').val();
             }, "Los tanques son iguales");
 
             jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
-                return redondeo($('.cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
+                return redondeo($('#cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
             }, "La cantidad no puede superar los litros reales");
             
-            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
-                return redondeo($('#cantidad1').val(),2) <= redondeo($('#tank1OcupedCapacity').val(),2);
-            }, "La cantidad no puede superar los litros ocupados del tanque");
+{#            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
+                var value = $("#tanque1").val();
+                var retorno = true;
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        async:false,
+                        success: function (jsonTank) {
+                            retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                        }
+                    });
+                }
+                if ($(element).attr("id")=="tanque1" && $('#cantidad1').val() != ""){
+                    $('#cantidad1').valid();
+                }
+                return retorno;
+            }, "La cantidad no puede superar los litros ocupados del tanque");#}
             
             jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
                 return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val(),2);
             }, "La cantidad no puede superar los litros ocupados del tanque");
+            
+            jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
+                return redondeo($("#mainbundle_egress_realLiter").val(),2) == redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2);
+            }, "Las suma de las cantidades ingresadas deber ser igual a los litros reales");
             
             //Events
             $("#tanque1").change(function () {
@@ -248,7 +262,7 @@
                         url: Routing.generate('calculateCapacity', {id: value}),
                         dataType: "json",
                         success: function (jsonTank) {
-                            $('#tank1Msg').html("Cantidad ocupada del tanque: " + jsonTank['tankOcupedCapacity']);
+                            $('#tank1Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
                             $("#tank1OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
                         }
                     });
@@ -264,11 +278,14 @@
                         dataType: "json",
                         async: false,
                         success: function (jsonTank) {
-                            $('#tank2Msg').html("Cantidad ocupada del tanque: " + jsonTank['tankOcupedCapacity']);
+                            $('#tank2Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
                             $("#tank2OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
                         }
                     });
                     calculateRest();
+                }else{
+                    $("#cantidad1").val($("#mainbundle_egress_realLiter").val());
+                    $("#cantidad2").val("");
                 }
             });
             
@@ -282,7 +299,27 @@
             
             //Validation
             $('#egress-form').validate({
-                onkeyup: function(element) {$(element).valid()},
+                {#onkeyup: function(element) {$(element).valid()},#}
+                submitHandler: function(form) {
+                    var value = $("#tanque1").val();
+                    var retorno = true;
+                    if (value != "") {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateCapacity', {id: value}),
+                            dataType: "json",
+                            async:false,
+                            success: function (jsonTank) {
+                                retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                            }
+                        });
+                    }
+                    if(retorno){
+                        form.submit();
+                    }else{
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros ocupados del tanque</span>").addClass('has-error');
+                    }
+                },
                 highlight: function (element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },
@@ -301,13 +338,13 @@
                 rules: {
                     tanque1: {
                         required: true,
-                        notEqual: true
+                        notEqual: true,
+                        minRealLiters: true
                     },
                     cantidad1: {
                         required: true,
                         number: true,
-                        minRealLiters: true,
-                        minOcupedCapacity1: true
+                        minRealLiters: true
                     },
                     cantidad2: {
                         required: false,
@@ -319,40 +356,37 @@
                         notEqual: true
                     },
                     "mainbundle_egress[truckDomain]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[coupledDomain]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[grossWeight]":{
-                        required :true,
-                        number: true
+                        required:true,
+                        number:true
                     },
                     "mainbundle_egress[tareWeight]":{
-                        required :true,
+                        required:true,
                         number: true
                     },
                     "mainbundle_egress[density]":{
-                        required :true,
+                        required:true,
                         number: true
                     },
-                    "mainbundle_egress[clean]":{
-                        required :true
-                    },
                     "mainbundle_egress[realLiter]":{
-                        required :true
+                        lessRealLiter:true
                     },
                     "mainbundle_egress[client]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[product]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[transport]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[driver]":{
-                        required :true
+                        required:true
                     }
                 },
                 messages: {
@@ -381,12 +415,6 @@
                         required :"Este campo es requerido",
                         number: "El valor debe ser numerico"
                     },
-                    "mainbundle_egress[clean]":{
-                        required :"Este campo es requerido"
-                    },
-                    "mainbundle_egress[realLiter]":{
-                        required :"Este campo es requerido"
-                    },
                     "mainbundle_egress[client]":{
                         required :"Este campo es requerido"
                     },
@@ -401,7 +429,6 @@
                     }
                 }
             });
-            
             //Functions
             function redondeo(value, precision) {
                 if (value == "") {
@@ -410,7 +437,6 @@
                     return parseFloat(parseFloat(value).toFixed(precision));
                 }
             }
-
             function calculateRest(){
                 var quantity1 = redondeo($("#cantidad1").val(),2);
                 var realLiter = redondeo($('#mainbundle_egress_realLiter').val(),2);
@@ -436,6 +462,13 @@
             $('.floatNumberPrecision').focusout(function(){
                 $(this).val(redondeoMuestra($(this).val(),1));
             });
+            
+            $("#mainbundle_egress_transport").trigger("change");
+            $("#tanque1").removeClass("form-control");
+            $("#tanque2").removeClass("form-control");
+            $("#tanque1").trigger("change");
+            $("#tanque2").trigger("change");
+            $("#cantidad1").trigger("focusout");
         });
     </script>
 {% endblock %}

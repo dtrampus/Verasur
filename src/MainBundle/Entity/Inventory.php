@@ -190,4 +190,27 @@ class Inventory
         return $this->liter;
     }
 
+
+    /**
+     * Set tank
+     *
+     * @param \MainBundle\Entity\Tank $tank
+     * @return Inventory
+     */
+    public function setTank(\MainBundle\Entity\Tank $tank = null)
+    {
+        $this->tank = $tank;
+
+        return $this;
+    }
+
+    /**
+     * Get tank
+     *
+     * @return \MainBundle\Entity\Tank 
+     */
+    public function getTank()
+    {
+        return $this->tank;
+    }
 }

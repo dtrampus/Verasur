@@ -183,7 +183,7 @@
     <script>
         jQuery(document).ready(function () {
             verasurNewEditMovement.init();
-            $("#mainbundle_egress_transport").trigger("change");
+{#            $("#mainbundle_egress_transport").trigger("change");#}
             $("#tanque1").removeClass("form-control");
             $("#tanque2").removeClass("form-control");
             
@@ -193,10 +193,10 @@
             }, "Los tanques son iguales");
 
             jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
-                return redondeo($('.cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
+                return redondeo($('#cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
             }, "La cantidad no puede superar los litros reales");
             
-            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
+{#            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
                 var value = $("#tanque1").val();
                 var retorno = true;
                 if (value != "") {
@@ -214,17 +214,15 @@
                     $('#cantidad1').valid();
                 }
                 return retorno;
-            }, "La cantidad no puede superar los litros ocupados del tanque");
+            }, "La cantidad no puede superar los litros ocupados del tanque");#}
             
             jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
                 return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val(),2);
             }, "La cantidad no puede superar los litros ocupados del tanque");
             
             jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
-                if ($("#tanque2").val() == "Elige un tanque" && $("#cantidad1").val() < $('#mainbundle_egress_realLiter').val()){
-                    return $("#cantidad1").val();
-                }
-            }, "Si elige un solo tanque la cantidad debe ser igual a los litros reales");
+                return redondeo($("#mainbundle_egress_realLiter").val(),2) == redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2);
+            }, "Las suma de las cantidades ingresadas deber ser igual a los litros reales");
             
             //Events
             $("#tanque1").change(function () {
@@ -273,6 +271,26 @@
             //Validation
             $('#egress-form').validate({
                 {#onkeyup: function(element) {$(element).valid()},#}
+                submitHandler: function(form) {
+                    var value = $("#tanque1").val();
+                    var retorno = true;
+                    if (value != "") {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateCapacity', {id: value}),
+                            dataType: "json",
+                            async:false,
+                            success: function (jsonTank) {
+                                retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                            }
+                        });
+                    }
+                    if(retorno){
+                        form.submit();
+                    }else{
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros ocupados del tanque</span>").addClass('has-error');
+                    }
+                },
                 highlight: function (element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },
@@ -292,14 +310,12 @@
                     tanque1: {
                         required: true,
                         notEqual: true,
-                        minRealLiters: true,
-                        minOcupedCapacity1: true
+                        minRealLiters: true
                     },
                     cantidad1: {
                         required: true,
                         number: true,
-                        minRealLiters: true,
-                        minOcupedCapacity1: true
+                        minRealLiters: true
                     },
                     cantidad2: {
                         required: false,
@@ -308,43 +324,40 @@
                     },
                     tanque2: {
                         required: false,
-                        notEqual: true,
+                        notEqual: true
                     },
                     "mainbundle_egress[truckDomain]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[coupledDomain]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[grossWeight]":{
-                        required :true,
-                        number: true
+                        required:true,
+                        number:true
                     },
                     "mainbundle_egress[tareWeight]":{
-                        required :true,
+                        required:true,
                         number: true
                     },
                     "mainbundle_egress[density]":{
-                        required :true,
+                        required:true,
                         number: true
                     },
-                    "mainbundle_egress[clean]":{
-                        required :true
-                    },
                     "mainbundle_egress[realLiter]":{
-                        required :true
+                        lessRealLiter:true
                     },
                     "mainbundle_egress[client]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[product]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[transport]":{
-                        required :true
+                        required:true
                     },
                     "mainbundle_egress[driver]":{
-                        required :true
+                        required:true
                     }
                 },
                 messages: {
@@ -372,12 +385,6 @@
                     "mainbundle_egress[density]":{
                         required :"Este campo es requerido",
                         number: "El valor debe ser numerico"
-                    },
-                    "mainbundle_egress[clean]":{
-                        required :"Este campo es requerido"
-                    },
-                    "mainbundle_egress[realLiter]":{
-                        required :"Este campo es requerido"
                     },
                     "mainbundle_egress[client]":{
                         required :"Este campo es requerido"
