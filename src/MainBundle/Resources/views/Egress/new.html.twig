@@ -6,7 +6,6 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Egresos <span>&gt; Crear Egreso </span></h1>
         </div>
     </div>
-
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -28,7 +27,6 @@
                     <span class="widget-icon"> <i class="fa fa-sign-out"></i> </span>
                     <h2>Formulario de declaracion de egresos</h2>
                 </header>
-
                 <!-- widget div-->
                 <div>
                     <!-- widget edit box -->
@@ -36,122 +34,140 @@
                         <!-- This area used as dropdown edit box -->
                     </div>
                     <!-- end widget edit box -->
-
                     <!-- widget content -->
                     <div class="widget-body">
                         {{ form_start(form, {'attr': {'id': 'egress-form'}}) }}
-                        {{ form_errors(form) }}
-                        <div class='row'>
-                            <div class='col-md-3'>
-                                {{ form_row(form.baln) }}
-                            </div>
-                            <div class='col-md-9'>
-                                {{ form_row(form.date) }}
-                            </div>
-                        </div>
-                        <hr>
-                        {{ form_row(form.client) }}
-                        <h5>Dominio:</h5>
-                        <div class='row'>
-                            <div class='col-md-6'>
-                                {{ form_row(form.truckDomain) }}
-                            </div>
-                            <div class='col-md-6'>
-                                {{ form_row(form.coupledDomain) }}
-                            </div>
-                        </div>
-                        {{ form_row(form.transport) }}
-                        {{ form_row(form.driver) }}
-                        <hr>
-                        <h5>Peso(Kg):</h5>
-                        <div class='row'>
-                            <div class='col-md-6'>
-                                {{ form_row(form.grossWeight) }}
-                            </div>
-                            <div class='col-md-6'>
-                                {{ form_row(form.tareWeight) }}
-                            </div>
-                        </div>
-                        <hr>
-                        {{ form_row(form.product) }}
-                        {{ form_row(form.density) }}
-                        {{ form_row(form.tested) }}
-                        {{ form_row(form.clean) }}
-                        {{ form_row(form.realLiter) }}
-                        <h5>Tanques de origen :</h5>
-                        <div class='row'>
-                            <div class='col-md-6'>
-                                <div class="form-group">
-                                    <label>Tanque 1:</label>
-                                    <select class="tanque1" id="tanque1" name="tanque1">
-                                        <option value=""></option>
-                                        {% for entity in tanks %}
-                                            <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <input type="hidden" id="tank1OcupedCapacity" />
-                                    <span id="tank1Msg"></span>
+                            {{ form_errors(form) }}
+                            <div class='row'>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.baln) }}
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Cantidad:</label>
-                                    <input class="form-control cantidad1" type="text" id="cantidad1" name="cantidad1">
+                                <div class='col-md-3'>
+                                    {{ form_row(form.date.date,{ 'label': 'Fecha' }) }}
+                                </div>
+                                <div class="col-md-3">
+                                    {{ form_row(form.date.time ,{ 'label': 'Hora' }) }}
+                                </div>                                
+                            </div>
+                            <hr>
+                            <h5>Cliente:</h5>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{form_row(form.client)}}
                                 </div>
                             </div>
-                            <div class='col-md-6'>        
-                                <div class="form-group">
-                                    <label>Tanque 2:</label>
-                                    <select class="tanque2" id="tanque2" name="tanque2">
-                                        <option value=""></option>
-                                        {% for entity in tanks %}
-                                            <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <input type="hidden" id="tank2OcupedCapacity" />
-                                    <span id="tank2Msg"></span>
+                            <hr>
+                            <h5>Transporte:</h5>
+                            <div class='row'>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.transport) }}
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Cantidad:</label>
-                                    <input class="form-control cantidad2" type="text" id="cantidad2" name="cantidad2" readonly>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.driver) }}
+                                </div>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.truckDomain) }}
+                                </div>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.coupledDomain) }}
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <h5>Remito:</h5>
-                        <div class='row'>
-                            <div class='col-md-3'>
-                                {{ form_row(form.branchNumber) }}
-                            </div>                           
-                            <div class='col-md-9'>
-                                {{ form_row(form.remitNumber)}}
+                            <hr>
+                            <h5>Producto:</h5>
+                            <div class='row'>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.product) }}
+                                </div>
+                                <div class='col-md-3'>
+                                    
+                                    {{ form_row(form.grossWeight) }}
+                                </div>
+                                <div class='col-md-3'>
+                                    {{ form_row(form.tareWeight) }}
+                                </div>
+                                <div class="col-md-3">
+                                    {{ form_row(form.density) }}
+                                </div>
                             </div>
-                        </div>
-                        {{form_row(form.observation)}}    
-                        <hr>
-                        <h5>Muestra:</h5>
-                        {{form_row(form.distillationGout)}}
-                        {{form_row(form.fivePercent)}}
-                        {{form_row(form.tenPercent)}}
-                        {{form_row(form.twentyPercent)}}
-                        {{form_row(form.thirtyPercent)}}
-                        {{form_row(form.fortyPercent)}}
-                        {{form_row(form.fiftyPercent)}}
-                        {{form_row(form.sixtyPercent)}}
-                        {{form_row(form.seventyPercent)}}
-                        {{form_row(form.eightyPercent)}}
-                        {{form_row(form.ninetyPercent)}}
-                        {{form_row(form.ninetyFivePercent)}}
-                        {{form_row(form.pDry)}}
-                        {{form_row(form.pFinal)}}
-                        {{form_row(form.recovered)}}                            
+                            <div class="row">
+                                <div class="col-md-3">{{form_row(form.clean)}}</div>
+                                <div class="col-md-3">{{form_row(form.realLiter)}}</div>
+                                <div class="col-md-3 col-md-offset-3">{{form_row(form.tested)}}</div>
+                            </div>
+                            <h5>Tanques de origen :</h5>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    <div class="form-group">
+                                        <label>Tanque 1:</label> <span id="tank1Msg"></span>
+                                        <select class="tanque1" id="tanque1" name="tanque1" style="width: 100%">
+                                            <option value="" selected="selected">Elige un tanque</option>
+                                            {% for tank in tanks %}
+                                                <option value="{{tank.id}}">{{tank.code}}-{{tank.description}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden" id="tank1OcupedCapacity" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tanque 2:</label> <span id="tank2Msg"></span>
+                                        <select class="tanque2" id="tanque2" name="tanque2" style="width: 100%">
+                                            <option value="" selected="selected">Elige un tanque</option>
+                                            {% for tank in tanks %}
+                                                <option value="{{ tank.id }}">{{ tank.code }}-{{ tank.description }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden" id="tank2OcupedCapacity" />
+                                    </div>
+                                </div>
+                                <div class='col-md-6'>        
+                                    <div class="form-group">
+                                        <label>Cantidad (Litros):</label>
+                                        <input class="form-control cantidad1" type="text" id="cantidad1" name="cantidad1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Cantidad (Litros):</label>
+                                        <input class="form-control cantidad2" type="text" id="cantidad2" name="cantidad2" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5>Muestra:</h5>
+                            <div class="row">
+                                <div class="col-md-1">{{form_row(form.fivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.tenPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.twentyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.thirtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.fortyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.fiftyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.sixtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.seventyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.eightyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.ninetyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-1">{{form_row(form.ninetyFivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">{{form_row(form.distillationGout, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-3">{{form_row(form.pDry, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-3">{{form_row(form.pFinal, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                                <div class="col-md-3">{{form_row(form.recovered, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            </div>
+                            <hr>
+                            <h5>Remito:</h5>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    {{ form_row(form.branchNumber) }}
+                                </div>
+                                
+                                <div class='col-md-4'>
+                                    {{ form_row(form.remitNumber) }}
+                                </div>
+                            </div>
+                            <hr>
+                            {{form_row(form.observation)}}
                         {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
-
                 </div>
                 <!-- end widget div -->
-
             </div>
             <!-- end widget -->
         </article>
@@ -167,10 +183,9 @@
     <script>
         jQuery(document).ready(function () {
             verasurNewEditMovement.init();
-            
-            //CSS
-            $('.tanque1').addClass('form-control');
-            $('.tanque2').addClass('form-control');
+{#            $("#mainbundle_egress_transport").trigger("change");#}
+            $("#tanque1").removeClass("form-control");
+            $("#tanque2").removeClass("form-control");
             
             //Rules
             jQuery.validator.addMethod("notEqual", function (value, element, param) {
@@ -178,16 +193,36 @@
             }, "Los tanques son iguales");
 
             jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
-                return redondeo($('.cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
+                return redondeo($('#cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
             }, "La cantidad no puede superar los litros reales");
             
-            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
-                return redondeo($('#cantidad1').val(),2) <= redondeo($('#tank1OcupedCapacity').val(),2);
-            }, "La cantidad no puede superar los litros ocupados del tanque");
+{#            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
+                var value = $("#tanque1").val();
+                var retorno = true;
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        async:false,
+                        success: function (jsonTank) {
+                            retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                        }
+                    });
+                }
+                if ($(element).attr("id")=="tanque1" && $('#cantidad1').val() != ""){
+                    $('#cantidad1').valid();
+                }
+                return retorno;
+            }, "La cantidad no puede superar los litros ocupados del tanque");#}
             
             jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
                 return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val(),2);
             }, "La cantidad no puede superar los litros ocupados del tanque");
+            
+            jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
+                return redondeo($("#mainbundle_egress_realLiter").val(),2) == redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2);
+            }, "Las suma de las cantidades ingresadas deber ser igual a los litros reales");
             
             //Events
             $("#tanque1").change(function () {
@@ -198,7 +233,7 @@
                         url: Routing.generate('calculateCapacity', {id: value}),
                         dataType: "json",
                         success: function (jsonTank) {
-                            $('#tank1Msg').html("Cantidad ocupada del tanque: " + jsonTank['tankOcupedCapacity']);
+                            $('#tank1Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
                             $("#tank1OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
                         }
                     });
@@ -214,11 +249,14 @@
                         dataType: "json",
                         async: false,
                         success: function (jsonTank) {
-                            $('#tank2Msg').html("Cantidad ocupada del tanque: " + jsonTank['tankOcupedCapacity']);
+                            $('#tank2Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
                             $("#tank2OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
                         }
                     });
                     calculateRest();
+                }else{
+                    $("#cantidad1").val($("#mainbundle_egress_realLiter").val());
+                    $("#cantidad2").val("");
                 }
             });
             
@@ -232,7 +270,27 @@
             
             //Validation
             $('#egress-form').validate({
-                onkeyup: function(element) {$(element).valid()},
+                {#onkeyup: function(element) {$(element).valid()},#}
+                submitHandler: function(form) {
+                    var value = $("#tanque1").val();
+                    var retorno = true;
+                    if (value != "") {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateCapacity', {id: value}),
+                            dataType: "json",
+                            async:false,
+                            success: function (jsonTank) {
+                                retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                            }
+                        });
+                    }
+                    if(retorno){
+                        form.submit();
+                    }else{
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros ocupados del tanque</span>").addClass('has-error');
+                    }
+                },
                 highlight: function (element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },
@@ -251,13 +309,13 @@
                 rules: {
                     tanque1: {
                         required: true,
-                        notEqual: true
+                        notEqual: true,
+                        minRealLiters: true
                     },
                     cantidad1: {
                         required: true,
                         number: true,
-                        minRealLiters: true,
-                        minOcupedCapacity1: true
+                        minRealLiters: true
                     },
                     cantidad2: {
                         required: false,
@@ -267,6 +325,39 @@
                     tanque2: {
                         required: false,
                         notEqual: true
+                    },
+                    "mainbundle_egress[truckDomain]":{
+                        required:true
+                    },
+                    "mainbundle_egress[coupledDomain]":{
+                        required:true
+                    },
+                    "mainbundle_egress[grossWeight]":{
+                        required:true,
+                        number:true
+                    },
+                    "mainbundle_egress[tareWeight]":{
+                        required:true,
+                        number: true
+                    },
+                    "mainbundle_egress[density]":{
+                        required:true,
+                        number: true
+                    },
+                    "mainbundle_egress[realLiter]":{
+                        lessRealLiter:true
+                    },
+                    "mainbundle_egress[client]":{
+                        required:true
+                    },
+                    "mainbundle_egress[product]":{
+                        required:true
+                    },
+                    "mainbundle_egress[transport]":{
+                        required:true
+                    },
+                    "mainbundle_egress[driver]":{
+                        required:true
                     }
                 },
                 messages: {
@@ -276,10 +367,39 @@
                     cantidad1: {
                         required: "Este campo es requerido",
                         number: "El valor ingresado debe ser un número"
+                    },
+                    "mainbundle_egress[truckDomain]":{
+                        required : "Este campo es requerido"
+                    },
+                    "mainbundle_egress[coupledDomain]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_egress[grossWeight]":{
+                        required :"Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_egress[tareWeight]":{
+                        required :"Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_egress[density]":{
+                        required :"Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_egress[client]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_egress[product]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_egress[transport]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_egress[driver]":{
+                        required :"Este campo es requerido"
                     }
                 }
             });
-            
             //Functions
             function redondeo(value, precision) {
                 if (value == "") {
@@ -288,7 +408,6 @@
                     return parseFloat(parseFloat(value).toFixed(precision));
                 }
             }
-
             function calculateRest(){
                 var quantity1 = redondeo($("#cantidad1").val(),2);
                 var realLiter = redondeo($('#mainbundle_egress_realLiter').val(),2);
@@ -302,6 +421,24 @@
                 }
                 $("#cantidad2").trigger("focusout");
             }
+            //Validacion Seccion Muestra
+            function redondeoMuestra (value, precision) {
+                if (value == "") {
+                    return "";
+                } else {
+                    return parseFloat(parseFloat(value).toFixed(precision));
+                }
+            }
+            $('.floatNumberPrecision').focusout(function(){
+                $(this).val(redondeoMuestra($(this).val(),1));
+            });
+            
+            $("#tanque1").select2().on("change", function(){
+                $(this).valid();
+            });
+            $("#tanque2").select2().on("change", function(){
+                $(this).valid();
+            });
         });
     </script>
 {% endblock %}

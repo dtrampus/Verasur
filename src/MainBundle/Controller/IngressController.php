@@ -82,7 +82,7 @@ class IngressController extends Controller
      */
     private function createCreateForm(Ingress $entity)
     {
-        $form = $this->createForm(new IngressType(), $entity, array(
+        $form = $this->createForm(new IngressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('ingress_create'),
             'method' => 'POST',
         ));
@@ -138,6 +138,7 @@ class IngressController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Ingress')->find($id);
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Ingress entity.');
@@ -148,6 +149,7 @@ class IngressController extends Controller
 
         return $this->render('MainBundle:Ingress:edit.html.twig', array(
             'entity'      => $entity,
+            'tanks' => $tanks,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -162,7 +164,7 @@ class IngressController extends Controller
     */
     private function createEditForm(Ingress $entity)
     {
-        $form = $this->createForm(new IngressType(), $entity, array(
+        $form = $this->createForm(new IngressType($entity->getTransport()), $entity, array(
             'action' => $this->generateUrl('ingress_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -180,7 +182,17 @@ class IngressController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Ingress')->find($id);
-
+        
+        foreach($entity->getMovementDetails() as $detail){
+          $em->remove($detail);
+        }
+        $em->flush();
+        
+        $tank1 = $request->request->get('tanque1');
+        $quantity1 = $request->request->get('cantidad1');
+        $tank2 = $request->request->get('tanque2');
+        $quantity2 = $request->request->get('cantidad2');
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Ingress entity.');
         }
@@ -190,6 +202,30 @@ class IngressController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            //1 o 2
+            if ($tank1 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank1);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity($quantity1);
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }
+            if ($tank2 != ""){
+                $tank = $em->getRepository('MainBundle:Tank')->find($tank2);
+                $mD = new MovementDetail();
+                $mD->setMovement($entity);
+                $mD->setQuantity($quantity2);
+                $mD->setTank($tank);
+
+                $entity->addMovementDetail($mD);
+                $em->persist($entity);
+
+            }
+            
             $em->flush();
 
             $this->addFlash(

@@ -416,4 +416,37 @@ class Tank {
         return $this->code.' - '.$this->description;
     }
 
+
+    /**
+     * Add inventories
+     *
+     * @param \MainBundle\Entity\Inventory $inventories
+     * @return Tank
+     */
+    public function addInventory(\MainBundle\Entity\Inventory $inventories)
+    {
+        $this->inventories[] = $inventories;
+
+        return $this;
+    }
+
+    /**
+     * Remove inventories
+     *
+     * @param \MainBundle\Entity\Inventory $inventories
+     */
+    public function removeInventory(\MainBundle\Entity\Inventory $inventories)
+    {
+        $this->inventories->removeElement($inventories);
+    }
+
+    /**
+     * Get inventories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventories()
+    {
+        return $this->inventories;
+    }
 }

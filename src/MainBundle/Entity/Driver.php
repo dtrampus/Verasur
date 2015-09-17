@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Transport;
+use MainBundle\Entity\Movement;
 
 /**
  * Driver
@@ -59,7 +60,12 @@ class Driver {
      * @Assert\NotBlank()
      * 
      */
-    private $transport;
+    protected $transport;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="driver")
+     */
+    protected $movements;
 
     /**
      * Get id
@@ -181,4 +187,44 @@ class Driver {
         return $this->dni.' - '.$this->name.' '.$this->surname;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movements = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     * @return Driver
+     */
+    public function addMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements[] = $movements;
+
+        return $this;
+    }
+
+    /**
+     * Remove movements
+     *
+     * @param \MainBundle\Entity\Movement $movements
+     */
+    public function removeMovement(\MainBundle\Entity\Movement $movements)
+    {
+        $this->movements->removeElement($movements);
+    }
+
+    /**
+     * Get movements
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovements()
+    {
+        return $this->movements;
+    }
 }

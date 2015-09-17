@@ -43,37 +43,35 @@
                         <form id="download-form" action="{{ path('ingress_createDownload') }}" method="POST">
                             <input type="hidden" name="ingressId" value="{{ ingressInfo.id }}">
                             <div class="form-group">
-                                <label>Tanque 1:</label>
-                                <select class="form-control tanque1" id="tanque1" name="tanque1">
-                                    <option value=""></option>
+                                <label>Tanque 1:</label> <span id="tank1Msg"></span>
+                                <select class="select2 tanque1" id="tanque1" name="tanque1">
+                                    <option value="" selected="selected">Elige un tanque</option>
                                     {% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
                                     {% endfor %}
                                 </select>
+                                <input type="hidden" id="tank1FreeCapacity" />
                             </div>
 
                             <div class="form-group">
-                                <label>Cantidad:</label>
+                                <label>Cantidad (Litros):</label>
                                 <input class="form-control cantidad1" type="text" name="cantidad1">
-                                <span id="cantidad1"></span><br>
-                                <span id="msg-error1"></span>
                             </div>
 
                             <div class="form-group">
-                                <label>Tanque 2:</label>
-                                <select class="form-control tanque2" id="tanque2" name="tanque2">
-                                    <option value=""></option>
+                                <label>Tanque 2:</label> <span id="tank2Msg"></span>
+                                <select class="select2 tanque2" id="tanque2" name="tanque2">
+                                    <option value="" selected="selected">Elige un tanque</option>
                                     {% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
                                     {% endfor %}
                                 </select>
+                                <input type="hidden" id="tank2FreeCapacity" />
                             </div>
 
                             <div class="form-group">
-                                <label>Cantidad:</label>
+                                <label>Cantidad (Litros):</label>
                                 <input class="form-control cantidad2" type="text" name="cantidad2">
-                                <span id="cantidad2"></span><br>
-                                <span id="msg-error2"></span>
                             </div>
                             <br>
                             <input class="btn btn-primary" type="submit" id="submitform">
@@ -99,14 +97,48 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#submitform').prop('disabled', true);
             $('.cantidad2').prop('readonly', true);
-            
+            var total = redondeo({{ingressInfo.realLiter}},2);
+
+            //Rules
             jQuery.validator.addMethod("notEqual", function(value, element, param) {
                 return $('#tanque1').val() != $('#tanque2').val();
             }, "Los tanques son iguales");
             
+            jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
+                return redondeo($('.cantidad1').val(),2) <= total;
+            }, "La cantidad no puede superar los litros totales");
+            
+            jQuery.validator.addMethod("minFreeCapacity1", function (value, element, param) {
+                var value = $("#tanque1").val();
+                var retorno = true;
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        async:false,
+                        success: function (jsonTank) {
+                            retorno = redondeo($('.cantidad1').val(),2) <= redondeo(jsonTank['tankFreeCapacity'],2);
+                        }
+                    });
+                }
+                if ($(element).attr("id")=="tanque1" && $('.cantidad1').val() != ""){
+                    $('.cantidad1').valid();
+                }
+                return retorno;
+            }, "La cantidad no puede superar los litros libres del tanque");
+            
+            jQuery.validator.addMethod("minFreeCapacity2", function (value, element, param) {
+                return redondeo($('.cantidad2').val(),2) <= redondeo($('#tank2FreeCapacity').val(),2);
+            }, "La cantidad no puede superar los litros libres del tanque");
+            
+            jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
+                return redondeo(total,2) == redondeo($(".cantidad1").val(),2)+redondeo($(".cantidad2").val(),2);
+            }, "Las suma de las cantidades ingresadas deber ser igual a los litros totales");
+            
             $('#download-form').validate({
+                onkeyup : false,
                 highlight: function(element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },
@@ -125,11 +157,21 @@
                 rules: {
                     tanque1 : {
                         required : true,
-                        notEqual : true
+                        notEqual : true,
+                        minRealLiters: true,
+                        minFreeCapacity1: true
                     },
                     cantidad1 : {
                         required : true,
-                        number : true
+                        number : true,
+                        minRealLiters: true,
+                        minFreeCapacity1: true,
+                        lessRealLiter : true
+                    },
+                    cantidad2: {
+                        required: false,
+                        number: true,
+                        minFreeCapacity2: true
                     },
                     tanque2 : {
                         required : false,
@@ -147,89 +189,73 @@
                 }
             });
             
-            $(".tanque1").change(function () {
-                var value = $(".tanque1 option:selected").val();
-                if (value != 0) {
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('calculateCapacity', {id: value}),
-                        dataType: "json",
-                        success: function (jsonTank) {
-                            $('#cantidad1').html("<span class='help-block'>Capacidad disponible en el tanque: " + jsonTank['tankFreeCapacity'] + "</span>");
-                            if($('.cantidad1').val() > jsonTank['tankFreeCapacity']){
-                                $("#msg-error1").html("<span class='text-danger'>La cantidad ingresada no puede superar a la cantidad disponible en el tanque!</span>");
-                                $('#submitform').prop('disabled', true);
-                            } else {
-                                $("#msg-error1").html("");
-                                $('#submitform').prop('disabled', false);
-                            }
-                        }
-                    });
-                } else {
-                    $('#cantidad1').html("");
-                }
-            });
-
-            $(".tanque2").change(function () {
-                var value = $(".tanque2 option:selected").val();
+            //Eventos
+            $("#tanque1").change(function () {
+                var value = $("#tanque1").val();
                 if (value != "") {
                     $.ajax({
                         type: 'GET',
                         url: Routing.generate('calculateCapacity', {id: value}),
                         dataType: "json",
                         success: function (jsonTank) {
-                            $('#cantidad2').html("<span class='help-block'>Capacidad disponible en el tanque: " + jsonTank['tankFreeCapacity'] + "</span>");
-                            if($('.cantidad2').val() > jsonTank['tankFreeCapacity']){
-                                $("#msg-error2").html("<span class='text-danger'>La cantidad ingresada no puede superar a la cantidad disponible en el tanque!</span>");
-                                $('#submitform').prop('disabled', true);
-                            } else {
-                                $("#msg-error2").html("");
-                                $('#submitform').prop('disabled', false);
-                            }
+                            $('#tank1Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
+                            $("#tank1FreeCapacity").val(jsonTank['tankFreeCapacity']);
                         }
                     });
-                } else {
-                    $('#cantidad2').html("");
-                    $('.cantidad1').val({{ingressInfo.realLiter}});
-                    $('.cantidad2').val("");
                 }
             });
 
-            //validaciones para descargar un ingreso en los tanques
-            $(".cantidad1").focusout(function () {
-                var ingressQuantity = {{ ingressInfo.realLiter }};
-                var quantity1 = $(".cantidad1").val();
-                var value = $(".tanque1 option:selected").val();
-                if (quantity1 == ""){
-                    quantity1 = 0;
-                    $('.cantidad1').val("0.00");
-                }
-                $.ajax({
-                    type: 'GET',
-                    url: Routing.generate('calculateCapacity', {id: value}),
-                    dataType: "json",
-                    success: function (jsonTank) {
-                        var freeCapacity = jsonTank['tankFreeCapacity'];
-                        if (quantity1 <= freeCapacity && quantity1 <= ingressQuantity) {
-                            $("#msg-error1").html("");
-                            var rest = ingressQuantity - quantity1;
-                            var cant1Redondeo = parseFloat(quantity1).toFixed(2);
-                            $(".cantidad1").val(cant1Redondeo);
-                            if (rest == 0){
-                                $(".cantidad2").val("");
-                            }else{
-                                var cant2Redondeo = parseFloat(rest).toFixed(2);
-                                $(".cantidad2").val(cant2Redondeo);
-                            }
-                            
-                        } else {
-                            $("#msg-error1").html("<span class='text-danger'>La cantidad ingresada no puede superar a la cantidad disponible en el tanque o la cantidad del ingreso!</span>");
-                            $('#submitform').prop('disabled', true);
+            $("#tanque2").change(function () {
+                var value = $("#tanque2").val();
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        async: false,
+                        success: function (jsonTank) {
+                            $('#tank2Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
+                            $("#tank2FreeCapacity").val(jsonTank['tankFreeCapacity']);
+                            $(".cantidad1").trigger("focusout");
                         }
-                    }
-                });
-
+                    });
+                    calculateRest();
+                }else{
+                    $(".cantidad1").val(total);
+                    $(".cantidad2").val("");
+                    $(".cantidad1").trigger("focusout");
+                }
             });
+
+            $(".cantidad1").focusout(function () {
+                var quantity1 = redondeo($(this).val(),2);
+                $(this).val(quantity1);
+                if($(this).closest(".form-group").hasClass("has-error") == false){
+                    calculateRest();
+                }
+            });
+            
+            //Functions
+            function redondeo(value, precision) {
+                if (value == "") {
+                    return 0;
+                } else {
+                    return parseFloat(parseFloat(value).toFixed(precision));
+                }
+            }
+            function calculateRest(){
+                var quantity1 = redondeo($(".cantidad1").val(),2);
+                var realLiter = {{ingressInfo.realLiter}};
+                var rest = redondeo(realLiter - quantity1,2);
+                if (rest <= 0) {
+                    $(".cantidad2").val("");
+                } else {
+                    if ($("#tanque2").val() != "") {
+                        $(".cantidad2").val(rest);
+                    }
+                }
+                $(".cantidad2").trigger("focusout");
+            }
         });
     </script>
 {% endblock %}
