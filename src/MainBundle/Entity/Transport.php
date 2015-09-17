@@ -49,7 +49,7 @@ class Transport
     /**
      * @ORM\OneToMany(targetEntity="Driver", mappedBy="transport")
      */
-    private $drivers;
+    protected $drivers;
 
     /**
      * @var boolean
@@ -61,7 +61,7 @@ class Transport
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="transport")
      */
-    private $movements;
+    protected $movements;
     
     /**
      * Get id
@@ -147,6 +147,7 @@ class Transport
     public function __construct()
     {
         $this->movements = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->drivers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

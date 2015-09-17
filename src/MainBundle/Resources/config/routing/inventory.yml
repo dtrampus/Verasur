@@ -1,5 +1,5 @@
 inventory:
-    path:     /{id}/
+    path:     /{id}/index
     defaults: { _controller: "MainBundle:Inventory:index" }
 
 inventory_show:
@@ -28,3 +28,7 @@ inventory_delete:
     path:     /{id}/delete
     defaults: { _controller: "MainBundle:Inventory:delete" }
     methods:  [POST, DELETE]
+
+inventory_report:
+    path:     /report
+    defaults: { _controller: "MainBundle:Inventory:report" }

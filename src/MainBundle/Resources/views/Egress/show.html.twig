@@ -78,8 +78,6 @@
                                 <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                 <p>Neto: {{ entity.clean }}</p>
                                 <p>Litros Reales: {{ entity.realLiter }}</p>
-                                <p>Número: {{ entity.branchNumber }} - {{ entity.remitNumber }}</p>
-                                <p>Observación: {{ entity.observation }}</p>
                                 <p>Destilación la gota: {{ entity.distillationGout }}</p>
                                 <p>5%: {{ entity.fivePercent }}</p>
                                 <p>10%: {{ entity.tenPercent }}</p>
@@ -94,8 +92,9 @@
                                 <p>95%: {{ entity.ninetyFivePercent }}</p>
                                 <p>P. Seco: {{ entity.pDry }}</p>
                                 <p>P. Final: {{ entity.pFinal }}</p>
-                                <p>Recuperado: {{ entity.recovered }}</p>
-                                
+                                <p>Recuperado: {{ entity.recovered }}</p><br>
+                                <p>Número de remito: {{ entity.branchNumber }} - {{ entity.remitNumber }}</p>
+                                <p>Observación: {{ entity.observation }}</p>
                                 <p>Usuario Asociado: {{ entity.user.username }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
@@ -117,51 +116,26 @@
                                 </ul>
                             </div>
                             <div class="tab-pane" id="hb5">
-                                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <!-- Widget ID (each widget will need unique ID)-->
-                                    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
-                                        <header>
-                                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                            <h2>Tanques asociados</h2>
-                                        </header>
-                                        <!-- widget div-->
-                                        <div>
-                                            <!-- widget edit box -->
-                                            <div class="jarviswidget-editbox">
-                                                    <!-- This area used as dropdown edit box -->
-
-                                            </div>
-                                            <!-- end widget edit box -->
-
-                                            <!-- widget content -->
-                                            <div class="widget-body">
-                                                <div class="table-responsive">
-
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Tanque</th>
-                                                                <th>Cantidad</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for movementDetail in entity.getMovementDetails() %}
-                                                                <tr>
-                                                                    <td>{{ movementDetail.tank.code }}-{{ movementDetail.tank.description }}</td>
-                                                                    <td>{{ movementDetail.quantity }}</td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                    </table>
-
-                                                </div>
-                                            </div>
-                                            <!-- end widget content -->
-                                        </div>
-                                        <!-- end widget div -->
+                                <div class="widget-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanque</th>
+                                                    <th>Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for movementDetail in entity.getMovementDetails() %}
+                                                    <tr>
+                                                        <td>{{ movementDetail.tank.code }}-{{ movementDetail.tank.description }}</td>
+                                                        <td>{{ movementDetail.quantity }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <!-- end widget -->
-                                </article>
+                                </div>
                             </div>
                         </div>
 
