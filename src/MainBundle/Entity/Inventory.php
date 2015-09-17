@@ -5,12 +5,12 @@ namespace MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use MainBundle\Entity\Tank;
-use UserBundle\Entity\User;
+use MainBundle\Entity\Product;
 
 /**
  * Inventory
  *
- * @ORM\Table()
+ * @ORM\Table(name="inventories")
  * @ORM\Entity(repositoryClass="MainBundle\Entity\InventoryRepository")
  */
 class Inventory
@@ -32,16 +32,8 @@ class Inventory
     private $date;
 
     /**
-     * @var string
-     * @Assert\NotBlank()
-     * @ORM\Column(name="product", type="string", length=255)
-     */
-    private $product;
-
-    /**
      * @var float
-     * @Assert\NotBlank()
-     * @ORM\Column(name="vacuum", type="float")
+     * @ORM\Column(name="vacuum", type="float", nullable=true)
      */
     private $vacuum;
 
@@ -54,17 +46,22 @@ class Inventory
     
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tank", inversedBy="inventories")
-     * @ORM\JoinColumn(name="tank_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Tank", inversedBy="inventories", cascade={"persist"})
+     * @ORM\JoinColumn(name="tank_id", referencedColumnName="id", onDelete="CASCADE")
      **/
-    private $tank;
+    protected $tank;
     
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="inventory")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $users;  
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="inventory")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     **/
+    protected $product;  
 
     /**
      * Get id
@@ -97,29 +94,6 @@ class Inventory
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set product
-     *
-     * @param string $product
-     * @return Inventory
-     */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get product
-     *
-     * @return string 
-     */
-    public function getProduct()
-    {
-        return $this->product;
     }
 
     /**
@@ -213,5 +187,28 @@ class Inventory
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \MainBundle\Entity\Product $product
+     * @return Inventory
+     */
+    public function setProduct(\MainBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \MainBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

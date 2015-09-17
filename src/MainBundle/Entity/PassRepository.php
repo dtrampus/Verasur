@@ -48,7 +48,7 @@ class PassRepository extends EntityRepository
         $sFrom = "FROM movements m INNER JOIN products p ON m.product_id = p.id";
 
         /*
-         * Paging
+         * Select
          */
         $sSelect = "SELECT ";
         $prefix = "";
@@ -171,7 +171,16 @@ class PassRepository extends EntityRepository
         $rResult = $stmt->fetchAll();
 
         /* Data set length after filtering */
-        $iFilteredTotal = count($rResult);
+        $sQuery = "
+            SELECT IFNULL(COUNT(".$sIndexColumn."),0) AS count
+            $sFrom
+            $sWhere
+        ";
+        
+        $stmt = $em->getConnection()->prepare($sQuery);
+        $stmt->execute();
+        $rResultFilteres = $stmt->fetch();
+        $iFilteredTotal = $rResultFilteres["count"];;
 
         /* Total data set length */
         $sQuery = "

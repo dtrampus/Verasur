@@ -28,7 +28,7 @@
                 -->
                 <header>
                     <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
-                    <h2>Formulario de edición de inventario</h2>
+                    <h2>Formulario de edición de inventario {{tank.plant?"de la planta":"del tanque"}} {{tank.code}} - {{tank.description}}</h2>
                 </header>
 
                 <!-- widget div-->
@@ -50,7 +50,7 @@
                                 {{ form_row(edit_form.date.time, {'label': 'Hora'}) }}
                             </div>                                
                         </div>
-                        <input type="hidden" name="tank_id" id="tankId" value="{{ tank.Id }}">
+                        <input type="hidden" name="tank_id" id="tankId" value="{{ tank.id }}">
                         {{ form_end(edit_form) }}
                         <input type="hidden" id="tankOrPlant" value="{{ tank.plant }}">
                         <input type="hidden" id="tankCoordinates" value="{{ tank.coordinates }}">

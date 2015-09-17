@@ -14,11 +14,13 @@ var verasurNewEditInventory = function () {
             $("#mainbundle_inventory_liter").prop('readonly', true);
             $("#mainbundle_inventory_vacuum").focusout(function () {
                 if ($("#mainbundle_inventory_vacuum").val() != "") {
-                    var vacuum = $("#mainbundle_inventory_vacuum").val();
+                    var vacuum = parseFloat($('#mainbundle_inventory_vacuum').val(), 10).toFixed(2);
+                    $('#mainbundle_inventory_vacuum').val(vacuum);
                     var diference = vacuum - coordinates;
                     var result = diference * tankLiter;
+                    var result_fixed = result.toFixed(2);
                     if (!isNaN(result)) {
-                        $("#mainbundle_inventory_liter").val(result);
+                        $("#mainbundle_inventory_liter").val(result_fixed);
                     } else {
                         $("#mainbundle_inventory_liter").val(null);
                     }
@@ -30,19 +32,24 @@ var verasurNewEditInventory = function () {
             $("#mainbundle_inventory_vacuum").prop('disabled', true);
         }
 
-
         $.ajax({
             type: 'GET',
             url: Routing.generate('getProductAjax', {id: tankId}),
             dataType: "json",
             success: function (jsonTanks) {
-                $('#mainbundle_inventory_product').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_inventory_products').html("<option value=''>Elige una opcion</option>");
                 for (var tank in jsonTanks) {
                     var arrayTank = jsonTanks[tank];
-                    $('#mainbundle_inventory_product').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                    $('#mainbundle_inventory_products').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
                 }
             }
         });
+        
+        $("#mainbundle_inventory_vacuum").focusout(function () {
+        if(isNaN($("#mainbundle_inventory_vacuum").val())){
+           $("#mainbundle_inventory_vacuum").val(null);
+        }
+    });
 
         $('#inventory-form').validate({
             highlight: function (element) {

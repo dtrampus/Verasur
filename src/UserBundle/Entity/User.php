@@ -7,8 +7,6 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use MainBundle\Entity\Movement;
-use MainBundle\Entity\Inventory;
 
 /**
  * @ORM\Entity
@@ -50,7 +48,7 @@ class User extends BaseUser
     protected $movement;
     
     /**
-     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Inventory", mappedBy="inventory")
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Inventory", mappedBy="users")
      */
     protected $inventory;
     

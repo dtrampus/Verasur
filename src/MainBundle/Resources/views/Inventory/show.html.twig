@@ -61,18 +61,17 @@
                     <div class="widget-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="hb1">    
-                                <p>Fecha: {{ entity.date|date("d/m/Y h:m") }}</p>
+                                <p>Fecha: {{ entity.date|date("d/m/Y H:i") }}</p>
                                 <p>CM de Vacio: {{ entity.vacuum }}</p>
                                 <p>Litros/CM: {{ entity.liter}}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
-                                <p>Producto: {{ entity.product }}</p>
+                                <p>Producto: {{ entity.product.code }} - {{ entity.product.description }}</p>
                             </div>
                             <div class="tab-pane" id="hb3">
                                 <p>Usuario: {{ entity.users.username }}</p>
                             </div>
                         </div>
-
                         <hr class="simple">
 
                         <a href="{{ path('inventory', { 'id': entity.tank.id }) }}" class="btn btn-default">Volver</a>

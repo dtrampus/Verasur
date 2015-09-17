@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Inventario <span>&gt; Mostrar Inventario </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Pases <span>&gt; Mostrar Pase </span></h1>
         </div>
     </div>
 
@@ -32,17 +32,11 @@
 
                 -->
                 <header>
-                    <h2>Inventario</h2>
+                    <h2>Pase</h2>
                     <ul class="nav nav-tabs pull-right in">
 
                         <li class="active">
                             <a data-toggle="tab" href="#hb1"> <i class="fa fa-lg fa-align-left"></i> <span class="hidden-mobile hidden-tablet"> Información Básica </span> </a>
-                        </li>
-                        <li>
-                            <a data-toggle="tab" href="#hb2"> <i class="fa fa-lg fa-cubes"></i> <span class="hidden-mobile hidden-tablet"> Producto </span> </a>
-                        </li>
-                        <li>
-                            <a data-toggle="tab" href="#hb3"> <i class="fa fa-lg fa-user"></i> <span class="hidden-mobile hidden-tablet"> Usuario </span> </a>
                         </li>
                     </ul>
                 </header>
@@ -61,22 +55,23 @@
                     <div class="widget-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="hb1">    
-                                <p>Fecha: {{ entity.date|date("d/m/Y h:m") }}</p>
-                                <p>CM de Vacio: {{ entity.vacuum }}</p>
-                                <p>Litros/CM: {{ entity.liter}}</p>
-                            </div>
-                            <div class="tab-pane" id="hb2">
-                                <p>Producto: {{ entity.product }}</p>
-                            </div>
-                            <div class="tab-pane" id="hb3">
-                                <p>Usuario: {{ entity.users.username }}</p>
+                                <p>Fecha: {{ entity.date|date("d/m/Y H:i") }}</p>
+                                <p>Producto: {{ entity.product.code }} - {{ entity.product.description }}</p>
+                                {% for movementDetail in entity.getMovementDetails() %}  
+                                    {% if movementDetail.quantity < 0 %}
+                                        <p>Origen: {{ movementDetail.tank.code }} - {{ movementDetail.tank.description }}</p>
+                                    {% endif %}
+                                    {% if movementDetail.quantity > 0 %}
+                                        <p>Cantidad: {{ movementDetail.quantity }}</p>
+                                        <p>Destino: {{ movementDetail.tank.code }} - {{ movementDetail.tank.description }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
-
                         <hr class="simple">
 
-                        <a href="{{ path('inventory', { 'id': entity.tank.id }) }}" class="btn btn-default">Volver</a>
-                        <a href="{{ path('inventory_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
+                        <a href="{{ path('pass') }}" class="btn btn-default">Volver</a>
+                        <a href="{{ path('pass_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
                         <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
 
                     </div>

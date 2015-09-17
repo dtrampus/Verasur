@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Inventory;
 use MainBundle\Form\InventoryType;
+use MainBundle\Entity\Tank;
 
 /**
  * Inventory controller.
@@ -37,18 +38,17 @@ class InventoryController extends Controller
     public function createAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        
         $tank_id = $request->request->get('tank_id');
-        $tankid = $em->getRepository('MainBundle:Tank')->find($tank_id);
+        $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
         
         $entity = new Inventory();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $tank);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity->setUsers($this->getUser());
-            $entity->setTank($tankid);
+            $entity->setTank($tank);
             $em->persist($entity);
             $em->flush();
             
@@ -62,7 +62,8 @@ class InventoryController extends Controller
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form'   => $form->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -73,9 +74,9 @@ class InventoryController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Inventory $entity)
+    private function createCreateForm(Inventory $entity, Tank $tank)
     {
-        $form = $this->createForm(new InventoryType(), $entity, array(
+        $form = $this->createForm(new InventoryType($tank), $entity, array(
             'action' => $this->generateUrl('inventory_create'),
             'method' => 'POST',
         ));
@@ -95,7 +96,7 @@ class InventoryController extends Controller
         $tank = $em->getRepository('MainBundle:Tank')->find($id);
         
         $entity = new Inventory();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $tank);
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
@@ -113,7 +114,6 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
-        $entity_prod = $em->getRepository('MainBundle:Tank')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Inventory entity.');
@@ -123,8 +123,7 @@ class InventoryController extends Controller
 
         return $this->render('MainBundle:Inventory:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-            'entity_prod' => $entity_prod
+            'delete_form' => $deleteForm->createView()
         ));
     }
 
@@ -137,14 +136,13 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
-        $getTank = $entity->getTank();
-        $tank = $em->getRepository('MainBundle:Tank')->find($getTank);
+        $tank = $entity->getTank();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Inventory entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $tank);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Inventory:edit.html.twig', array(
@@ -162,9 +160,9 @@ class InventoryController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Inventory $entity)
+    private function createEditForm(Inventory $entity, Tank $tank)
     {
-        $form = $this->createForm(new InventoryType(), $entity, array(
+        $form = $this->createForm(new InventoryType($tank), $entity, array(
             'action' => $this->generateUrl('inventory_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -180,6 +178,8 @@ class InventoryController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $tank_id = $request->request->get('tank_id');
+        $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
 
@@ -188,7 +188,7 @@ class InventoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $tank);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -206,6 +206,7 @@ class InventoryController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'tank' => $tank
         ));
     }
     /**
@@ -234,7 +235,7 @@ class InventoryController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('inventory'));
+        return $this->redirect($this->generateUrl('inventory', array('id' => $entity->getTank()->getId())));
     }
 
     /**

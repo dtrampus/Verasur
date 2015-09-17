@@ -98,25 +98,22 @@ class Tank {
     private $totalCapacity;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Product")
-     * @ORM\JoinTable(name="tanks_products",
-     *      joinColumns={@ORM\JoinColumn(name="tank_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
-     *  )
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="tanks")
+     * @ORM\JoinTable(name="tanks_products")
      * @Assert\NotBlank()
      * 
      */
     protected $products;
-    
+
     /**
-     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="tank")
+     * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="tank", cascade={"persist"})
      */
-    private $movementDetails;    
- 
+    protected $movementDetails;
+
     /**
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="tank")
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="tank", cascade={"persist"})
      */
-    private $inventories;
+    protected $inventories;
 
     /**
      * Get id
@@ -336,48 +333,6 @@ class Tank {
     public function getTotalCapacity() {
         return $this->totalCapacity;
     }
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add product
-     *
-     * @param \MainBundle\Entity\Product $product
-     * @return Product
-     */
-    public function addProduct(\MainBundle\Entity\Product $product)
-    {
-        $this->products[] = $product;
-
-        return $this;
-    }
-
-    /**
-     * Remove product
-     *
-     * @param \MainBundle\Entity\Product $product
-     */
-    public function removeProduct(\MainBundle\Entity\Product $product)
-    {
-        $this->products->removeElement($product);
-    }
-
-    /**
-     * Get product
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
 
     /**
      * Add movementDetails
@@ -385,8 +340,7 @@ class Tank {
      * @param \MainBundle\Entity\MovementDetail $movementDetails
      * @return Tank
      */
-    public function addMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
-    {
+    public function addMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails) {
         $this->movementDetails[] = $movementDetails;
 
         return $this;
@@ -397,8 +351,7 @@ class Tank {
      *
      * @param \MainBundle\Entity\MovementDetail $movementDetails
      */
-    public function removeMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails)
-    {
+    public function removeMovementDetail(\MainBundle\Entity\MovementDetail $movementDetails) {
         $this->movementDetails->removeElement($movementDetails);
     }
 
@@ -407,13 +360,12 @@ class Tank {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMovementDetails()
-    {
+    public function getMovementDetails() {
         return $this->movementDetails;
     }
-    
+
     public function __toString() {
-        return $this->code.' - '.$this->description;
+        return $this->code . ' - ' . $this->description;
     }
 
     /**
@@ -422,8 +374,7 @@ class Tank {
      * @param \MainBundle\Entity\Inventory $inventories
      * @return Tank
      */
-    public function addInventory(\MainBundle\Entity\Inventory $inventories)
-    {
+    public function addInventory(\MainBundle\Entity\Inventory $inventories) {
         $this->inventories[] = $inventories;
 
         return $this;
@@ -434,8 +385,7 @@ class Tank {
      *
      * @param \MainBundle\Entity\Inventory $inventories
      */
-    public function removeInventory(\MainBundle\Entity\Inventory $inventories)
-    {
+    public function removeInventory(\MainBundle\Entity\Inventory $inventories) {
         $this->inventories->removeElement($inventories);
     }
 
@@ -444,8 +394,46 @@ class Tank {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getInventories()
-    {
+    public function getInventories() {
         return $this->inventories;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \MainBundle\Entity\Product $products
+     * @return Tank
+     */
+    public function addProduct(\MainBundle\Entity\Product $products) {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \MainBundle\Entity\Product $products
+     */
+    public function removeProduct(\MainBundle\Entity\Product $products) {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts() {
+        return $this->products;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->movementDetails = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inventories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

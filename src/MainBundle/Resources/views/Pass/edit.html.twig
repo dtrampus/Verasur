@@ -5,7 +5,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Inventario <span>&gt; Editar Inventario </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Pase <span>&gt; Editar Pase </span></h1>
         </div>
     </div>
 
@@ -27,8 +27,8 @@
 
                 -->
                 <header>
-                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
-                    <h2>Formulario de edición de inventario</h2>
+                    <span class="widget-icon"> <i class="fa fa-share-square-o"></i> </span>
+                    <h2>Formulario de edición de pase</h2>
                 </header>
 
                 <!-- widget div-->
@@ -41,20 +41,101 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form_start(edit_form, { 'attr': {'id': 'inventory-form'} }) }}
-                        <div class='row'>
-                            <div class='col-md-3'>
-                                {{ form_row(edit_form.date.date, {'label': 'Fecha'}) }}
+                        <form name="mainbundle_pass" method="post" id="pass-form" action="/pass/{{ passes.id }}/update">
+                            <div id="mainbundle_pass">
+                                <div class='row'>
+                                    <div class='col-md-3'>
+                                        <div class="form-group">
+                                            <label class="control-label required" for="mainbundle_pass_date_date">Fecha</label>
+                                            <input type="date" id="mainbundle_pass_date_date" name="date" required="required" class="form-control"/>
+                                            <input type="hidden" name="pass_date" id="pass_date" value="{{ passes.date|date("Y-m-d") }}">
+                                        </div>
+                                    </div>
+                                    <div class='col-md-3'>
+                                        <div class="form-group">
+                                            <label class="control-label required" for="mainbundle_pass_date_time">Hora</label>
+                                            <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control"/>
+                                            <input type="hidden" name="pass_time" id="pass_time" value="{{ passes.date|date("H:i") }}">
+                                        </div>
+                                    </div>                                
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-6'>
+                                        <div class="form-group">                
+                                            <label class="control-label required" for="mainbundle_pass_tank_origin">Tanque/Planta Origen</label>
+                                            <select id="mainbundle_pass_tank_origin" name="tank_1" required="required" class="select2 form-control" style="width:100%">
+                                                <option value="" selected="selected">Elige una opción</option>    
+                                                {% for tank in tanks %}
+                                                    {% for movementDetail in passes.getMovementDetails() %}
+                                                        {% if movementDetail.tank.id == tank.id %}
+                                                            {% if movementDetail.quantity < 0 %}
+                                                                <option value="{{ tank.id }}" selected="selected">{{ tank.code }} - {{ tank.description }}</option> 
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% if movementDetail.quantity < 0 %}
+                                                                <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </select>
+                                            <span id='cantidad1'></span>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-6'>
+                                        <div class="form-group">                
+                                            <label class="control-label required" for="mainbundle_pass_tank_destination">Tanque/Planta Destino</label>
+                                            <select id="mainbundle_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
+                                                <option value="" selected="selected">Elige una opción</option>    
+                                                {% for tank in tanks %}
+                                                    {% for movementDetail in passes.getMovementDetails() %}
+                                                        {% if movementDetail.tank.id == tank.id %}
+                                                            {% if movementDetail.quantity > 0 %}
+                                                                <option value="{{ tank.id }}" selected="selected">{{ tank.code }} - {{ tank.description }}</option> 
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% if movementDetail.quantity > 0 %}
+                                                                <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </select>
+                                            <span id='cantidad2'></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-6'>
+                                        <div class="form-group">                
+                                            <label class="control-label required" for="mainbundle_pass_product">Producto</label>
+                                            <select id="mainbundle_pass_product" name="product" required="required" class="select2 form-control" style="width:100%">
+                                                <option value="" selected="selected">Elige una opción</option>
+                                                <option value="{{ passes.product.id }}" selected="selected">{{ passes.product.code }} - {{ passes.product.description }}</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-6'>
+                                        <div class="form-group">                
+                                            <label class="control-label required" for="mainbundle_pass_quantity">Cantidad</label>
+                                            {% for movementDetail in passes.getMovementDetails() %}
+                                                {% if movementDetail.quantity > 0 %}
+                                                    <input type="text" id="mainbundle_pass_quantity" name="quantity" required="required" class="form-control" value="{{ movementDetail.quantity }}"/>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">                
+                                    <label class="control-label required" for="mainbundle_pass_observation">Observaciones</label>
+                                    <textarea id="mainbundle_pass_observation" name="observation" required="required" class="form-control" rows="3">{{ passes.observation }}</textarea> 
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" id="mainbundle_pass_submit" name="mainbundle_pass[submit]" class="btn-primary btn">Grabar</button>
+                                </div>
+                                <input type="hidden" id="mainbundle_pass__token" name="mainbundle_pass[_token]" class="form-control" value="" />
                             </div>
-                            <div class='col-md-3'>
-                                {{ form_row(edit_form.date.time, {'label': 'Hora'}) }}
-                            </div>                                
-                        </div>
-                        <input type="hidden" name="tank_id" id="tankId" value="{{ tank.Id }}">
-                        {{ form_end(edit_form) }}
-                        <input type="hidden" id="tankOrPlant" value="{{ tank.plant }}">
-                        <input type="hidden" id="tankCoordinates" value="{{ tank.coordinates }}">
-                        <input type="hidden" id="tankLiter" value="{{ tank.liter }}">
+                        </form>
                     </div>
                     <!-- end widget content -->
 
@@ -68,14 +149,14 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@MainBundle/Resources/public/js/verasur_new_edit_inventory.js'
+    {% javascripts '@MainBundle/Resources/public/js/verasur_new_edit_pass.js'
                    'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js' %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 
     <script type="text/javascript">
         jQuery(document).ready(function () {
-            verasurNewEditInventory.init();
+            verasurNewEditPass.init();
 
         });
     </script>

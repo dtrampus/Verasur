@@ -25,18 +25,18 @@ class MovementDetail {
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Tank", inversedBy="movementDetails")
-     * @ORM\JoinColumn(name="tank_id", referencedColumnName="id", nullable = false)
+     * @ORM\ManyToOne(targetEntity="Tank", inversedBy="movementDetails", cascade={"persist"})
+     * @ORM\JoinColumn(name="tank_id", referencedColumnName="id", nullable = false, onDelete="CASCADE")
      */
-    private $tank;
+    protected $tank;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="Movement", inversedBy="movementDetails", cascade={"persist"})
-     * @ORM\JoinColumn(name="movement_id", referencedColumnName="id", nullable = false)
+     * @ORM\JoinColumn(name="movement_id", referencedColumnName="id", nullable = false, onDelete="CASCADE")
      * 
      */
-    private $movement;
+    protected $movement;
 
     /**
      * @var float
