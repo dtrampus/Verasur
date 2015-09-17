@@ -63,17 +63,17 @@
                                         <th data-hide="phone">Capacidad Total</th>
                                         <th data-hide="phone">Planta</th>
                                         <th></th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for entity in entities %}
+                                         <tr>
                                     <td>{{ entity.code }}</td>
                                     <td>{{ entity.description }}</td>
                                     <td>
                                         <ul class="list-unstyled">
                                             {% for product in entity.products %}
-                                                <li><span class="label label-primary">{{ product.code }}</span></li>
+                                                <li><span class="label label-primary">{{ product.code }} - {{ product.description }}</span></li>
                                                 {% endfor %}
                                         </ul>
                                     </td>
@@ -81,8 +81,6 @@
                                     <td>{{ entity.plant ? 'Si':'No' }}</td>
                                     <td>
                                         <a class="btn btn-primary" href="{{ path('tank_show', { 'id': entity.id }) }}">Ver</a>
-                                    </td>
-                                    <td>
                                         <a class="btn btn-primary" href="{{ path('inventory', { 'id': entity.id }) }}">Inventario</a>
                                     </td>
                                     </tr>

@@ -4,7 +4,6 @@ namespace MainBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use MainBundle\Entity\Tank;
 use MainBundle\Form\TankType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,29 +12,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Tank controller.
  *
  */
-class TankController extends Controller
-{
+class TankController extends Controller {
 
     /**
      * Lists all Tank entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MainBundle:Tank')->findAll();
 
         return $this->render('MainBundle:Tank:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Tank entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Tank();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -46,16 +43,15 @@ class TankController extends Controller
             $em->flush();
 
             $this->addFlash(
-                'success',
-                'El tanque se ha creado correctamente.'
+                    'success', 'El tanque se ha creado correctamente.'
             );
-            
+
             return $this->redirect($this->generateUrl('tank_show', array('id' => $entity->getId())));
         }
 
         return $this->render('MainBundle:Tank:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -66,8 +62,7 @@ class TankController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Tank $entity)
-    {
+    private function createCreateForm(Tank $entity) {
         $form = $this->createForm(new TankType(), $entity, array(
             'action' => $this->generateUrl('tank_create'),
             'method' => 'POST',
@@ -82,14 +77,13 @@ class TankController extends Controller
      * Displays a form to create a new Tank entity.
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Tank();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('MainBundle:Tank:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -97,8 +91,7 @@ class TankController extends Controller
      * Finds and displays a Tank entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Tank')->find($id);
@@ -110,8 +103,8 @@ class TankController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Tank:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -119,8 +112,7 @@ class TankController extends Controller
      * Displays a form to edit an existing Tank entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Tank')->find($id);
@@ -133,21 +125,20 @@ class TankController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Tank:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Tank entity.
-    *
-    * @param Tank $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Tank $entity)
-    {
+     * Creates a form to edit a Tank entity.
+     *
+     * @param Tank $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Tank $entity) {
         $form = $this->createForm(new TankType(), $entity, array(
             'action' => $this->generateUrl('tank_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -157,12 +148,12 @@ class TankController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Tank entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Tank')->find($id);
@@ -177,45 +168,47 @@ class TankController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-            
+
             $this->addFlash(
-                'success',
-                'El tanque se ha grabado correctamente.'
+                    'success', 'El tanque se ha grabado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('tank_show', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Tank:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Tank entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('MainBundle:Tank')->find($id);
-
+            
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Tank entity.');
             }
-
-            $this->addFlash(
-                'success',
-                'El tanque se ha eliminado correctamente.'
-            );
             
+            foreach ($entity->getMovementDetails() as $mov) {
+                $em->remove($mov->getMovement());
+            }            
+
             $em->remove($entity);
             $em->flush();
+            
+            $this->addFlash(
+                    'success', 'El tanque se ha eliminado correctamente.'
+            );   
         }
 
         return $this->redirect($this->generateUrl('tank'));
@@ -228,22 +221,21 @@ class TankController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tank_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            //->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('tank_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        //->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
-    
-    public function getProductByTankAjaxAction($id){
+
+    public function getProductByTankAjaxAction($id) {
         $response = array();
         //id es del tanke getproductsbytank
         $tank = $this->getDoctrine()->getManager()->getRepository('MainBundle:Tank')->find($id);
         $products = $tank->getProducts();
-        
+
         foreach ($products as $product) {
             $res = array();
             $res[0] = $product->getId();
@@ -251,15 +243,15 @@ class TankController extends Controller
             $res[2] = $product->getDescription();
             array_push($response, $res);
         }
-             
+
         return new JsonResponse($response);
     }
-    
-     public function calculateCapacityAction($id)
-   {
-       $em = $this->getDoctrine()->getManager();
-       $entity = $em->getRepository('MainBundle:Tank')->find($id);
-       $result = $em->getRepository('MainBundle:Tank')->calculateFreeOcuped($entity);
-       return new JsonResponse($result);
-   }
+
+    public function calculateCapacityAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MainBundle:Tank')->find($id);
+        $result = $em->getRepository('MainBundle:Tank')->calculateFreeOcuped($entity);
+        return new JsonResponse($result);
+    }
+
 }

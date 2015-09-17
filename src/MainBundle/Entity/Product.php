@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Tank;
 use MainBundle\Entity\Movement;
+use MainBundle\Entity\Inventory;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -53,7 +54,7 @@ class Product
     private $active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tank", mappedBy="product")
+     * @ORM\ManyToMany(targetEntity="Tank", mappedBy="products")
      */
     private $tanks;
     
@@ -62,9 +63,15 @@ class Product
      */
     private $movements;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="product")
+     */
+    protected $inventory;
+    
     public function __construct()
     {
         $this->tanks = new ArrayCollection();
+        $this->inventory = new ArrayCollection();
     }
 
     /**
@@ -124,43 +131,6 @@ class Product
     }
 
     /**
-     * Add tanks
-     *
-     * @param \MainBundle\Entity\Tank $tanks
-     * @return Product
-     */
-    public function addTank(\MainBundle\Entity\Tank $tanks)
-    {
-        $this->tanks[] = $tanks;
-
-        return $this;
-    }
-
-    /**
-     * Remove tanks
-     *
-     * @param \MainBundle\Entity\Tank $tanks
-     */
-    public function removeTank(\MainBundle\Entity\Tank $tanks)
-    {
-        $this->tanks->removeElement($tanks);
-    }
-
-    /**
-     * Get tanks
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTanks()
-    {
-        return $this->tanks;
-    }
-    
-    public function __toString() {
-        return $this->code.' - '.$this->description;
-    }
-
-    /**
      * Add movements
      *
      * @param \MainBundle\Entity\Movement $movements
@@ -215,4 +185,74 @@ class Product
     {
         return $this->active;
     }
+
+    /**
+     * Add inventory
+     *
+     * @param \MainBundle\Entity\Inventory $inventory
+     * @return Product
+     */
+    public function addInventory(\MainBundle\Entity\Inventory $inventory)
+    {
+        $this->inventory[] = $inventory;
+
+        return $this;
+    }
+
+    /**
+     * Remove inventory
+     *
+     * @param \MainBundle\Entity\Inventory $inventory
+     */
+    public function removeInventory(\MainBundle\Entity\Inventory $inventory)
+    {
+        $this->inventory->removeElement($inventory);
+    }
+
+    /**
+     * Get inventory
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventory()
+    {
+        return $this->inventory;
+    }
+
+    /**
+     * Add tanks
+     *
+     * @param \MainBundle\Entity\Tank $tanks
+     * @return Product
+     */
+    public function addTank(\MainBundle\Entity\Tank $tanks)
+    {
+        $this->tanks[] = $tanks;
+
+        return $this;
+    }
+
+    /**
+     * Remove tanks
+     *
+     * @param \MainBundle\Entity\Tank $tanks
+     */
+    public function removeTank(\MainBundle\Entity\Tank $tanks)
+    {
+        $this->tanks->removeElement($tanks);
+    }
+
+    /**
+     * Get tanks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTanks()
+    {
+        return $this->tanks;
+    }
+    
+    public function __toString() {
+    return $this->code . ' - ' . $this->description;;
+}
 }
