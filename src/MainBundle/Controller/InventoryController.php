@@ -254,4 +254,19 @@ class InventoryController extends Controller
             ->getForm()
         ;
     }
+    
+    /**
+     * Lists all Inventory entities.
+     *
+     */
+    public function reportAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('MainBundle:Inventory')->findAll();
+
+        return $this->render('MainBundle:Inventory:inventoryReport.html.twig', array(
+            'entities' => $entities
+        ));
+    }
 }
