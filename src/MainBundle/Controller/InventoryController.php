@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Inventory;
 use MainBundle\Form\InventoryType;
+use MainBundle\Entity\Tank;
 
 /**
  * Inventory controller.
@@ -26,7 +27,8 @@ class InventoryController extends Controller
         $entities = $em->getRepository('MainBundle:Inventory')->findby(array('tank' => $id));
 
         return $this->render('MainBundle:Inventory:index.html.twig', array(
-            'entities' => $entities
+            'entities' => $entities,
+            'id' => $id
         ));
     }
     /**
@@ -35,14 +37,25 @@ class InventoryController extends Controller
      */
     public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $tank_id = $request->request->get('tank_id');
+        $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
+        
         $entity = new Inventory();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $tank);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setUsers($this->getUser());
+            $entity->setTank($tank);
             $em->persist($entity);
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha declarado correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('inventory_show', array('id' => $entity->getId())));
         }
@@ -50,6 +63,7 @@ class InventoryController extends Controller
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -60,9 +74,9 @@ class InventoryController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Inventory $entity)
+    private function createCreateForm(Inventory $entity, Tank $tank)
     {
-        $form = $this->createForm(new InventoryType(), $entity, array(
+        $form = $this->createForm(new InventoryType($tank), $entity, array(
             'action' => $this->generateUrl('inventory_create'),
             'method' => 'POST',
         ));
@@ -76,14 +90,18 @@ class InventoryController extends Controller
      * Displays a form to create a new Inventory entity.
      *
      */
-    public function newAction()
+    public function newAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $tank = $em->getRepository('MainBundle:Tank')->find($id);
+        
         $entity = new Inventory();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $tank);
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -105,7 +123,7 @@ class InventoryController extends Controller
 
         return $this->render('MainBundle:Inventory:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'delete_form' => $deleteForm->createView()
         ));
     }
 
@@ -118,18 +136,20 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
+        $tank = $entity->getTank();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Inventory entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $tank);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MainBundle:Inventory:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'tank' => $tank
         ));
     }
 
@@ -140,9 +160,9 @@ class InventoryController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Inventory $entity)
+    private function createEditForm(Inventory $entity, Tank $tank)
     {
-        $form = $this->createForm(new InventoryType(), $entity, array(
+        $form = $this->createForm(new InventoryType($tank), $entity, array(
             'action' => $this->generateUrl('inventory_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -158,6 +178,8 @@ class InventoryController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $tank_id = $request->request->get('tank_id');
+        $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
 
@@ -166,19 +188,25 @@ class InventoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $tank);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha grabado correctamente.'
+            );
 
-            return $this->redirect($this->generateUrl('inventory_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('inventory_show', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Inventory:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'tank' => $tank
         ));
     }
     /**
@@ -200,9 +228,14 @@ class InventoryController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            
+            $this->addFlash(
+                'success',
+                'El inventario se ha eliminado correctamente.'
+            );
         }
 
-        return $this->redirect($this->generateUrl('inventory'));
+        return $this->redirect($this->generateUrl('inventory', array('id' => $entity->getTank()->getId())));
     }
 
     /**
@@ -220,5 +253,20 @@ class InventoryController extends Controller
             //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Lists all Inventory entities.
+     *
+     */
+    public function reportAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('MainBundle:Inventory')->findAll();
+
+        return $this->render('MainBundle:Inventory:inventoryReport.html.twig', array(
+            'entities' => $entities
+        ));
     }
 }

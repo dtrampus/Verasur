@@ -46,9 +46,7 @@ class Provider
     /**
      * @var string
      *
-     * @ORM\Column(name="observation", type="text")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3)
+     * @ORM\Column(name="observation", type="text", nullable=true)
      */
     private $observation;
     

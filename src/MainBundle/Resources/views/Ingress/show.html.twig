@@ -81,8 +81,6 @@
                                     <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                     <p>Neto: {{ entity.clean|number_format(2, '.', ',') }}</p>
                                     <p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p>
-                                    <p>Número: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
-                                    <p>Observación: {{ entity.observation }}</p>
                                     <p>Destilación la gota: {{ entity.distillationGout }}</p>
                                     <p>5%: {{ entity.fivePercent }}</p>
                                     <p>10%: {{ entity.tenPercent }}</p>
@@ -97,8 +95,9 @@
                                     <p>95%: {{ entity.ninetyFivePercent }}</p>
                                     <p>P. Seco: {{ entity.pDry }}</p>
                                     <p>P. Final: {{ entity.pFinal }}</p>
-                                    <p>Recuperado: {{ entity.recovered }}</p>
-                                    
+                                    <p>Recuperado: {{ entity.recovered }}</p><br>
+                                    <p>Número de remito: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
+                                    <p>Observación: {{ entity.observation }}</p>
                                     <p>Usuario Asociado: {{ entity.user.username }}</p>
                                     <p>Estado: {{ entity.status }}</p>
                                     
@@ -112,7 +111,7 @@
                                     <p>Rubro: {{ entity.provider.category }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb3">
-                                    <p>Cogido: {{ entity.transport.code }}</p>
+                                    <p>Codigo: {{ entity.transport.code }}</p>
                                     <p>Transporte: {{ entity.transport.transport }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb4">
@@ -120,51 +119,26 @@
                                     <p>Descripcion: {{ entity.product.description }}</p>
                                 </div>
                                 <div class="tab-pane" id="hb5">
-                                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <!-- Widget ID (each widget will need unique ID)-->
-                                        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
-                                            <header>
-                                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                                <h2>Descarga</h2>
-                                            </header>
-                                            <!-- widget div-->
-                                            <div>
-                                                <!-- widget edit box -->
-                                                <div class="jarviswidget-editbox">
-                                                        <!-- This area used as dropdown edit box -->
-
-                                                </div>
-                                                <!-- end widget edit box -->
-
-                                                <!-- widget content -->
-                                                <div class="widget-body">
-                                                    <div class="table-responsive">
-
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Tanque</th>
-                                                                    <th>Cantidad</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                {% for movementDetail in entity.getMovementDetails() %}
-                                                                    <tr>
-                                                                        <td>{{ movementDetail.tank.code }}-{{ movementDetail.tank.description }}</td>
-                                                                        <td>{{ movementDetail.quantity }}</td>
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                        </table>
-
-                                                    </div>
-                                                </div>
-                                                <!-- end widget content -->
-                                            </div>
-                                            <!-- end widget div -->
+                                    <div class="widget-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tanque</th>
+                                                        <th>Cantidad</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for movementDetail in entity.getMovementDetails() %}
+                                                        <tr>
+                                                            <td>{{ movementDetail.tank.code }}-{{ movementDetail.tank.description }}</td>
+                                                            <td>{{ movementDetail.quantity }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <!-- end widget -->
-                                    </article>
+                                    </div>
                                 </div>
                             </div>
 
@@ -172,8 +146,11 @@
 
                         <a href="{{ path('ingress') }}" class="btn btn-default">Volver</a>
                         <a href="{{ path('ingress_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
-                        <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
-
+                        {% if entity.status == "En plaza" %}
+                            <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+                        {% else %}
+                            <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal" disabled>Eliminar</button>                            
+                        {% endif %}    
                     </div>
                     <!-- end widget content -->
 

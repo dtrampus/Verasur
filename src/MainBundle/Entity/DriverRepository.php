@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class DriverRepository extends EntityRepository
 {
+    public function getDriversByTransport($transportId) {
+       $em = $this->getEntityManager();
+
+       $dql = "SELECT d FROM MainBundle:Driver d JOIN d.transport t WHERE t.id = ?1";
+       return $em->createQuery($dql)->setParameter(1, $transportId)->getResult();
+   }
 }

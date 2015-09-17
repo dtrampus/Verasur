@@ -7,7 +7,6 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use MainBundle\Entity\Movement;
 
 /**
  * @ORM\Entity
@@ -48,12 +47,18 @@ class User extends BaseUser
      */
     protected $movement;
     
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Inventory", mappedBy="users")
+     */
+    protected $inventory;
+    
     
     public function __construct()
     {
         parent::__construct();
         $this->groups = new ArrayCollection();
         $this->movement = new ArrayCollection();
+        $this->inventory = new ArrayCollection();
     }
 
     /**
@@ -145,4 +150,36 @@ class User extends BaseUser
         return $this->movement;
     }
 
+    /**
+     * Add inventory
+     *
+     * @param \MainBundle\Entity\Inventory $inventory
+     * @return User
+     */
+    public function addInventory(\MainBundle\Entity\Inventory $inventory)
+    {
+        $this->inventory[] = $inventory;
+
+        return $this;
+    }
+
+    /**
+     * Remove inventory
+     *
+     * @param \MainBundle\Entity\Inventory $inventory
+     */
+    public function removeInventory(\MainBundle\Entity\Inventory $inventory)
+    {
+        $this->inventory->removeElement($inventory);
+    }
+
+    /**
+     * Get inventory
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventory()
+    {
+        return $this->inventory;
+    }
 }

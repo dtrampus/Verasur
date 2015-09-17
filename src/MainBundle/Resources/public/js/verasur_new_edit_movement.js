@@ -21,29 +21,28 @@ var verasurNewEditMovement = function () {
         $("#mainbundle_ingress_density,#mainbundle_egress_density").focusout(function () {
             $(this).val(redondeo($(this).val(), 3));
         });
-
-        $("#mainbundle_egress_driver,#mainbundle_ingress_driver").html("");
+        
+        var transportAnterior = $("#mainbundle_egress_transport").val();
         $("#mainbundle_egress_transport,#mainbundle_ingress_transport").change(function () {
-            var value = $("#mainbundle_egress_transport,#mainbundle_ingress_transport").select2('val');
-            if (value != 0) {
+            var value = $(this).select2('val');
+            if(transportAnterior != value){
+                $('#mainbundle_egress_driver,#mainbundle_ingress_driver').select2("val", "");
+            }
+            if (value != '' && typeof value != "undefined") {
+                transportAnterior = value;
                 $.ajax({
                     type: 'GET',
                     url: Routing.generate('getDriverAjax', {id: value}),
                     dataType: "json",
                     success: function (jsonDrivers) {
-                        $('#mainbundle_egress_driver,#mainbundle_ingress_driver').html("");
+                        $('#mainbundle_egress_driver option, #mainbundle_ingress_driver option').addClass("hide");
                         for (var driver in jsonDrivers) {
                             var arrayDriver = jsonDrivers[driver];
-                            $('#mainbundle_egress_driver,#mainbundle_ingress_driver').append("<option value=" + arrayDriver[0] + ">" + arrayDriver[1] + " - " + arrayDriver[2] + " " + arrayDriver[3] + "</option>");
+                                $('#mainbundle_egress_driver option[value="' + arrayDriver[0] + '"],#mainbundle_ingress_driver option[value="' + arrayDriver[0] + '"]').removeClass("hide");
                         }
                     }
                 });
-            } else {
-                $('#mainbundle_egress_driver,#mainbundle_ingress_driver').select2("val", "");
-                $('#mainbundle_egress_driver,#mainbundle_ingress_driver').html("");
-            }
-
-
+            } 
         });
     };
 
@@ -66,7 +65,7 @@ var verasurNewEditMovement = function () {
     }
 
     var redondeo = function (value, precision) {
-        if (value == "") {
+        if (value == "" || isNaN(value)) {
             return 0;
         } else {
             return parseFloat(parseFloat(value).toFixed(precision));
