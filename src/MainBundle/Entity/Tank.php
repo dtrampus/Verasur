@@ -57,36 +57,36 @@ class Tank {
 
     /**
      * @var float
-     * 
-     * @ORM\Column(name="circumference", type="decimal", nullable = true)
+     *
+     * @ORM\Column(name="circumference", type="decimal", nullable=true)
      */
     private $circumference;
 
     /**
      * @var float
-     * 
-     * @ORM\Column(name="reference", type="float", nullable = true)
+     *
+     * @ORM\Column(name="reference", type="float", nullable=true)
      */
     private $reference;
 
     /**
      * @var float
-     * 
-     * @ORM\Column(name="coordinates", type="float", nullable = true)
+     *
+     * @ORM\Column(name="coordinates", type="float", nullable=true)
      */
     private $coordinates;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="diameter", type="float", nullable = true)
+     * @ORM\Column(name="diameter", type="float", nullable=true)
      */
     private $diameter;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="liter", type="float", nullable = true)
+     * @ORM\Column(name="liter", type="float", nullable=true)
      */
     private $liter;
 

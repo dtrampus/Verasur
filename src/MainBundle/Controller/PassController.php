@@ -20,10 +20,21 @@ class PassController extends Controller {
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository("MainBundle:Tank")->findall();
+
+        $entities = $em->getRepository('MainBundle:Pass')->findAll();
+        $tanks = $em->getRepository('MainBundle:Tank')->findAll();
+
         return $this->render('MainBundle:Pass:index.html.twig', array(
-            'entities' => $entities
+            'entities' => $entities,
+            "tanks" => $tanks
         ));
+    }
+    
+    public function listAjaxAction(Request $request) {
+        $get = $request->query->all();
+        $em = $this->getDoctrine()->getEntityManager();
+        $output = $em->getRepository('MainBundle:Pass')->findDataTable($get);
+        return new JsonResponse($output);
     }
 
     public function listAjaxAction(Request $request) {

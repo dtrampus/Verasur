@@ -13,97 +13,91 @@ use Doctrine\ORM\Query\Expr\Orx;
  */
 class PassRepository extends EntityRepository
 {
-    public function ajaxTable(array $get, $flag = false) {
-        /* DB table to use */
-        $tableObjectName = 'MainBundle:Pass';
-        /**
-         * Set to default
+    
+    public function findDataTable($get) {
+        $em = $this->getEntityManager();
+        
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
          */
-        $arrayColumns = array();
+        $aColumns = array(
+          'id' => 'm.id', 
+          'date' => "DATE_FORMAT(m.date,'%d/%m/%Y %H:%i')", 
+          'product' => 'CONCAT(p.code,p.description)',
+          'realLiter' => 'm.realLiter',
+          'origin' => "(SELECT CONCAT(t.code,' - ',t.description) 
+                        FROM movement_detail md 
+                        INNER JOIN tanks t ON md.tank_id = t.id 
+                        WHERE quantity < 0 AND md.movement_id = m.id)",
+          'destiny' => "(SELECT CONCAT(t.code,' - ',t.description) 
+                        FROM movement_detail md 
+                        INNER JOIN tanks t ON md.tank_id = t.id 
+                        WHERE quantity > 0 AND md.movement_id = m.id)",
+          'stockDestiny' => "(SELECT SUM(md.quantity)
+                              FROM movement_detail md 
+                              INNER JOIN movements mov ON md.movement_id = mov.id
+                              WHERE md.tank_id = (SELECT md.tank_id
+                                                  FROM movement_detail md 
+                                                  INNER JOIN tanks t ON md.tank_id = t.id 
+                                                  WHERE quantity > 0 AND md.movement_id = m.id) AND
+                                    mov.date <= m.date)");
+
+        /* Indexed column (used for fast and accurate table cardinality) */
+        $sIndexColumn = "m.id";
+
+        $sFrom = "FROM movements m INNER JOIN products p ON m.product_id = p.id";
+
+        /*
+         * Paging
+         */
+        $sSelect = "SELECT ";
+        $prefix = "";
         foreach ($get['columns'] as $value) {
-            if ($value['name'] != "") {
-                $arrayColumns[] = $value['name'];
+            if ($value['name'] != "" && array_key_exists($value['name'], $aColumns)) {
+                $sSelect .= $prefix.$aColumns[$value['name']]." AS ".$value['name'];
+                $prefix = ", ";
             }
         }
-        $cb = $this->getEntityManager()
-                ->createQueryBuilder("p")
-                ->select($arrayColumns)
-                ->from('MainBundle\Entity\Pass', 'p')
-                ->innerJoin('p.product', 'product')
-                ->innerJoin('p.movementDetails', 'movD');
-        if (isset($get['start']) && $get['length'] != '-1') {
-            $cb->setFirstResult((int) $get['start'])
-                    ->setMaxResults((int) $get['length']);
+        /*
+         * Paging
+         */
+        $sLimit = "";
+        if ( isset($get['start']) && $get['length'] != '-1' )
+        {
+            $sLimit = "LIMIT ".intval( $get['start'] ).", ".intval( $get['length'] );
         }
+
+
         /*
          * Ordering
          */
-        if (isset($get['order'])) {
-            for ($i = 0; $i < count($get['order']); $i++) {
+        $sOrder = "";
+        if ( isset( $get['order'] ) )
+        {
+            $sOrder = "ORDER BY  ";
+            for ( $i=0 ; $i<intval( $get['order'] ) ; $i++ )
+            {
                 $order = $get['order'][$i];
-                if ($get['columns'][$order['column']]['orderable'] == "true") {
-                    $cb->orderBy($get['columns'][$order['column']]['name'], $order['dir']);
+                if ( $get['columns'][$order['column']]['orderable'] == "true" )
+                {
+                    if ( $get['columns'][$order['column']]['name'] == "date" )
+                    {
+                        $sOrder .= "m.date"."
+                        ".$order['dir'] .", ";
+                    }else{
+                        $sOrder .= $get['columns'][$order['column']]['name']."
+                        ".$order['dir'] .", ";
+                    }
                 }
             }
-        }
-        
-        /*
-         * Filtering
-         * NOTE this does not match the built-in DataTables filtering which does it
-         * word by word on any field. It's possible to do here, but concerned about efficiency
-         * on very large tables, and MySQL's regex functionality is very limited
-         */
-        if (isset($get['search']) && $get['search'] != '') {
-            $columns = $get['columns'];
-            $aLike = array();
-            for ($i = 0; $i < count($columns); $i++) {
-                if (isset($columns[$i]['searchable']) && $columns[$i]['searchable'] == "true") {
-                    $aLike[] = $cb->expr()->like($columns[$i]["name"], '\'%' . $get['search']["value"] . '%\'');
-                }
-            }
-            if (count($aLike) > 0)
-                $cb->andWhere(new Orx($aLike));
-            else
-                unset($aLike);
-        }
-        /*
-         * SQL queries
-         * Get data to display
-         */
-        $query = $cb->getQuery();
-        if ($flag)
-            return $query;
-        else
-            return $query->getResult();
-    }
 
-    /**
-     * @return int
-     */
-    public function getCount() {
-        $aResultTotal = $this->getEntityManager()
-                ->createQuery('SELECT COUNT(a) FROM MainBundle:Pass a')
-                ->setMaxResults(1)
-                ->getResult();
-        return $aResultTotal[0][1];
-    }
-
-    public function getFilteredCount(array $get) {
-        $arrayColumns = array();
-        foreach ($get['columns'] as $value) {
-            if ($value['name'] != "") {
-                $arrayColumns[] = $value['name'];
+            $sOrder = substr_replace( $sOrder, "", -2 );
+            if ( $sOrder == "ORDER BY" )
+            {
+                $sOrder = "";
             }
         }
-        
-        /* DB table to use */
-        $cb = $this->getEntityManager()
-                ->createQueryBuilder("p")
-                ->select("count(p.id)")
-                ->from('MainBundle\Entity\Pass', 'p')
-                ->innerJoin('p.product', 'product')
-                ->innerJoin('p.movementDetails', 'movD')
-                ->innerJoin('movD.tank', 'tank');
+
 
         /*
          * Filtering
@@ -111,26 +105,104 @@ class PassRepository extends EntityRepository
          * word by word on any field. It's possible to do here, but concerned about efficiency
          * on very large tables, and MySQL's regex functionality is very limited
          */
-        if (isset($get['search']) && $get['search'] != '') {
+        $initWhere = "WHERE m.discr = 'pass'";
+        $sWhere = $initWhere;
+        if ( isset($get['search']) && $get['search'] != "" )
+        {
+            if ( $sWhere == "" )
+            {
+                $sWhere = "WHERE (";
+            }
+            else
+            {
+                $sWhere .= " AND (";
+            }
             $columns = $get['columns'];
-            $aLike = array();
-            for ($i = 0; $i < count($columns); $i++) {
-                if (isset($columns[$i]['searchable']) && $columns[$i]['searchable'] == "true") {
-                    $aLike[] = $cb->expr()->like($columns[$i]["name"], '\'%' . $get['search']["value"] . '%\'');
+            for ( $i=0 ; $i<count($columns) ; $i++ )
+            {
+                if ( isset($columns[$i]['searchable']) && $columns[$i]['searchable'] == "true" )
+                {
+                    $sWhere .= $aColumns[$columns[$i]["name"]]." LIKE '%".$get['search']["value"]."%' OR ";
                 }
             }
-            if (count($aLike) > 0)
-                $cb->andWhere(new Orx($aLike));
-            else
-                unset($aLike);
+            $sWhere = substr_replace( $sWhere, "", -3 );
+            $sWhere .= ')';
+        }
+
+        /* Individual column filtering */
+        
+        if(isset($get["fromDate"]) && $get["fromDate"] != ''){
+            if ( $sWhere == "" ){$sWhere = "WHERE ";}else{$sWhere .= " AND ";}
+            $sWhere .= "DATE(m.date) >= STR_TO_DATE('".$get["fromDate"]."','%d/%m/%Y')";
+        }
+        if(isset($get["toDate"]) && $get["toDate"] != ''){
+            if ( $sWhere == "" ){$sWhere = "WHERE ";}else{$sWhere .= " AND ";}
+            $sWhere .= "DATE(m.date) <= STR_TO_DATE('".$get["toDate"]."','%d/%m/%Y')";
+        }
+        if(isset($get["origin"]) && $get["origin"] != ''){
+            if ( $sWhere == "" ){$sWhere = "WHERE ";}else{$sWhere .= " AND ";}
+            $sWhere .= "(SELECT t.id
+                        FROM movement_detail md 
+                        INNER JOIN tanks t ON md.tank_id = t.id 
+                        WHERE quantity < 0 AND movement_id = m.id) = ".$get["origin"];
+        }
+        if(isset($get["destiny"]) && $get["destiny"] != ''){
+            if ( $sWhere == "" ){$sWhere = "WHERE ";}else{$sWhere .= " AND ";}
+            $sWhere .= "(SELECT t.id
+                        FROM movement_detail md 
+                        INNER JOIN tanks t ON md.tank_id = t.id 
+                        WHERE quantity > 0 AND movement_id = m.id) = ".$get["destiny"];
         }
 
         /*
          * SQL queries
          * Get data to display
          */
-        $query = $cb->getQuery();
-        $aResultTotal = $query->getResult();
-        return $aResultTotal[0][1];
+        $sQuery = "
+            $sSelect
+            $sFrom
+            $sWhere
+            $sOrder
+            $sLimit
+        ";
+
+        $stmt = $em->getConnection()->prepare($sQuery);
+        $stmt->execute();
+        $rResult = $stmt->fetchAll();
+
+        /* Data set length after filtering */
+        $iFilteredTotal = count($rResult);
+
+        /* Total data set length */
+        $sQuery = "
+            SELECT IFNULL(COUNT(".$sIndexColumn."),0) AS count
+            $sFrom
+            $initWhere
+        ";
+
+        $stmt = $em->getConnection()->prepare($sQuery);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
+        $iTotal = $row["count"];
+        /*
+         * Output
+         */
+        $output = array(
+          "draw" => intval($get['draw']),
+          "recordsTotal" => $iTotal,
+          "recordsFiltered" => $iFilteredTotal,
+          "data" => array()
+        );
+
+        foreach ($rResult as $aRow) {
+            $row = array();
+            foreach ($aRow as $value) {
+              $row[]=$value;  
+            }
+            $output['data'][] = $row;
+        }
+
+        return $output;
     }
+            
 }
