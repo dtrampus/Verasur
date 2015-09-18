@@ -41,7 +41,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(edit_form) }}
+                        {{ form(edit_form, {'attr': {'id': 'driver-form'}}) }}
                     </div>
                     <!-- end widget content -->
 
@@ -55,9 +55,66 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script>
+    {% javascripts 'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
         jQuery(document).ready(function () {
-            $('select').removeClass('form-control');
+            $("select").removeClass("form-control");
+            //Validation
+            $('#driver-form').validate({
+                onkeyup: false,
+                submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_driver_submit").prop('disabled', true);
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    "mainbundle_driver[name]":{
+                        required :true
+                    },
+                    "mainbundle_driver[surname]":{
+                        required :true
+                    },
+                    "mainbundle_driver[dni]":{
+                        required :true,
+                        number:true
+                    },
+                    "mainbundle_driver[transport]":{
+                        required :true
+                    },
+                },
+                messages: {
+                    "mainbundle_driver[name]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_driver[surname]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_driver[dni]":{
+                        required :"Este campo es requerido",
+                        number:"Este campo debe ser numérico"
+                    },
+                    "mainbundle_driver[transport]":{
+                        required :"Este campo es requerido"
+                    },
+                }
+            });
         });
     </script>
 {% endblock %}

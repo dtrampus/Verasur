@@ -39,7 +39,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}
+                        {{ form(form, {'attr': {'id': 'client-form'}}) }}
                     </div>
                     <!-- end widget content -->
 
@@ -52,3 +52,71 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+   {{ parent() }}
+    {% javascripts 'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js'%}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        //Validation
+        $('#client-form').validate({
+            onkeyup: false,
+            submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_client_submit").prop('disabled', true);
+                },
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function (error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            rules: {
+                "mainbundle_client[code]":{
+                    required :true
+                },
+                "mainbundle_client[nombre]":{
+                    required :true,
+                    minlength:2
+                },
+                "mainbundle_client[delivery]":{
+                    required :true,
+                    minlength:2
+                },
+                "mainbundle_client[contact]":{
+                    required :true,
+                    minlength:2
+                }
+            },
+            messages: {
+                "mainbundle_client[code]":{
+                    required : "Este campo es requerido"
+                },
+                "mainbundle_client[nombre]":{
+                    required :"Este campo es requerido",
+                    minlength:"Este campo debe tener dos caracteres como mínimo"
+                },
+                "mainbundle_client[delivery]":{
+                    required :"Este campo es requerido",
+                    minlength:"Este campo debe tener dos caracteres como mínimo"
+                },
+                "mainbundle_client[contact]":{
+                    required :"Este campo es requerido",
+                    minlength:"Este campo debe tener dos caracteres como mínimo"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

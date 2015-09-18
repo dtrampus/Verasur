@@ -56,7 +56,7 @@ class ClientController extends Controller
                 'El cliente se ha creado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('client_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('client'));
         }
 
         return $this->render('MainBundle:Client:new.html.twig', array(
