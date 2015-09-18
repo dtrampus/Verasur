@@ -264,5 +264,17 @@ class PassController extends Controller {
                         ->getForm()
         ;
     }
+    
+    public function checkDateTimeAjaxAction($date){
+        $datetime = \DateTime::createFromFormat('Y-m-d H:i', $date);
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MainBundle:Pass')->findBy(array('date' => $datetime));
+        if($entity != null){
+            $entity = false;
+        }else{
+            $entity = true;
+        }
+        return new JsonResponse($entity);
+    }
 
 }

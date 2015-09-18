@@ -4,6 +4,7 @@ namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Tank;
 use MainBundle\Entity\Product;
 
@@ -12,6 +13,7 @@ use MainBundle\Entity\Product;
  *
  * @ORM\Table(name="inventories")
  * @ORM\Entity(repositoryClass="MainBundle\Entity\InventoryRepository")
+ * @UniqueEntity("date")
  */
 class Inventory
 {
@@ -27,7 +29,7 @@ class Inventory
     /**
      * @var \DateTime
      * @Assert\NotBlank()
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetime", unique=true)
      */
     private $date;
 

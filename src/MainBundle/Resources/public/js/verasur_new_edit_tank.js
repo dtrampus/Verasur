@@ -118,7 +118,7 @@ var verasurNewEditTank = function () {
                         $('.coordinates').val(newVal_3);
                     }
                 } else {
-                    $('.coordinates').val(null);
+                    $('.coordinates').val("0");
                 }
             });
 
@@ -166,7 +166,7 @@ var verasurNewEditTank = function () {
                         number: true
                     },
                     "mainbundle_tank[coordinates]": {
-                        required: true,
+                        required: false,
                         number: true
                     },
                     "mainbundle_tank[diameter]": {
@@ -199,7 +199,6 @@ var verasurNewEditTank = function () {
                         number: "El campo solo admite números"
                     },
                     "mainbundle_tank[coordinates]": {
-                        required: "Este campo es requerido",
                         number: "El campo solo admite números"
                     },
                     "mainbundle_tank[totalCapacity]": {
