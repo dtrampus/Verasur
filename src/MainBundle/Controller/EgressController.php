@@ -86,7 +86,7 @@ class EgressController extends Controller {
                     'success', 'El egreso se ha declarado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('egress_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('egress'));
         }
         
         $em = $this->getDoctrine()->getManager();

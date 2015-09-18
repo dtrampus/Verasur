@@ -52,6 +52,10 @@ var verasurNewEditInventory = function () {
     });
 
         $('#inventory-form').validate({
+            submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_inventory_submit").prop('disabled', true);
+                },
             highlight: function (element) {
                 $(element).closest('.form-group').addClass('has-error');
             },

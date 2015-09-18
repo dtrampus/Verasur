@@ -122,6 +122,10 @@ var verasurNewEditPass = function () {
         }, "La cantidad tiene que ser mayor a 0");
 
         $('#pass-form').validate({
+            submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_pass_submit").prop('disabled', true);
+                },
             highlight: function (element) {
                 $(element).closest('.form-group').addClass('has-error');
             },

@@ -55,7 +55,7 @@ class TransportController extends Controller
                 'El transporte se ha creado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('transport_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('transport'));
         }
 
         return $this->render('MainBundle:Transport:new.html.twig', array(

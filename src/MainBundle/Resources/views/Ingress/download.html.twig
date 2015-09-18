@@ -139,6 +139,10 @@
             
             $('#download-form').validate({
                 onkeyup : false,
+                submitHandler: function(form) {
+                    form.submit();
+                    $("#submitform").prop('disabled', true);
+                },
                 highlight: function(element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },

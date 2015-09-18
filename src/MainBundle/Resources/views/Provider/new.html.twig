@@ -41,7 +41,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}
+                        {{ form(form, {'attr': {'id': 'provider-form'}}) }}
                     </div>
                     <!-- end widget content -->
 
@@ -55,14 +55,74 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts  %}
+    {% javascripts 'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js' %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 
     <script type="text/javascript">
         jQuery(document).ready(function () {
             $("select").removeClass("form-control");
-
+            //Validation
+            $('#provider-form').validate({
+                onkeyup: false,
+                submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_provider_submit").prop('disabled', true);
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    "mainbundle_provider[code]":{
+                        required :true
+                    },
+                    "mainbundle_provider[name]":{
+                        required :true,
+                        minlength:3
+                    },
+                    "mainbundle_provider[contact]":{
+                        required :true,
+                        minlength:3
+                    },
+                    "mainbundle_provider[score]":{
+                        required :true
+                    },
+                    "mainbundle_provider[category]":{
+                        required :true
+                    },
+                },
+                messages: {
+                    "mainbundle_provider[code]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_provider[name]":{
+                        required :"Este campo es requerido",
+                        minlength:"Este campo debe tener 3 caracteres como mínimo"
+                    },
+                    "mainbundle_provider[contact]":{
+                        required :"Este campo es requerido",
+                        minlength:"Este campo debe tener 3 caracteres como mínimo"
+                    },
+                    "mainbundle_provider[score]":{
+                        required :"Este campo es requerido"
+                    },
+                    "mainbundle_provider[category]":{
+                        required :"Este campo es requerido"
+                    },
+                }
+            });
         });
     </script>
 {% endblock %}
