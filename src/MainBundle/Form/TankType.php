@@ -16,33 +16,33 @@ class TankType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 ->add('plant', 'checkbox', array(
-                    'label' => 'Tildado Planta / No Tildado Tanque',
+                    'label' => 'Es Planta?',
                     'required' => false,
                     'attr' => array('class' => 'plant')))
                 ->add('code', 'text', array('label' => 'Codigo'))
                 ->add('description', 'text', array('label' => 'Descripción'))
                 ->add('vertical', 'checkbox', array(
-                    'label' => 'Tildado Vertical / No Tildado Horizontal',
+                    'label' => 'Es Vertical?',
                     'required' => false,
                     'attr' => array('class' => 'vertical')))
                 ->add('circumference', 'text', array(
-                    'label' => 'Circunferencia (Solo Números)',
+                    'label' => 'Circunferencia',
                     'attr' => array('class' => 'circumference')))
                 ->add('reference', 'text', array(
-                    'label' => 'Punto de Referencia (Solo Números)',
+                    'label' => 'Punto de Referencia',
                     'attr' => array('class' => 'reference')))
                 ->add('coordinates', 'text', array(
-                    'label' => 'Punto de Corte (Solo Números)',
+                    'label' => 'Punto de Corte',
                     'attr' => array('class' => 'coordinates')))
                 ->add('diameter', 'text', array(
-                    'label' => 'Diametro Interno ( m )',
+                    'label' => 'Diametro Interno (metros)',
                     'attr' => array('readonly' => 'readonly', 'class' => 'diameter')))
                 ->add('liter', 'text', array(
-                    'label' => 'Litro / CM ( l/cm )',
+                    'label' => 'Litro / CM (litros/centimetros)',
                     'attr' => array('readonly' => 'readonly', 'class' => 'liter')))
                 ->add('totalCapacity', 'text', array(
-                    'label' => 'Capacidad Total ( l )',
-                    'attr' => array('readonly' => 'readonly', 'class' => 'totalCapacity')))
+                    'label' => 'Capacidad Total (litros)',
+                    'attr' => array('class' => 'totalCapacity')))
                 ->add('products', 'entity', array(
                     'label' => 'Producto',
                     'multiple' => true,
