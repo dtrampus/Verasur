@@ -67,35 +67,65 @@
                     <div class="widget-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="hb1">    
-                                <p>BALN: {{ entity.baln }}</p>
-                                <p>Fecha y Hora: {{ entity.date|date("d/m/Y h:m") }}</p
-                                <p>Dominio Camion: {{ entity.truckDomain }}</p>
-                                <p>Dominio Acoplado: {{ entity.coupledDomain }}</p>
-                                <p>Chofer: {{ entity.driver }}</p>
-                                <p>Peso Bruto: {{ entity.grossWeight }}</p>
-                                <p>Peso Tara: {{ entity.tareWeight }}</p>
-                                <p>Densidad: {{ entity.density }}</p>
-                                <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
-                                <p>Neto: {{ entity.clean }}</p>
-                                <p>Litros Reales: {{ entity.realLiter }}</p>
-                                <p>Destilación la gota: {{ entity.distillationGout }}</p>
-                                <p>5%: {{ entity.fivePercent }}</p>
-                                <p>10%: {{ entity.tenPercent }}</p>
-                                <p>20%: {{ entity.twentyPercent }}</p>
-                                <p>30%: {{ entity.thirtyPercent }}</p>
-                                <p>40%: {{ entity.fortyPercent }}</p>
-                                <p>50%: {{ entity.fiftyPercent }}</p>
-                                <p>60%: {{ entity.sixtyPercent }}</p>
-                                <p>70%: {{ entity.seventyPercent }}</p>
-                                <p>80%: {{ entity.eightyPercent }}</p>
-                                <p>90%: {{ entity.ninetyPercent }}</p>
-                                <p>95%: {{ entity.ninetyFivePercent }}</p>
-                                <p>P. Seco: {{ entity.pDry }}</p>
-                                <p>P. Final: {{ entity.pFinal }}</p>
-                                <p>Recuperado: {{ entity.recovered }}</p><br>
-                                <p>Número de remito: {{ entity.branchNumber }} - {{ entity.remitNumber }}</p>
-                                <p>Observación: {{ entity.observation }}</p>
-                                <p>Usuario Asociado: {{ entity.user.username }}</p>
+                                <div class="row">
+                                        <div class="col-md-3"><p>BALN: {{ entity.baln }}</p></div>
+                                        <div class="col-md-3"><p>Fecha y Hora: {{ entity.date|date("d/m/Y h:m") }}</p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>Peso Bruto: {{ entity.grossWeight|number_format(2, '.', ',') }}</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p>Tara: {{ entity.tareWeight|number_format(2, '.', ',') }}</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p>Densidad: {{ entity.density }}</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Neto: {{ entity.clean|number_format(2, '.', ',') }}</p></div>
+                                        <div class="col-md-3"><p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p></div>  
+                                    </div>
+                                    <hr>
+                                    <h5>Muestra:</h5>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Destilación la gota: {{ entity.distillationGout }}</p></div>
+                                        <div class="col-md-3"><p>5%: {{ entity.fivePercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>10%: {{ entity.tenPercent }}</p></div>
+                                        <div class="col-md-3"><p>20%: {{ entity.twentyPercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>30%: {{ entity.thirtyPercent }}</p></div>
+                                        <div class="col-md-3"><p>40%: {{ entity.fortyPercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>50%: {{ entity.fiftyPercent }}</p></div>
+                                        <div class="col-md-3"><p>60%: {{ entity.sixtyPercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>70%: {{ entity.seventyPercent }}</p></div>
+                                        <div class="col-md-3"><p>80%: {{ entity.eightyPercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>90%: {{ entity.ninetyPercent }}</p></div>
+                                        <div class="col-md-3"><p>95%: {{ entity.ninetyFivePercent }}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>P. Seco: {{ entity.pDry }}</p></div>
+                                        <div class="col-md-3"><p>P. Final: {{ entity.pFinal }}</p></div>
+                                        <div class="col-md-3"><p>Recuperado: {{ entity.recovered }}</p><br></div>
+                                    </div>
+                                    <hr>
+                                    <p>Número de remito: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
+                                    <p>Observación: {{ entity.observation }}</p>
+                                    <p>Usuario Asociado: {{ entity.user.username }}</p>
+                                    <p>Estado: {{ entity.status }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <ul class="list-group">
@@ -105,8 +135,11 @@
                             </div>
                             <div class="tab-pane" id="hb3">
                                 <ul class="list-group">
-                                    <p>Código: {{ entity.transport.code }}</p>
+                                    <p>Codigo: {{ entity.transport.code }}</p>
                                     <p>Transporte: {{ entity.transport.transport }}</p>
+                                    <p>Chofer: {{ entity.driver }}</p>
+                                    <p>Dominio de camión: {{ entity.truckDomain }}</p>
+                                    <p>Dominio de acoplado: {{ entity.coupledDomain }}</p>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="hb4">

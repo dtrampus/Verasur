@@ -80,7 +80,7 @@ class EgressType extends AbstractType {
                     'placeholder' => 'Elige una opción',
                     'class' => 'MainBundle\Entity\Product',
                     'query_builder' => function (ProductRepository $repository) {
-                return $repository->createQueryBuilder('p')
+                        return $repository->createQueryBuilder('p')
                         ->where('p.active = ?1')
                         ->setParameter(1, true);
             }

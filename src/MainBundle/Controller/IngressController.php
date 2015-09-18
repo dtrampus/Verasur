@@ -64,7 +64,7 @@ class IngressController extends Controller
                 'El ingreso se ha declarado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('ingress_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('ingress'));
         }
 
         return $this->render('MainBundle:Ingress:new.html.twig', array(

@@ -161,6 +161,7 @@
                                     </div>
                                 {% endif %}    
                             {% endif %}
+                            <input type="hidden" id="status-value" value="{{entity.status}}">
                             <hr>
                             <h5>Muestra:</h5>
                             <div class="row">
@@ -223,7 +224,7 @@
         verasurNewEditMovement.init();
         
         function redondeoMuestra (value, precision) {
-            if (value == "") {
+            if (value == "" || isNaN(value)) {
                 return "";
             } else {
                 return parseFloat(parseFloat(value).toFixed(precision));
@@ -313,28 +314,38 @@
                 calculateRest();
             }
         });
-
+        
+        var status = $("#status-value").val();
         //Validation
         $('#ingress-form').validate({
-            {#onkeyup: function(element) {$(element).valid()},#}
+            onkeyup: false,
             submitHandler: function(form) {
-                var value = $("#tanque1").val();
-                var retorno = true;
-                if (value != "") {
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('calculateCapacity', {id: value}),
-                        dataType: "json",
-                        async:false,
-                        success: function (jsonTank) {
-                            retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankFreeCapacity'],2);
-                        }
-                    });
-                }
-                if(retorno){
-                    form.submit();
+                if (status == "Descargado"){
+                    var value = $("#tanque1").val();
+                    var retorno = true;
+                    var retorno2 = true;
+                    if (value != "") {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateCapacity', {id: value}),
+                            dataType: "json",
+                            async:false,
+                            success: function (jsonTank) {
+                                retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankFreeCapacity'],2);
+                            }
+                        });
+                    }
+                    if (redondeo($("#mainbundle_ingress_realLiter").val(),2) != redondeo(redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2),2)){
+                        var retorno2 = false;
+                    }
+                    if(retorno == true && retorno2 == true){
+                        form.submit();
+                        $("#mainbundle_ingress_submit").prop('disabled', true);
+                    }else{
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
+                    }
                 }else{
-                    $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque</span>").addClass('has-error');
+                    form.submit();
                 }
             },
             highlight: function (element) {
@@ -362,6 +373,7 @@
                     required: true,
                     number: true,
                     minRealLiters: true
+                    
                 },
                 cantidad2: {
                     required: false,
@@ -389,9 +401,6 @@
                 "mainbundle_ingress[density]":{
                     required:true,
                     number: true
-                },
-                "mainbundle_ingress[realLiter]":{
-                    lessRealLiter:true
                 },
                 "mainbundle_ingress[provider]":{
                     required:true
@@ -468,7 +477,7 @@
             $("#cantidad2").trigger("focusout");
         }
         
-{#        $("#mainbundle_ingress_transport").trigger("change");#}
+        $("#mainbundle_ingress_transport").trigger("change");
         $("#tanque1").trigger("change");
         $("#tanque2").trigger("change");
         $("#cantidad1").trigger("focusout");
