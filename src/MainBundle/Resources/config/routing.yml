@@ -41,3 +41,7 @@ main_ingress:
 main_pass:
     resource: "@MainBundle/Resources/config/routing/pass.yml"
     prefix:  /pass
+
+main_report:
+    resource: "@MainBundle/Resources/config/routing/report.yml"
+    prefix:  /report
