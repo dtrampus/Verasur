@@ -135,6 +135,10 @@ var verasurNewEditTank = function () {
             });
 
             $('#tank-form').validate({
+                submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_tank_submit").prop('disabled', true);
+                },
                 highlight: function (element) {
                     $(element).closest('.form-group').addClass('has-error');
                 },

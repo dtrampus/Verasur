@@ -42,7 +42,7 @@
                             <a data-toggle="tab" href="#hb2"> <i class="fa fa-lg fa-cubes"></i> <span class="hidden-mobile hidden-tablet"> Producto </span> </a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#hb3"> <i class="fa fa-lg fa-user"></i> <span class="hidden-mobile hidden-tablet"> Usuario </span> </a>
+                            <a data-toggle="tab" href="#hb3"> <i class="fa fa-lg fa-user"></i> <span class="hidden-mobile hidden-tablet"> Operador </span> </a>
                         </li>
                     </ul>
                 </header>
@@ -63,7 +63,8 @@
                             <div class="tab-pane active" id="hb1">    
                                 <p>Fecha: {{ entity.date|date("d/m/Y H:i") }}</p>
                                 <p>CM de Vacio: {{ entity.vacuum }}</p>
-                                <p>Litros/CM: {{ entity.liter}}</p>
+                                <p>Volumen: {{ entity.liter }}</p>
+                                <p>Observación: {{ entity.observation }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <p>Producto: {{ entity.product.code }} - {{ entity.product.description }}</p>

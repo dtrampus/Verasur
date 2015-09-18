@@ -49,7 +49,7 @@ class DriverController extends Controller
                 'El chofer se ha creado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('driver_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('driver'));
         }
 
         return $this->render('MainBundle:Driver:new.html.twig', array(

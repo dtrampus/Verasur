@@ -5,6 +5,8 @@ inventory:
 inventory_show:
     path:     /{id}/show
     defaults: { _controller: "MainBundle:Inventory:show" }
+    options:
+        expose: true
 
 inventory_new:
     path:     /{id}/new
@@ -29,6 +31,6 @@ inventory_delete:
     defaults: { _controller: "MainBundle:Inventory:delete" }
     methods:  [POST, DELETE]
 
-inventory_report:
-    path:     /report
-    defaults: { _controller: "MainBundle:Inventory:report" }
+inventory_ajax_list:
+    path:     /ajax/list
+    defaults: { _controller: "MainBundle:Inventory:listAjax" }

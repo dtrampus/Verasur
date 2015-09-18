@@ -46,7 +46,12 @@ class Inventory
      */
     private $liter;
     
-
+        /**
+     * @var string
+     * @ORM\Column(name="observation", type="text", nullable=true)
+     */
+    private $observation;
+    
     /**
      * @ORM\ManyToOne(targetEntity="Tank", inversedBy="inventories", cascade={"persist"})
      * @ORM\JoinColumn(name="tank_id", referencedColumnName="id", onDelete="CASCADE")
@@ -144,7 +149,27 @@ class Inventory
         return $this->liter;
     }
 
+    /**
+     * Set observation
+     *
+     * @param string $observation
+     * @return Inventory
+     */
+    public function setObservation($observation)
+    {
+        $this->observation = $observation;
+        return $this;
+    }
 
+    /**
+     * Get observation
+     * @return string
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
+    
     /**
      * Set tank
      *
