@@ -158,20 +158,24 @@
     $(document).ready(function(){
         verasurNewEditMovement.init();
 {#        $("#mainbundle_ingress_transport").trigger("change");#}
-        function redondeo (value, precision) {
-            if (value == "") {
+        function redondeoMuestra (value, precision) {
+            if (value == "" || isNaN(value)) {
                 return "";
             } else {
                 return parseFloat(parseFloat(value).toFixed(precision));
             }
         }
         $('.floatNumberPrecision').focusout(function(){
-            $(this).val(redondeo($(this).val(),1));
+            $(this).val(redondeoMuestra($(this).val(),1));
         });
         
         //Validation
         $('#ingress-form').validate({
-            onkeyup: function(element) {$(element).valid()},
+            onkeyup: false,
+            submitHandler: function(form) {
+                    form.submit();
+                    $("#mainbundle_ingress_submit").prop('disabled', true);
+            },
             highlight: function (element) {
                 $(element).closest('.form-group').addClass('has-error');
             },

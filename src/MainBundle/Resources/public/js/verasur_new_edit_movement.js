@@ -22,7 +22,7 @@ var verasurNewEditMovement = function () {
             $(this).val(redondeo($(this).val(), 3));
         });
         
-        var transportAnterior = $("#mainbundle_egress_transport").val();
+        var transportAnterior = $("#mainbundle_egress_transport,#mainbundle_ingress_transport").val();
         $("#mainbundle_egress_transport,#mainbundle_ingress_transport").change(function () {
             var value = $(this).select2('val');
             if(transportAnterior != value){
@@ -57,7 +57,7 @@ var verasurNewEditMovement = function () {
         var clean = redondeo($("#mainbundle_ingress_clean,#mainbundle_egress_clean").val(), 2);
         var density = redondeo($("#mainbundle_ingress_density,#mainbundle_egress_density").val(), 3);
         if (density == 0) {
-            realLiters = "Infinito";
+            realLiters = "";
         } else {
             var realLiters = redondeo(clean / density, 2);
         }

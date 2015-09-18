@@ -316,6 +316,7 @@
                     }
                     if(retorno){
                         form.submit();
+                        $("#mainbundle_egress_submit").prop('disabled', true);
                     }else{
                         $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros ocupados del tanque</span>").addClass('has-error');
                     }
@@ -453,7 +454,7 @@
             
             //Validacion Seccion Muestra
             function redondeoMuestra (value, precision) {
-                if (value == "") {
+                if (value == "" || isNaN(value)) {
                     return "";
                 } else {
                     return parseFloat(parseFloat(value).toFixed(precision));

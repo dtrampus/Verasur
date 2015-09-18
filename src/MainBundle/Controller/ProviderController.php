@@ -57,7 +57,7 @@ class ProviderController extends Controller
                 'El proveedor se ha ingresado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('provider_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('provider'));
         }
 
         return $this->render('MainBundle:Provider:new.html.twig', array(

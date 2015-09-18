@@ -4,7 +4,7 @@ namespace MainBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use MainBundle\Entity\Inventory;
 use MainBundle\Form\InventoryType;
 use MainBundle\Entity\Tank;
@@ -25,12 +25,21 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MainBundle:Inventory')->findby(array('tank' => $id));
-
+        $tank = $em->getRepository('MainBundle:Tank')->find($id);
+        
         return $this->render('MainBundle:Inventory:index.html.twig', array(
             'entities' => $entities,
-            'id' => $id
+            'tank' => $tank
         ));
     }
+    
+    public function listAjaxAction(Request $request) {
+        $get = $request->query->all();
+        $em = $this->getDoctrine()->getEntityManager();
+        $output = $em->getRepository('MainBundle:Inventory')->findDataTable($get);
+        return new JsonResponse($output);
+    }
+    
     /**
      * Creates a new Inventory entity.
      *
@@ -46,7 +55,6 @@ class InventoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $entity->setUsers($this->getUser());
             $entity->setTank($tank);
             $em->persist($entity);
@@ -255,18 +263,4 @@ class InventoryController extends Controller
         ;
     }
     
-    /**
-     * Lists all Inventory entities.
-     *
-     */
-    public function reportAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MainBundle:Inventory')->findAll();
-
-        return $this->render('MainBundle:Inventory:inventoryReport.html.twig', array(
-            'entities' => $entities
-        ));
-    }
 }
