@@ -23,7 +23,7 @@ class PassRepository extends EntityRepository
         $aColumns = array(
           'id' => 'm.id', 
           'date' => "DATE_FORMAT(m.date,'%d/%m/%Y %H:%i')", 
-          'product' => 'CONCAT(p.code,p.description)',
+          'product' => "CONCAT(p.code,' - ',p.description)",
           'realLiter' => 'm.realLiter',
           'origin' => "(SELECT CONCAT(t.code,' - ',t.description) 
                         FROM movement_detail md 

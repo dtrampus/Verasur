@@ -47,14 +47,14 @@ abstract class Movement
     /**
      * @var string
      * @Assert\NotBlank()
-     * @ORM\Column(name="truckDomain", type="string", length=255, nullable=true)
+     * @ORM\Column(name="truckDomain", type="string", length=255, nullable = true)
      */
     private $truckDomain;
 
     /**
      * @var string
      * @Assert\NotBlank()
-     * @ORM\Column(name="coupledDomain", type="string", length=255, nullable=true)
+     * @ORM\Column(name="coupledDomain", type="string", length=255, nullable = true)
      */
     private $coupledDomain;
 
