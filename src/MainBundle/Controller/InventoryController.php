@@ -23,6 +23,7 @@ class InventoryController extends Controller
     public function indexAction($id)
     {
         $em = $this->getDoctrine()->getManager();
+        $tank = $em->getRepository('MainBundle:Tank')->find($id);
 
         $entities = $em->getRepository('MainBundle:Inventory')->findby(array('tank' => $id));
         $tank = $em->getRepository('MainBundle:Tank')->find($id);

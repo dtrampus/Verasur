@@ -34,3 +34,9 @@ pass_delete:
 pass_ajax_list:
     path:     /ajax/list
     defaults: { _controller: "MainBundle:Pass:listAjax" }
+    
+checkDateTime:
+    pattern: /{date}/checkdatetime
+    defaults: { _controller: "MainBundle:Pass:checkDateTimeAjax" }
+    options:
+        expose: true
