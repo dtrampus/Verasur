@@ -1,34 +1,11 @@
-inventory:
-    path:     /index/{id}
-    defaults: { _controller: "MainBundle:Inventory:index" }
+report_inventory_index:
+    path:     /inventory/index
+    defaults: { _controller: "MainBundle:Report:inventoryIndex" }
 
-inventory_show:
-    path:     /{id}/show
-    defaults: { _controller: "MainBundle:Inventory:show" }
+report_inventory_ajax_list:
+    path:     /inventory/list
+    defaults: { _controller: "MainBundle:Report:inventoryAjaxList" }
 
-inventory_new:
-    path:     /{id}/new
-    defaults: { _controller: "MainBundle:Inventory:new" }
-
-inventory_create:
-    path:     /create
-    defaults: { _controller: "MainBundle:Inventory:create" }
-    methods:  POST
-
-inventory_edit:
-    path:     /{id}/edit
-    defaults: { _controller: "MainBundle:Inventory:edit" }
-
-inventory_update:
-    path:     /{id}/update
-    defaults: { _controller: "MainBundle:Inventory:update" }
-    methods:  [POST, PUT]
-
-inventory_delete:
-    path:     /{id}/delete
-    defaults: { _controller: "MainBundle:Inventory:delete" }
-    methods:  [POST, DELETE]
-
-inventory_report:
-    path:     /report
-    defaults: { _controller: "MainBundle:Inventory:report" }
+report_inventory_export:
+    path:     /inventory/export
+    defaults: { _controller: "MainBundle:Report:inventoryExport" }

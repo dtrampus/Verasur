@@ -48,8 +48,9 @@ class InventoryType extends AbstractType {
                     'label' => 'CM de Vacio',
                     'attr' => array('class' => 'vacuum')))
                 ->add('liter', 'text', array(
-                    'label' => 'Litros/CM',
+                    'label' => 'Volumen (litros)',
                     'attr' => array('class' => 'liter')))
+                ->add('observation', 'textarea', array('label' => 'Observación', 'required' => false))
         ;
     }
 
