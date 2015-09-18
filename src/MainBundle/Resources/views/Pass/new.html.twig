@@ -45,13 +45,13 @@
                                     <div class='col-md-3'>
                                         <div class="form-group">
                                             <label class="control-label required" for="mainbundle_pass_date_date">Fecha</label>
-                                            <input type="date" id="mainbundle_pass_date_date" name="date" required="required" class="form-control"/>
+                                            <input type="date" id="mainbundle_pass_date_date" name="date" required="required" class="form-control" value="{{ "now"|date('Y-m-d') }}"/>
                                         </div>
                                     </div>
                                     <div class='col-md-3'>
                                         <div class="form-group">
                                             <label class="control-label required" for="mainbundle_pass_date_time">Hora</label>
-                                            <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control"/>
+                                            <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control" value="{{ "now"|date('H:i') }}"/>
                                         </div>
                                     </div>                                
                                 </div>

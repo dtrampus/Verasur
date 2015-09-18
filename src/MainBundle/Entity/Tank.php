@@ -74,7 +74,7 @@ class Tank {
      *
      * @ORM\Column(name="coordinates", type="float", nullable=true)
      */
-    private $coordinates;
+    private $coordinates = '0';
 
     /**
      * @var float
