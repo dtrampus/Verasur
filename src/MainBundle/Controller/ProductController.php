@@ -57,7 +57,7 @@ class ProductController extends Controller
                 'El producto se ha ingresado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('product_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('product'));
         }
 
         return $this->render('MainBundle:Product:new.html.twig', array(

@@ -43,10 +43,10 @@ class TankController extends Controller {
             $em->flush();
 
             $this->addFlash(
-                    'success', 'El tanque se ha creado correctamente.'
+                    'success', 'El tanque/planta se ha creado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('tank_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('tank'));
         }
 
         return $this->render('MainBundle:Tank:new.html.twig', array(
