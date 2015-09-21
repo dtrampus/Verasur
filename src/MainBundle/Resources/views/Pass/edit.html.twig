@@ -47,17 +47,17 @@
                                     <div class='col-md-3'>
                                         <div class="form-group">
                                             <label class="control-label required" for="mainbundle_pass_date_date">Fecha</label>
-                                            <input type="date" id="mainbundle_pass_date_date" name="date" required="required" class="form-control"/>
-                                            <input type="hidden" name="pass_date" id="pass_date" value="{{ passes.date|date("Y-m-d") }}">
+                                            <input type="date" id="mainbundle_pass_date_date" name="date" required="required" class="form-control" value="{{ passes.date|date("Y-m-d") }}"/>
                                         </div>
                                     </div>
                                     <div class='col-md-3'>
                                         <div class="form-group">
                                             <label class="control-label required" for="mainbundle_pass_date_time">Hora</label>
-                                            <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control"/>
-                                            <input type="hidden" name="pass_time" id="pass_time" value="{{ passes.date|date("H:i") }}">
+                                            <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control" value="{{ passes.date|date("H:i") }}"/>
+                                            
                                         </div>
-                                    </div>                                
+                                    </div>  
+                                            <input type="hidden" name="pass_datetime" id="pass_datetime" value="{{ passes.date|date("Y-m-d H:i") }}">
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-6'>

@@ -1,0 +1,11 @@
+report_inventory_index:
+    path:     /inventory/index
+    defaults: { _controller: "MainBundle:Report:inventoryIndex" }
+
+report_inventory_ajax_list:
+    path:     /inventory/list
+    defaults: { _controller: "MainBundle:Report:inventoryAjaxList" }
+
+report_inventory_export:
+    path:     /inventory/export
+    defaults: { _controller: "MainBundle:Report:inventoryExport" }

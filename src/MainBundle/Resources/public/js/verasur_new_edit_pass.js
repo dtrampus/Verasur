@@ -3,22 +3,6 @@ var verasurNewEditPass = function () {
     var Initialize = function () {
         //$(".datepicker").datepicker('setDate', new Date());
 
-        var pass_date = $("#pass_date").val();
-        var pass_time = $("#pass_time").val();
-
-        if (!pass_date) {
-            var now = new Date();
-            var day = ("0" + now.getDate()).slice(-2);
-            var month = ("0" + (now.getMonth() + 1)).slice(-2);
-            var today = now.getFullYear() + "-" + (month) + "-" + (day);
-            var time = ("0" + (now.getHours())).slice(-2) + ":" + ("0" + (now.getMinutes())).slice(-2);
-            $('#mainbundle_pass_date_date').val(today);
-            $('#mainbundle_pass_date_time').val(time);
-        }else{
-            $('#mainbundle_pass_date_date').val(pass_date);
-            $('#mainbundle_pass_date_time').val(pass_time);
-        }
-
         $("#mainbundle_pass_product").html("");
         $("#mainbundle_pass_tank_origin").change(function () {
             var value = $("#mainbundle_pass_tank_origin").select2('val');
@@ -50,9 +34,9 @@ var verasurNewEditPass = function () {
                     dataType: "json",
                     success: function (jsonTank) {
                         if (jsonTank['tankOcupedCapacity'] != null) {
-                            $('#cantidad1').html("<span class='help-block'>Ocupado en el tanque: " + jsonTank['tankOcupedCapacity'] + "</span>");
+                            $('#cantidad1').html("<span>Ocupado en el tanque: " + jsonTank['tankOcupedCapacity'] + "</span>");
                         } else {
-                            $('#cantidad1').html("<span class='help-block'>Ocupado en el tanque: 0 </span>");
+                            $('#cantidad1').html("<span>Ocupado en el tanque: 0 </span>");
                         }
                     }
                 });
@@ -68,7 +52,7 @@ var verasurNewEditPass = function () {
                     url: Routing.generate('calculateCapacity', {id: value}),
                     dataType: "json",
                     success: function (jsonTank) {
-                        $('#cantidad2').html("<span class='help-block'>Capacidad disponible en el tanque: " + jsonTank['tankFreeCapacity'] + "</span>");
+                        $('#cantidad2').html("<span>Capacidad disponible en el tanque: " + jsonTank['tankFreeCapacity'] + "</span>");
                     }
                 });
             }
@@ -195,6 +179,44 @@ var verasurNewEditPass = function () {
                 time: {
                     required: "Este campo es requerido"
                 }
+            },
+            submitHandler: function (form) {
+                var date = $("#mainbundle_pass_date_date").val();
+                var time = $("#mainbundle_pass_date_time").val();
+                var datetime = date.concat(" ").concat(time);
+                var pass_datetime = $("#pass_datetime").val();
+                if(typeof pass_datetime == 'undefined'){
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('checkDateTime', {date: datetime}),
+                        dataType: "json",
+                        success: function (jsonDate) {
+                            if (jsonDate == false) {
+                                $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
+                            } else {
+                                form.submit();
+                            }
+                        }
+                    }); 
+                }else{
+                    if(pass_datetime != datetime){
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('checkDateTime', {date: datetime}),
+                            dataType: "json",
+                            success: function (jsonDate) {
+                                if (jsonDate == false) {
+                                    $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
+                                } else {
+                                    form.submit();
+                                }
+                            }
+                        });  
+                    }else{
+                        form.submit();
+                    }
+                }
+
             }
         });
         $("select").removeClass("form-control").on("change", function (e) {

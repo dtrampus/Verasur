@@ -4,6 +4,7 @@ namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MainBundle\Entity\Tank;
 use MainBundle\Entity\Product;
 
@@ -12,6 +13,7 @@ use MainBundle\Entity\Product;
  *
  * @ORM\Table(name="inventories")
  * @ORM\Entity(repositoryClass="MainBundle\Entity\InventoryRepository")
+ * @UniqueEntity("date")
  */
 class Inventory
 {
@@ -27,7 +29,7 @@ class Inventory
     /**
      * @var \DateTime
      * @Assert\NotBlank()
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetime", unique=true)
      */
     private $date;
 
@@ -44,7 +46,12 @@ class Inventory
      */
     private $liter;
     
-
+        /**
+     * @var string
+     * @ORM\Column(name="observation", type="text", nullable=true)
+     */
+    private $observation;
+    
     /**
      * @ORM\ManyToOne(targetEntity="Tank", inversedBy="inventories", cascade={"persist"})
      * @ORM\JoinColumn(name="tank_id", referencedColumnName="id", onDelete="CASCADE")
@@ -142,7 +149,27 @@ class Inventory
         return $this->liter;
     }
 
+    /**
+     * Set observation
+     *
+     * @param string $observation
+     * @return Inventory
+     */
+    public function setObservation($observation)
+    {
+        $this->observation = $observation;
+        return $this;
+    }
 
+    /**
+     * Get observation
+     * @return string
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
+    
     /**
      * Set tank
      *
