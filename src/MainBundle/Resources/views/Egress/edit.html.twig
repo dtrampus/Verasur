@@ -299,10 +299,10 @@
             
             //Validation
             $('#egress-form').validate({
-                {#onkeyup: function(element) {$(element).valid()},#}
                 submitHandler: function(form) {
                     var value = $("#tanque1").val();
                     var retorno = true;
+                    var retorno2 = true;
                     if (value != "") {
                         $.ajax({
                             type: 'GET',
@@ -314,11 +314,14 @@
                             }
                         });
                     }
-                    if(retorno){
+                    if (redondeo($("#mainbundle_egress_realLiter").val(),2) != redondeo(redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2),2)){
+                        var retorno2 = false;
+                    }
+                    if(retorno == true && retorno2 == true){
                         form.submit();
                         $("#mainbundle_egress_submit").prop('disabled', true);
                     }else{
-                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros ocupados del tanque</span>").addClass('has-error');
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
                     }
                 },
                 highlight: function (element) {
@@ -373,9 +376,6 @@
                     "mainbundle_egress[density]":{
                         required:true,
                         number: true
-                    },
-                    "mainbundle_egress[realLiter]":{
-                        lessRealLiter:true
                     },
                     "mainbundle_egress[client]":{
                         required:true
