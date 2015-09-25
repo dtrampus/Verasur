@@ -233,7 +233,7 @@ class IngressController extends Controller
                 'El ingreso se ha grabado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('ingress_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('ingress', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Ingress:edit.html.twig', array(

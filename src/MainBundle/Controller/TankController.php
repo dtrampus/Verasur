@@ -36,6 +36,7 @@ class TankController extends Controller {
         $entity = new Tank();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+        $entity->setStatus("N/A");
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -155,9 +156,13 @@ class TankController extends Controller {
      */
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
+        $status = $request->request->get('status');
+        $reason = $request->request->get('reason');
 
         $entity = $em->getRepository('MainBundle:Tank')->find($id);
-
+        $entity->setStatus($status);
+        $entity->setReason($reason);
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Tank entity.');
         }
@@ -173,7 +178,7 @@ class TankController extends Controller {
                     'success', 'El tanque se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('tank_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('tank', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Tank:edit.html.twig', array(

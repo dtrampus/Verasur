@@ -257,7 +257,7 @@ class EgressController extends Controller {
                     'success', 'El egreso se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('egress_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('egress', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Egress:edit.html.twig', array(

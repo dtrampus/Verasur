@@ -159,7 +159,7 @@
                     { "name": "e.remitNumber","targets": 7,"className": "text-center" },
                     { "name": "e.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
                         "render": function ( data, type, row ) {
-                            return '<a href="'+Routing.generate('egress_show', { id: row[8] })+'" class="btn btn-primary">Ver</a>';
+                            return '<a href="'+Routing.generate('egress_show', { id: row[8] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="'+Routing.generate('egress_edit', { id: row[8] })+'" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"></i></a>';
                         } 
                     }
                 ],

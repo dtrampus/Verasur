@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Product;
 use MainBundle\Form\ProductType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product controller.
@@ -190,7 +191,7 @@ class ProductController extends Controller
                 'El producto se ha editado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('product_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('product', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Product:edit.html.twig', array(
@@ -242,6 +243,22 @@ class ProductController extends Controller
             //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    public function getTankByProductAjaxAction($id) {
+        $response = array();
+        $product = $this->getDoctrine()->getManager()->getRepository('MainBundle:Product')->find($id);
+        $tanks = $product->getTanks();
+
+        foreach ($tanks as $tank) {
+            $res = array();
+            $res[0] = $tank->getId();
+            $res[1] = $tank->getCode();
+            $res[2] = $tank->getDescription();
+            array_push($response, $res);
+        }
+
+        return new JsonResponse($response);
     }
     
 }

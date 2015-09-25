@@ -68,7 +68,8 @@
                                             <td>{{ entity.code }}</td>
                                             <td>{{ entity.transport }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ path('transport_show', { 'id': entity.id }) }}">Ver</a>
+                                                <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('transport_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('transport_edit', { 'id': entity.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
                                             </td>
                                         </tr>
                                     {% endfor %}

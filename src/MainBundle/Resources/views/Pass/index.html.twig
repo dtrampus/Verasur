@@ -164,7 +164,7 @@
                     {"name": "origin"},
                     {"name": "destiny"},
                     {"name": "stockDestiny"},
-                    {"name": "id","className": "text-center","render": function ( data, type, row ) { return '<a href="'+Routing.generate('pass_show', { id: row[6] })+'" class="btn btn-primary">Ver</a>'}}
+                    {"name": "id","className": "text-center","render": function ( data, type, row ) { return '<a href="'+Routing.generate('pass_show', { id: row[6] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="'+Routing.generate('pass_edit', { id: row[6] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>'}}
                 ],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +

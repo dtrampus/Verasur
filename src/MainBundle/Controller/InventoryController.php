@@ -50,6 +50,7 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $tank_id = $request->request->get('tank_id');
         $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
+        $tank->setStatus("Liberado");
         
         $entity = new Inventory();
         $form = $this->createCreateForm($entity, $tank);
@@ -66,7 +67,7 @@ class InventoryController extends Controller
                 'El inventario se ha declarado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('inventory_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('inventory', array('id' => $tank_id)));
         }
 
         return $this->render('MainBundle:Inventory:new.html.twig', array(
@@ -189,6 +190,7 @@ class InventoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $tank_id = $request->request->get('tank_id');
         $tank = $em->getRepository('MainBundle:Tank')->find($tank_id);
+        $tank->setStatus("Liberado");
 
         $entity = $em->getRepository('MainBundle:Inventory')->find($id);
 
@@ -208,7 +210,7 @@ class InventoryController extends Controller
                 'El inventario se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('inventory_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('inventory', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Inventory:edit.html.twig', array(

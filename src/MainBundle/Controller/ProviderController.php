@@ -189,7 +189,7 @@ class ProviderController extends Controller
                 'El proveedor se ha editado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('provider_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('provider', array('id' => $id)));
             //return $this->redirect($this->generateUrl('provider_edit', array('id' => $id)));
         }
        

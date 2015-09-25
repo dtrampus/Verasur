@@ -72,6 +72,10 @@
                                 <p>Diametro Interno: {{ entity.diameter }}</p>
                                 <p>Litro / CM: {{ entity.liter }}</p>
                                 <p>Capacidad Total: {{ entity.totalCapacity }}</p>
+                                <p>Estado: {{ entity.status }}</p>
+                                {% if entity.status == "Rechazado" %}
+                                    <p>Motivo: {{ entity.reason }}</p>
+                                {% endif %}
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <table id="tableClient" class="table table-striped table-bordered table-hover" width="100%">

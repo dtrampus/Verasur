@@ -3,28 +3,61 @@ var verasurNewEditPass = function () {
     var Initialize = function () {
         //$(".datepicker").datepicker('setDate', new Date());
 
-        $("#mainbundle_pass_product").html("");
+//        $("#mainbundle_pass_product").html("");
         $("#mainbundle_pass_tank_origin").change(function () {
-            var value = $("#mainbundle_pass_tank_origin").select2('val');
-            if (value != 0) {
+            var value = $(this).select2('val');
+            $('#mainbundle_pass_product').select2("val", "");
+            $('#mainbundle_pass_tank_destination').select2("val", "");
+            $('#cantidad2').html("");
+            if (value != "" && typeof value != "undefined") {
                 $.ajax({
                     type: 'GET',
                     url: Routing.generate('getProductAjax', {id: value}),
                     dataType: "json",
-                    success: function (jsonTanks) {
-                        $('#mainbundle_pass_product').html("");
-                        for (var tank in jsonTanks) {
-                            var arrayTank = jsonTanks[tank];
-                            $('#mainbundle_pass_product').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                    success: function (jsonProducts) {
+                        $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
+                        for (var product in jsonProducts) {
+                            var arrayProduct = jsonProducts[product];
+                            $('#mainbundle_pass_product').append("<option value=" + arrayProduct[0] + ">" + arrayProduct[1] + " - " + arrayProduct[2] + "</option>");
                         }
                     }
                 });
             } else {
-                $('#mainbundle_pass_product').html("");
+                $('#cantidad1').html("");
+                $('#cantidad2').html("");
+                $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_pass_product').select2("val", "");
+                $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_pass_tank_destination').select2("val", "");
             }
         });
 
-        $("#mainbundle_pass_product").html("");
+        $("#mainbundle_pass_product").change(function () {
+            var value2 = $(this).select2('val');
+            $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+            $('#mainbundle_pass_tank_destination').select2("val", "");
+            $('#cantidad2').html("");
+            if (value2 != '' && typeof value2 != "undefined") {
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('getTankAjax', {id: value2}),
+                    dataType: "json",
+                    success: function (jsonTanks) {
+                        $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                        for (var tank in jsonTanks) {
+                            var arrayTank = jsonTanks[tank];
+                            $('#mainbundle_pass_tank_destination').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                        }
+                    }
+                });
+            } else {
+                $('#cantidad2').html("");
+                $('#mainbundle_pass_tank_destination').select2('val', "");
+                $('#mainbundle_pass_tank_destination').html("");
+            }
+        });
+
+//                $("#mainbundle_pass_product").html("");
         $("#mainbundle_pass_tank_origin").change(function () {
             var value = $("#mainbundle_pass_tank_origin").select2('val');
             if (value != 0) {
@@ -43,7 +76,7 @@ var verasurNewEditPass = function () {
             }
         });
 
-        $("#mainbundle_pass_product").html("");
+//        $("#mainbundle_pass_product").html("");
         $("#mainbundle_pass_tank_destination").change(function () {
             var value = $("#mainbundle_pass_tank_destination").select2('val');
             if (value != 0) {
@@ -57,7 +90,7 @@ var verasurNewEditPass = function () {
                 });
             }
         });
-        $("#mainbundle_pass_tank_origin,#mainbundle_pass_tank_destination").trigger("change");
+//        $("#mainbundle_pass_tank_origin,#mainbundle_pass_tank_destination").trigger("change");
 
         jQuery.validator.addMethod("notEqual", function (value, element, param) {
             return $('#mainbundle_pass_tank_origin').select2('val') != $('#mainbundle_pass_tank_destination').select2('val');
@@ -106,10 +139,45 @@ var verasurNewEditPass = function () {
         }, "La cantidad tiene que ser mayor a 0");
 
         $('#pass-form').validate({
-            submitHandler: function(form) {
-                    form.submit();
-                    $("#mainbundle_pass_submit").prop('disabled', true);
-                },
+            submitHandler: function (form) {
+                $("#mainbundle_pass_submit").prop('disabled', true);
+
+                var date = $("#mainbundle_pass_date_date").val();
+                var time = $("#mainbundle_pass_date_time").val();
+                var datetime = date.concat(" ").concat(time);
+                var pass_datetime = $("#pass_datetime").val();
+                if (typeof pass_datetime == 'undefined') {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('checkDateTime', {date: datetime}),
+                        dataType: "json",
+                        success: function (jsonDate) {
+                            if (jsonDate == false) {
+                                $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
+                            } else {
+                                form.submit();
+                            }
+                        }
+                    });
+                } else {
+                    if (pass_datetime != datetime) {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('checkDateTime', {date: datetime}),
+                            dataType: "json",
+                            success: function (jsonDate) {
+                                if (jsonDate == false) {
+                                    $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
+                                } else {
+                                    form.submit();
+                                }
+                            }
+                        });
+                    } else {
+                        form.submit();
+                    }
+                }
+            },
             highlight: function (element) {
                 $(element).closest('.form-group').addClass('has-error');
             },
@@ -179,46 +247,9 @@ var verasurNewEditPass = function () {
                 time: {
                     required: "Este campo es requerido"
                 }
-            },
-            submitHandler: function (form) {
-                var date = $("#mainbundle_pass_date_date").val();
-                var time = $("#mainbundle_pass_date_time").val();
-                var datetime = date.concat(" ").concat(time);
-                var pass_datetime = $("#pass_datetime").val();
-                if(typeof pass_datetime == 'undefined'){
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('checkDateTime', {date: datetime}),
-                        dataType: "json",
-                        success: function (jsonDate) {
-                            if (jsonDate == false) {
-                                $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
-                            } else {
-                                form.submit();
-                            }
-                        }
-                    }); 
-                }else{
-                    if(pass_datetime != datetime){
-                        $.ajax({
-                            type: 'GET',
-                            url: Routing.generate('checkDateTime', {date: datetime}),
-                            dataType: "json",
-                            success: function (jsonDate) {
-                                if (jsonDate == false) {
-                                    $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
-                                } else {
-                                    form.submit();
-                                }
-                            }
-                        });  
-                    }else{
-                        form.submit();
-                    }
-                }
-
             }
         });
+        
         $("select").removeClass("form-control").on("change", function (e) {
             $(this).valid();
         });

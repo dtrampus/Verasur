@@ -20,6 +20,8 @@ ingress_create:
 ingress_edit:
     path:     /{id}/edit
     defaults: { _controller: "MainBundle:Ingress:edit" }
+    options:
+        expose: true
 
 ingress_update:
     path:     /{id}/update

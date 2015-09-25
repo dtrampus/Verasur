@@ -189,7 +189,7 @@ class ClientController extends Controller
                 'El cliente se ha grabado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('client_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('client', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Client:edit.html.twig', array(

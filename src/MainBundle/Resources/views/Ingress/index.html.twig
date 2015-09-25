@@ -161,10 +161,10 @@
                     { "name": "i.status","targets": 8,"className": "text-center" },
                     { "name": "i.id", "targets": 9,"className": "text-center", "searchable": false,"orderable":false,
                         "render": function ( data, type, row ) {
-                            if (row[8] == "En plaza"){
-                               return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary margin-right-5">Ver</a><a href="'+Routing.generate('ingress_newDownload', { id: row[9] })+'" class="btn btn-danger">Descargar</a>'; 
+                            if (row[8].toLowerCase() == "en plaza"){
+                               return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="'+Routing.generate('ingress_edit', { id: row[9] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a><a href="'+Routing.generate('ingress_newDownload', { id: row[9] })+'" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>'; 
                             }else{
-                                return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary">Ver</a>';
+                                return '<a href="'+Routing.generate('ingress_show', { id: row[9] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="'+Routing.generate('ingress_edit', { id: row[9] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
                             }
                             
                         } 
