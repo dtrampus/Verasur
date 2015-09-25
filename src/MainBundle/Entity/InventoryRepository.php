@@ -27,7 +27,7 @@ class InventoryRepository extends EntityRepository
           'volume' => "i.liter",
           'difference' => "IFNULL((SELECT ROUND((i.liter - i2.liter),2)
                            FROM inventories i2
-                           WHERE i2.date < i.date AND i.tank_id = ".$get["tankId"]."
+                           WHERE i2.date < i.date AND i2.tank_id = ".$get["tankId"]."
                            ORDER BY i2.date DESC
                            LIMIT 1),i.liter)",
           'observation' => "i.observation");
