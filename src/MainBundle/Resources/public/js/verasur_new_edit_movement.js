@@ -3,6 +3,33 @@ var verasurNewEditMovement = function () {
     var Initialize = function () {
         //$(".datepicker").datepicker('setDate', new Date());
         $("select").removeClass("form-control");
+        
+        //Carga de tanques segun el producto seleccionado
+        var productoAnterior = $("#mainbundle_egress_product,#mainbundle_ingress_product").val();
+        $("#mainbundle_egress_product").change(function () {
+            var value = $(this).select2('val');
+            if(productoAnterior != value){
+                $('#tanque1,#tanque2').select2("val", "");
+            }
+            if (value != 0) {
+                productoAnterior = value;
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('getTanksAjax', {id: value}),
+                    dataType: "json",
+                    success: function (jsonTanks) {
+                        $('#tanque1 option, #tanque2 option').addClass("hide");
+                        for (var tank in jsonTanks) {
+                            var arrayTank = jsonTanks[tank];
+                            $('#tanque1 option[value="' + arrayTank[0] + '"],#tanque2 option[value="' + arrayTank[0] + '"]').removeClass("hide");
+                        }
+                    }
+                });
+            } 
+//            else {
+//                $('#tanque1, #tanque2').html("");
+//            }
+        });
 
         $("#mainbundle_ingress_grossWeight,#mainbundle_ingress_tareWeight,#mainbundle_egress_grossWeight,#mainbundle_egress_tareWeight").keyup(function () {
             $("#mainbundle_ingress_clean,#mainbundle_egress_clean").val(calculateClean());
@@ -38,7 +65,7 @@ var verasurNewEditMovement = function () {
                         $('#mainbundle_egress_driver option, #mainbundle_ingress_driver option').addClass("hide");
                         for (var driver in jsonDrivers) {
                             var arrayDriver = jsonDrivers[driver];
-                                $('#mainbundle_egress_driver option[value="' + arrayDriver[0] + '"],#mainbundle_ingress_driver option[value="' + arrayDriver[0] + '"]').removeClass("hide");
+                            $('#mainbundle_egress_driver option[value="' + arrayDriver[0] + '"],#mainbundle_ingress_driver option[value="' + arrayDriver[0] + '"]').removeClass("hide");
                         }
                     }
                 });
