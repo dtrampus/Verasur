@@ -96,8 +96,10 @@
                         <hr class="simple">
 
                         <a href="{{ path('tank') }}" class="btn btn-default">Volver</a>
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <a href="{{ path('tank_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
                         <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+                        {% endif %}
 
                     </div>
                     <!-- end widget content -->
