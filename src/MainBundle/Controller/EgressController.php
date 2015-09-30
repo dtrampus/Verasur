@@ -31,7 +31,6 @@ class EgressController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MainBundle:Egress')->findAll();
-        session_destroy();
         return $this->render('MainBundle:Egress:index.html.twig', array(
                     'entities' => $entities,
         ));

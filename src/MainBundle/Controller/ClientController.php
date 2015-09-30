@@ -30,7 +30,6 @@ class ClientController extends Controller
         
         $clients = $query->getResult();
         
-        session_destroy();
         return $this->render('MainBundle:Client:index.html.twig', array(
             'entities' => $clients,
         ));

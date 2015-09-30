@@ -26,7 +26,20 @@ security:
     access_control:
         - { path: ^/$, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/tank/show/$, role: ROLE_OPERATOR }
+        - { path: ^/inventory/index/show/$, role: ROLE_OPERATOR }
+        - { path: ^/inventory/ajax/list, role: ROLE_OPERATOR }
         - { path: ^/provider, role: ROLE_SUPERVISOR }
-#        - { path: ^/group, role: ROLE_ADMIN }
+        - { path: ^/client, role: ROLE_SUPERVISOR }
+        - { path: ^/transport, role: ROLE_SUPERVISOR }
+        - { path: ^/driver, role: ROLE_SUPERVISOR }
+        - { path: ^/product, role: ROLE_SUPERVISOR }
+        - { path: ^/tank, role: ROLE_SUPERVISOR }
+        - { path: ^/inventory, role: ROLE_SUPERVISOR }
+        - { path: ^/ingress, role: ROLE_SUPERVISOR }
+        - { path: ^/egress, role: ROLE_SUPERVISOR }
+        - { path: ^/pass, role: ROLE_SUPERVISOR }
+        - { path: ^/report/inventory/index, role: ROLE_SUPERVISOR }
+        - { path: ^/group, role: ROLE_ADMIN }
+        - { path: ^/user, role: ROLE_ADMIN }

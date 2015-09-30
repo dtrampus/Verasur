@@ -42,13 +42,14 @@
                         <p>Total a descargar: {{ ingressInfo.realLiter }} litros.</p>
                         <form id="download-form" action="{{ path('ingress_createDownload') }}" method="POST">
                             <input type="hidden" name="ingressId" value="{{ ingressInfo.id }}">
+                            <input type="hidden" name="ingress-product" id="ingress-product" value="{{ ingressInfo.product.id }}">
                             <div class="form-group">
                                 <label>Tanque 1:</label> <span id="tank1Msg"></span>
                                 <select class="select2 tanque1" id="tanque1" name="tanque1">
                                     <option value="" selected="selected">Elige un tanque</option>
-                                    {% for entity in entities %}
+                                    {#{% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
-                                    {% endfor %}
+                                    {% endfor %}#}
                                 </select>
                                 <input type="hidden" id="tank1FreeCapacity" />
                             </div>
@@ -62,9 +63,9 @@
                                 <label>Tanque 2:</label> <span id="tank2Msg"></span>
                                 <select class="select2 tanque2" id="tanque2" name="tanque2">
                                     <option value="" selected="selected">Elige un tanque</option>
-                                    {% for entity in entities %}
+                                    {#{% for entity in entities %}
                                         <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
-                                    {% endfor %}
+                                    {% endfor %}#}
                                 </select>
                                 <input type="hidden" id="tank2FreeCapacity" />
                             </div>
@@ -99,6 +100,26 @@
         $(document).ready(function () {
             $('.cantidad2').prop('readonly', true);
             var total = redondeo({{ingressInfo.realLiter}},2);
+            
+            //carga de tanques
+            $("#tanque1, #tanque2").html("");
+            var value = $("#ingress-product").val();
+            if (value != 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('getTanksAjax', {id: value}),
+                    dataType: "json",
+                    success: function (jsonTanks) {
+                        $('#tanque1, #tanque2').html("");
+                        for (var tank in jsonTanks) {
+                            var arrayTank = jsonTanks[tank];
+                            $('#tanque1, #tanque2').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                        }
+                    }
+                });
+            } else {
+                $('#tanque1, #tanque2').html("");
+            }
 
             //Rules
             jQuery.validator.addMethod("notEqual", function(value, element, param) {

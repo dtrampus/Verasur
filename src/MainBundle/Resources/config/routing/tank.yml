@@ -40,3 +40,15 @@ calculateCapacity:
     defaults: { _controller: "MainBundle:Tank:calculateCapacity" }
     options:
         expose: true
+        
+calculateGraph:
+    pattern: /calculateGraph
+    defaults: { _controller: "MainBundle:Tank:calculateGraph" }
+    options:
+        expose: true
+
+calculateGraph2:
+    pattern: /{code}/calculateGraph2
+    defaults: { _controller: "MainBundle:Tank:calculateGraph2" }
+    options:
+        expose: true

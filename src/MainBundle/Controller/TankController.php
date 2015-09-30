@@ -24,7 +24,7 @@ class TankController extends Controller {
         $entities = $em->getRepository('MainBundle:Tank')->findAll();
 
         return $this->render('MainBundle:Tank:index.html.twig', array(
-                    'entities' => $entities,
+                    'entities' => $entities
         ));
     }
 
@@ -256,6 +256,13 @@ class TankController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MainBundle:Tank')->find($id);
         $result = $em->getRepository('MainBundle:Tank')->calculateFreeOcuped($entity);
+        return new JsonResponse($result);
+    }
+    
+    public function calculateGraph2Action($code) {
+        $em = $this->getDoctrine()->getManager();
+//        $entity = $em->getRepository('MainBundle:Tank')->findby(array('code' => $code));
+        $result = $em->getRepository('MainBundle:Tank')->calculateGraphic2($code);
         return new JsonResponse($result);
     }
 

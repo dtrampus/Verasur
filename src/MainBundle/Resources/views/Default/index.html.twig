@@ -1,13 +1,74 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <h1 class="page-title txt-color-Dark"><i class="fa fa-desktop fa-fw "></i> Bienvenido! </h1>
-    <div id="stacked-bar-graph" class="chart no-padding"></div>
+    <section id="widget-grid" class="">
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success fade in">
+                        <button class="close" data-dismiss="alert">×</button>
+                        <i class="fa-fw fa fa-check"></i>
+                        <strong>Éxito:</strong> {{ flashMessage }}
+                    </div>
+                {% endfor %}
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-white" id="wid-id-0" data-widget-editbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-bar-chart"></i> </span>
+                        <h2>Estado de Tanques </h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <!-- widget content -->
+                        <div class="widget-body no-padding col-lg-12">
+                            <div class='row'>
+                            {% for tank in tanks %}
+                                <div id="{{ tank.id }}" data-x='{{ tank.x }}' data-y='{{ tank.y }}' data-z='{{ tank.z }}' class="c col col-xs-3" style='height: 220px;'></div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </article>
+        </div>
+    </section>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts 'SmartAdmin/js/plugin/morris/morris-chart-settings.min.js'
+    {% javascripts 'SmartAdmin/js/plugin/morris/morris.min.js'
+                   'SmartAdmin/js/plugin/morris/raphael.min.js'
     %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
@@ -16,39 +77,51 @@
     <script type="text/javascript">
         // START AND FINISH DATE
         $(document).ready(function () {
-            if ($('#stacked-bar-graph').length) {
-					Morris.Bar({
-						element : 'stacked-bar-graph',
-						axes : false,
-						grid : false,
-						data : [{
-							x : '2011 Q1',
-							y : 3,
-							z : 2,
-							a : 3
-						}, {
-							x : '2011 Q2',
-							y : 2,
-							z : null,
-							a : 1
-						}, {
-							x : '2011 Q3',
-							y : 0,
-							z : 2,
-							a : 4
-						}, {
-							x : '2011 Q4',
-							y : 2,
-							z : 4,
-							a : 3
-						}],
-						xkey : 'x',
-						ykeys : ['y', 'z', 'a'],
-						labels : ['Y', 'Z', 'A'],
-						stacked : true
-					});
-				}
-            
+
+            $(".c").each( function() {
+                var id = $(this).attr("id");
+                var x = $(this).attr("data-x");
+                var y = $(this).attr("data-y");
+                var z = $(this).attr("data-z");
+                Morris.Bar({
+                    element: id,
+                    axes: true,
+                    grid: true,
+                    data: [{
+                            x: x,
+                            y: y,
+                            z: z
+                        }],
+                    xkey: 'x',
+                    ykeys: ['y', 'z'],
+                    stacked: true,
+                    postUnits: ' %',
+                    barColors: ['#4F89DB', '#ADADAD'],
+                    hideHover: 'auto',
+                    hoverCallback: function (index, options) {
+                        var row = options.data[index];
+                        var rowX = row['x'];
+                        var cutRowX = rowX.split("-", 1);
+                        var code = $.trim(cutRowX);
+                        var html = '';
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateGraph2', {code: code}),
+                            dataType: "json",
+                            async: false,
+                            success: function (jsonTankInfo) {
+                                html += "<label style='font-weight: bold;'>" + jsonTankInfo["name"] + "</label><br/>";
+                                html += "<label>Estado: " + jsonTankInfo["status"] + "</label><br/>";
+                                html += "<label>Capacidad Total: " + jsonTankInfo["totalCapacity"] + " litros</label><br/>";
+                                html += "<label style='color:" + options.barColors[0] + "'>Ocupado: " + jsonTankInfo["occupied"] + " litros</label><br/>";
+                                html += "<label style='color:" + options.barColors[1] + "'>Libre: " + jsonTankInfo["free"] + " litros</label>";
+                            }
+                        });
+                        return html;
+                    }
+                });
+            });
+
         });
     </script>
 {% endblock %}
