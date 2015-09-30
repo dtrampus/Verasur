@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>No tienes los permisos para ingresar a ésta sección.</h1>
+    <h1>Error!.</h1>
 
     {# example security usage, see below #}
     {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -9,7 +9,6 @@
     {% endif %}
 
     <p>
-        The requested page couldn't be located. Checkout for any URL
-        misspelling or <a href="{{ path('main_home') }}">return to the homepage</a>.
+        <a href="{{ path('main_home') }}">Volver al inicio.</a>
     </p>
 {% endblock %}
