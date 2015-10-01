@@ -51,7 +51,7 @@ class UserController extends Controller
                 'El usuario se ha creado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_list'));
         }
 
         return $this->render('UserBundle:User:new.html.twig', array(
@@ -135,7 +135,7 @@ class UserController extends Controller
                 'El usuario se ha editado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('user_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('user_list'));
         }
 
         return $this->render('UserBundle:User:edit.html.twig', array(
