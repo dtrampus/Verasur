@@ -84,32 +84,36 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-{#                                <tbody>
-                                    {% for entity in entities %}
-                                        <tr>
-                                            <td>{{ entity.baln }}</td>
-                                            <td>{{ entity.date|date("d/m/Y")}}</td>
-                                            <td>{{ entity.client }}</td>
-                                            <td>{{ entity.truckDomain }}</td>
-                                            <td>{{ entity.coupledDomain }}</td>
-                                            <td>{{ entity.transport }}</td>
-                                            <td>{{ entity.driver }}</td>
-                                            <td>{{ entity.grossWeight }}</td>
-                                            <td>{{ entity.tareWeight }}</td>
-                                            <td>{{ entity.product }}</td>
-                                            <td>{{ entity.density }}</td>
-                                            <td>{{ entity.clean }}</td>
-                                            <td>{{ entity.realLiter }}</td>
-                                            <td>{{ entity.branchNumber }} - {{ entity.remitNumber }}</td>
-                                            <td>
-                                                <a class="btn btn-primary" href="{{ path('egress_show', { 'id': entity.id }) }}">Ver</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>#}
+                                {#                                <tbody>
+                                                                    {% for entity in entities %}
+                                                                        <tr>
+                                                                            <td>{{ entity.baln }}</td>
+                                                                            <td>{{ entity.date|date("d/m/Y")}}</td>
+                                                                            <td>{{ entity.client }}</td>
+                                                                            <td>{{ entity.truckDomain }}</td>
+                                                                            <td>{{ entity.coupledDomain }}</td>
+                                                                            <td>{{ entity.transport }}</td>
+                                                                            <td>{{ entity.driver }}</td>
+                                                                            <td>{{ entity.grossWeight }}</td>
+                                                                            <td>{{ entity.tareWeight }}</td>
+                                                                            <td>{{ entity.product }}</td>
+                                                                            <td>{{ entity.density }}</td>
+                                                                            <td>{{ entity.clean }}</td>
+                                                                            <td>{{ entity.realLiter }}</td>
+                                                                            <td>{{ entity.branchNumber }} - {{ entity.remitNumber }}</td>
+                                                                            <td>
+                                                                                <a class="btn btn-primary" href="{{ path('egress_show', { 'id': entity.id }) }}">Ver</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>#}
                             </table>
                         </div>
                         <!-- end widget content -->
+
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                            <input type="hidden" id="user" name="user" class="form-control" value="supervisor" />    
+                        {% endif %}
 
                     </div>
                     <!-- end widget div -->
@@ -132,7 +136,8 @@
     {% endjavascripts %}
     <script type="text/javascript">
         jQuery(document).ready(function () {
-
+            
+            var supervisor = $("#user").val();
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
@@ -144,23 +149,27 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": "{{ path('egress_list') }}",
-                        "order": [[0, "asc"]],
+                "order": [[0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "columnDefs": [
-                    { "name": "e.baln","targets": 0,"className": "text-center" },
-                    { "name": "e.date","targets": 1,"className": "text-center" },
-                    { "name": "client.nombre","targets": 2,"className": "text-center" },
-                    { "name": "transport.transport","targets": 3,"className": "text-center" },
-                    { "name": "product.description","targets": 4,"className": "text-center" },
-                    { "name": "e.realLiter","targets": 5,"className": "text-center" },
-                    { "name": "e.branchNumber","targets": 6,"className": "text-center" },
-                    { "name": "e.remitNumber","targets": 7,"className": "text-center" },
-                    { "name": "e.id", "targets": 8,"className": "text-center", "searchable": false,"orderable":false,
-                        "render": function ( data, type, row ) {
-                            return '<a href="'+Routing.generate('egress_show', { id: row[8] })+'" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="'+Routing.generate('egress_edit', { id: row[8] })+'" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"></i></a>';
-                        } 
+                    {"name": "e.baln", "targets": 0, "className": "text-center"},
+                    {"name": "e.date", "targets": 1, "className": "text-center"},
+                    {"name": "client.nombre", "targets": 2, "className": "text-center"},
+                    {"name": "transport.transport", "targets": 3, "className": "text-center"},
+                    {"name": "product.description", "targets": 4, "className": "text-center"},
+                    {"name": "e.realLiter", "targets": 5, "className": "text-center"},
+                    {"name": "e.branchNumber", "targets": 6, "className": "text-center"},
+                    {"name": "e.remitNumber", "targets": 7, "className": "text-center"},
+                    {"name": "e.id", "targets": 8, "className": "text-center", "searchable": false, "orderable": false,
+                        "render": function (data, type, row) {
+                            if (supervisor != "supervisor") {
+                                return '<a href="' + Routing.generate('egress_show', {id: row[8]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
+                            } else {
+                                return '<a href="' + Routing.generate('egress_show', {id: row[8]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a><a href="' + Routing.generate('egress_edit', {id: row[8]}) + '" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"></i></a>';
+                            }
+                        }
                     }
                 ],
                 "preDrawCallback": function () {

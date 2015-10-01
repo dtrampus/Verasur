@@ -68,31 +68,35 @@
                                 </thead>
                                 <tbody>
                                     {% for entity in entities %}
-                                         <tr>
-                                    <td>{{ entity.code }}</td>
-                                    <td>{{ entity.description }}</td>
-                                    <td>
-                                        <ul class="list-unstyled">
-                                            {% for product in entity.products %}
-                                                <li><span class="label label-primary">{{ product.code }} - {{ product.description }}</span></li>
-                                                {% endfor %}
-                                        </ul>
-                                    </td>
-                                    <td>{{ entity.totalCapacity }}</td>
-                                    <td>{{ entity.plant ? 'Si':'No' }}</td>
-                                    <td>{{ entity.status }}</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
-                                        <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_edit', { 'id': entity.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('inventory', { 'id': entity.id }) }}"><i class="fa fa-th-large"></i> Inventario</a>
-                                    </td>
-                                    </tr>
-                                {% endfor %}
+                                        <tr>
+                                            <td>{{ entity.code }}</td>
+                                            <td>{{ entity.description }}</td>
+                                            <td>
+                                                <ul class="list-unstyled">
+                                                    {% for product in entity.products %}
+                                                        <li><span class="label label-primary">{{ product.code }} - {{ product.description }}</span></li>
+                                                        {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td>{{ entity.totalCapacity }}</td>
+                                            <td>{{ entity.plant ? 'Si':'No' }}</td>
+                                            <td>{{ entity.status }}</td>
+                                            <td>
+                                                {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_edit', { 'id': entity.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('inventory', { 'id': entity.id }) }}"><i class="fa fa-th-large"></i> Inventario</a>
+                                                {% else %}
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('inventory', { 'id': entity.id }) }}"><i class="fa fa-th-large"></i> Inventario</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                         <!-- end widget content -->
-
                     </div>
                     <!-- end widget div -->
 
@@ -160,8 +164,10 @@
                     }
                 }
             });
-            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('tank_new') }}">Nuevo</a>');
-        });
+        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('tank_new') }}">Nuevo</a>');
+        {% endif %}
+            });
     </script>
 {% endblock %}
 

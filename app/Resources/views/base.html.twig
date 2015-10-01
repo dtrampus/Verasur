@@ -205,16 +205,13 @@
                                 </li>#}
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="{{ path('fos_user_security_logout') }}" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                                    <a href="{{ path('fos_user_security_logout') }}" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>S</u>alir</strong></a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
 
                     <!-- logout button -->
-                    <div id="logout" class="btn-header transparent pull-right">
-                        <span> <a href="{{ path('fos_user_security_logout') }}" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
-                    </div>
                     <!-- end logout button -->
 
                     <!-- search mobile button (this is hidden till mobile view port) -->
@@ -354,6 +351,7 @@
                         <li class="active">
                             <a href="{{ path('main_home') }}" title="Home"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Home</span></a>
                         </li>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-user"></i> <span class="menu-item-parent">Gestión de Usuarios</span></a>
                             <ul>
@@ -376,6 +374,8 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-truck"></i> <span class="menu-item-parent">Gestión de Proveedores</span></a>
                             <ul>
@@ -431,15 +431,18 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-database"></i> <span class="menu-item-parent">Gestión de Tanques</span></a>
                             <ul>
                                 <li>
                                     <a href="{{ path('tank') }}">Listado de Tanques</a>
                                 </li>
+                                {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                                 <li>
                                     <a href="{{ path('tank_new') }}">Carga de Tranques</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </li>
                         <li>
@@ -475,6 +478,7 @@
                                 </li>
                             </ul>
                         </li>
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-file-text"></i> <span class="menu-item-parent">Informes</span></a>
                             <ul>
@@ -483,6 +487,7 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
 {#                        <li>
                             <a href="inbox.html"><i class="fa fa-lg fa-fw fa-inbox"></i> <span class="menu-item-parent">Inbox</span><span class="badge pull-right inbox-badge">14</span></a>
                         </li>

@@ -40,7 +40,7 @@ var verasurNewEditPass = function () {
             if (value2 != '' && typeof value2 != "undefined") {
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('getTankAjax', {id: value2}),
+                    url: Routing.generate('getTanksAjax', {id: value2}),
                     dataType: "json",
                     success: function (jsonTanks) {
                         $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
