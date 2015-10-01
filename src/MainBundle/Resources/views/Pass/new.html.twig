@@ -72,10 +72,7 @@
                                         <div class="form-group">                
                                             <label class="control-label required" for="mainbundle_pass_tank_destination">Tanque/Planta Destino</label>
                                             <select id="mainbundle_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
-                                                <option value="" selected="selected">Elige una opción</option>    
-                                                {% for tank in tanks %}
-                                                    <option value="{{ tank.id }}" >{{ tank.code }} - {{ tank.description }}</option>                   
-                                                {% endfor %}
+                                                <option value="" selected="selected">Elige una opción</option>
                                             </select>
                                             <span id='cantidad2'></span>
                                         </div>

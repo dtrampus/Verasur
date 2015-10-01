@@ -50,10 +50,10 @@ class TankType extends AbstractType {
                     'attr' => array('class' => 'select2', 'placeholder' => 'Elige una opción', 'style' => "width:100%"),
                     'class' => 'MainBundle\Entity\Product',
                     'query_builder' => function (ProductRepository $repository) {
-                            return $repository->createQueryBuilder('p')
-                                        ->where('p.active = ?1')
-                                        ->setParameter(1, true);
-                        }
+                return $repository->createQueryBuilder('p')
+                        ->where('p.active = ?1')
+                        ->setParameter(1, true);
+            }
                 ))
         ;
     }

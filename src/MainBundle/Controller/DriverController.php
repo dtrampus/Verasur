@@ -182,7 +182,7 @@ class DriverController extends Controller
                 'El chofer se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('driver_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('driver', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Driver:edit.html.twig', array(
