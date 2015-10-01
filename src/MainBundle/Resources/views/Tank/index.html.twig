@@ -157,7 +157,9 @@
                     }
                 }
             });
+            {% if app.user and is_granted('ROLE_SUPERVISOR') %}
             $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('tank_new') }}">Nuevo</a>');
+            {% endif %}
         });
     </script>
 {% endblock %}

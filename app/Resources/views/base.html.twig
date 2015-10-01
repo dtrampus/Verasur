@@ -354,6 +354,7 @@
                         <li class="active">
                             <a href="{{ path('main_home') }}" title="Home"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Home</span></a>
                         </li>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-user"></i> <span class="menu-item-parent">Gestión de Usuarios</span></a>
                             <ul>
@@ -376,6 +377,8 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-truck"></i> <span class="menu-item-parent">Gestión de Proveedores</span></a>
                             <ul>
@@ -431,15 +434,18 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-database"></i> <span class="menu-item-parent">Gestión de Tanques</span></a>
                             <ul>
                                 <li>
                                     <a href="{{ path('tank') }}">Listado de Tanques</a>
                                 </li>
+                                {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                                 <li>
                                     <a href="{{ path('tank_new') }}">Carga de Tranques</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </li>
                         <li>
@@ -476,6 +482,7 @@
                                 </li>
                             </ul>
                         </li>
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-file-text"></i> <span class="menu-item-parent">Informes</span></a>
                             <ul>
@@ -484,6 +491,7 @@
                                 </li>
                             </ul>
                         </li>
+                        {% endif %}
 {#                        <li>
                             <a href="inbox.html"><i class="fa fa-lg fa-fw fa-inbox"></i> <span class="menu-item-parent">Inbox</span><span class="badge pull-right inbox-badge">14</span></a>
                         </li>
