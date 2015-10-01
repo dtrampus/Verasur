@@ -6,7 +6,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Inventario <span>&gt; Listado de Inventarios </span></h1>
         </div>
     </div>
-    
+
     <section id="widget-grid" class="">
         <!-- row -->
         <div class="row">
@@ -20,7 +20,7 @@
                         <strong>Éxito:</strong> {{ flashMessage }}
                     </div>
                 {% endfor %}
-                
+
                 <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget jarviswidget-color-white" id="wid-id-0" data-widget-editbutton="false">
                     <!-- widget options:
@@ -38,7 +38,7 @@
                     -->
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Listado de Inventarios {{tank.plant?"de la planta":"del tanque"}} {{tank.code}} - {{tank.description}}</h2>
+                        <h2>Listado de Inventarios {{tank.plant ? "de la planta":"del tanque"}} {{tank.code}} - {{tank.description}}</h2>
 
                     </header>
 
@@ -72,6 +72,10 @@
                         </div>
                         <!-- end widget content -->
 
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                            <input type="hidden" id="user" name="user" class="form-control" value="supervisor" />    
+                        {% endif %}
+
                     </div>
                     <!-- end widget div -->
 
@@ -95,6 +99,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function () {
 
+            var supervisor = $("#user").val();
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
@@ -119,7 +124,15 @@
                     {"name": "volume"},
                     {"name": "difference"},
                     {"name": "observation"},
-                    {"name": "id","className": "text-center","render": function ( data, type, row ) { return '<a href="'+Routing.generate('inventory_show', { id: row[7] })+'" class="btn btn-primary">Ver</a>'; }}
+                    {"name": "id", "className": "text-center", "render": function (data, type, row) {
+                            if (supervisor != "supervisor") {
+                                return '<a href="' + Routing.generate('inventory_show', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
+                            } else {
+                                return '<a href="' + Routing.generate('inventory_show', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>\n\
+                                    <a href="' + Routing.generate('inventory_edit', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
+                            }
+                        }
+                    }
                 ],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
@@ -137,16 +150,27 @@
                     responsiveHelper_dt_basic.respond();
                 },
                 "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por pagina",
-                    "zeroRecords": "Nada encontrado",
-                    "info": "Mostrando pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "paginate": {
-                        "first": "Primera",
-                        "last": "Última",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
                 }
             });

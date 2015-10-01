@@ -49,6 +49,7 @@ class PassController extends Controller {
         $tank2 = $em->getRepository('MainBundle:Tank')->find($tank_2);
         $productId = $request->request->get('product');
         $quantity = $request->request->get('quantity');
+        $tank2->setStatus("N/A");
 
         $product = $this->getDoctrine()->getRepository('MainBundle:Product')->find($productId);
 
@@ -184,6 +185,7 @@ class PassController extends Controller {
         $tank2 = $em->getRepository('MainBundle:Tank')->find($tank_2);
         $productId = $request->request->get('product');
         $quantity = $request->request->get('quantity');
+        $tank2->setStatus("N/A");
 
         $product = $this->getDoctrine()->getRepository('MainBundle:Product')->find($productId);
 
@@ -218,7 +220,7 @@ class PassController extends Controller {
                     'success', 'El pase se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('pass_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pass', array('id' => $id)));
         
     }
 

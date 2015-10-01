@@ -20,6 +20,8 @@ pass_create:
 pass_edit:
     path:     /{id}/edit
     defaults: { _controller: "MainBundle:Pass:edit" }
+    options:
+        expose: true
 
 pass_update:
     path:     /{id}/update

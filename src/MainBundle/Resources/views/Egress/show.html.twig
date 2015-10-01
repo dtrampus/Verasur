@@ -16,7 +16,7 @@
                     <strong>Éxito:</strong> {{ flashMessage }}
                 </div>
             {% endfor %}
-            
+
             <div class="jarviswidget" id="wid-id-8" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
@@ -68,64 +68,64 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="hb1">    
                                 <div class="row">
-                                        <div class="col-md-3"><p>BALN: {{ entity.baln }}</p></div>
-                                        <div class="col-md-3"><p>Fecha y Hora: {{ entity.date|date("d/m/Y h:m") }}</p></div>
+                                    <div class="col-md-3"><p>BALN: {{ entity.baln }}</p></div>
+                                    <div class="col-md-3"><p>Fecha y Hora: {{ entity.date|date("d/m/Y h:m") }}</p></div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <p>Peso Bruto: {{ entity.grossWeight|number_format(2, '.', ',') }}</p>
                                     </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <p>Peso Bruto: {{ entity.grossWeight|number_format(2, '.', ',') }}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Tara: {{ entity.tareWeight|number_format(2, '.', ',') }}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Densidad: {{ entity.density }}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
-                                        </div>
+                                    <div class="col-md-3">
+                                        <p>Tara: {{ entity.tareWeight|number_format(2, '.', ',') }}</p>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Neto: {{ entity.clean|number_format(2, '.', ',') }}</p></div>
-                                        <div class="col-md-3"><p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p></div>  
+                                    <div class="col-md-3">
+                                        <p>Densidad: {{ entity.density }}</p>
                                     </div>
-                                    <hr>
-                                    <h5>Muestra:</h5>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Destilación la gota: {{ entity.distillationGout }}</p></div>
-                                        <div class="col-md-3"><p>5%: {{ entity.fivePercent }}</p></div>
+                                    <div class="col-md-3">
+                                        <p>Densidad analizada: {{ entity.tested?'si':'no' }}</p>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>10%: {{ entity.tenPercent }}</p></div>
-                                        <div class="col-md-3"><p>20%: {{ entity.twentyPercent }}</p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>30%: {{ entity.thirtyPercent }}</p></div>
-                                        <div class="col-md-3"><p>40%: {{ entity.fortyPercent }}</p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>50%: {{ entity.fiftyPercent }}</p></div>
-                                        <div class="col-md-3"><p>60%: {{ entity.sixtyPercent }}</p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>70%: {{ entity.seventyPercent }}</p></div>
-                                        <div class="col-md-3"><p>80%: {{ entity.eightyPercent }}</p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>90%: {{ entity.ninetyPercent }}</p></div>
-                                        <div class="col-md-3"><p>95%: {{ entity.ninetyFivePercent }}</p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>P. Seco: {{ entity.pDry }}</p></div>
-                                        <div class="col-md-3"><p>P. Final: {{ entity.pFinal }}</p></div>
-                                        <div class="col-md-3"><p>Recuperado: {{ entity.recovered }}</p><br></div>
-                                    </div>
-                                    <hr>
-                                    <p>Número de remito: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
-                                    <p>Observación: {{ entity.observation }}</p>
-                                    <p>Usuario Asociado: {{ entity.user.username }}</p>
-                                    <p>Estado: {{ entity.status }}</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>Neto: {{ entity.clean|number_format(2, '.', ',') }}</p></div>
+                                    <div class="col-md-3"><p>Litros Reales: {{ entity.realLiter|number_format(2, '.', ',') }}</p></div>  
+                                </div>
+                                <hr>
+                                <h5>Muestra:</h5>
+                                <div class="row">
+                                    <div class="col-md-3"><p>Destilación la gota: {{ entity.distillationGout }}</p></div>
+                                    <div class="col-md-3"><p>5%: {{ entity.fivePercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>10%: {{ entity.tenPercent }}</p></div>
+                                    <div class="col-md-3"><p>20%: {{ entity.twentyPercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>30%: {{ entity.thirtyPercent }}</p></div>
+                                    <div class="col-md-3"><p>40%: {{ entity.fortyPercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>50%: {{ entity.fiftyPercent }}</p></div>
+                                    <div class="col-md-3"><p>60%: {{ entity.sixtyPercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>70%: {{ entity.seventyPercent }}</p></div>
+                                    <div class="col-md-3"><p>80%: {{ entity.eightyPercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>90%: {{ entity.ninetyPercent }}</p></div>
+                                    <div class="col-md-3"><p>95%: {{ entity.ninetyFivePercent }}</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><p>P. Seco: {{ entity.pDry }}</p></div>
+                                    <div class="col-md-3"><p>P. Final: {{ entity.pFinal }}</p></div>
+                                    <div class="col-md-3"><p>Recuperado: {{ entity.recovered }}</p><br></div>
+                                </div>
+                                <hr>
+                                <p>Número de remito: {{ entity.branchNumber}} - {{entity.remitNumber}}</p>
+                                <p>Observación: {{ entity.observation }}</p>
+                                <p>Usuario Asociado: {{ entity.user.username }}</p>
+                                <p>Estado: {{ entity.status }}</p>
                             </div>
                             <div class="tab-pane" id="hb2">
                                 <ul class="list-group">
@@ -176,8 +176,8 @@
 
                         <a href="{{ path('egress') }}" class="btn btn-default">Volver</a>
                         {% if app.user and is_granted('ROLE_SUPERVISOR') %}
-                        <a href="{{ path('egress_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
-                        <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+                            <a href="{{ path('egress_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
+                            <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
                         {% endif %}
 
                     </div>
@@ -188,30 +188,30 @@
             </div>
         </article>
     </div>
-                        
+
     {{ form_start(delete_form) }}
-        <!-- Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">Confirmación de eliminación</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Está seguro que desea eliminar el registro?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            Cancelar
-                        </button>
-                        <input class="btn btn-danger pull-right" type="submit" value="Eliminar" />
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmación de eliminación</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Está seguro que desea eliminar el registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <input class="btn btn-danger pull-right" type="submit" value="Eliminar" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     {{ form_end(delete_form) }}
-    
+
 {% endblock %}

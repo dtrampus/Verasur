@@ -191,7 +191,7 @@ class ProductController extends Controller
                 'El producto se ha editado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('product_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('product', array('id' => $id)));
         }
 
         return $this->render('MainBundle:Product:edit.html.twig', array(

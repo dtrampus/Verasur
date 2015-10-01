@@ -62,34 +62,41 @@
                                         <th data-hide="phone">Producto</th>
                                         <th data-hide="phone">Capacidad Total</th>
                                         <th data-hide="phone">Planta</th>
+                                        <th data-hide="phone">Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for entity in entities %}
-                                         <tr>
-                                    <td>{{ entity.code }}</td>
-                                    <td>{{ entity.description }}</td>
-                                    <td>
-                                        <ul class="list-unstyled">
-                                            {% for product in entity.products %}
-                                                <li><span class="label label-primary">{{ product.code }} - {{ product.description }}</span></li>
-                                                {% endfor %}
-                                        </ul>
-                                    </td>
-                                    <td>{{ entity.totalCapacity }}</td>
-                                    <td>{{ entity.plant ? 'Si':'No' }}</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="{{ path('tank_show', { 'id': entity.id }) }}">Ver</a>
-                                        <a class="btn btn-primary" href="{{ path('inventory', { 'id': entity.id }) }}">Inventario</a>
-                                    </td>
-                                    </tr>
-                                {% endfor %}
+                                        <tr>
+                                            <td>{{ entity.code }}</td>
+                                            <td>{{ entity.description }}</td>
+                                            <td>
+                                                <ul class="list-unstyled">
+                                                    {% for product in entity.products %}
+                                                        <li><span class="label label-primary">{{ product.code }} - {{ product.description }}</span></li>
+                                                        {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td>{{ entity.totalCapacity }}</td>
+                                            <td>{{ entity.plant ? 'Si':'No' }}</td>
+                                            <td>{{ entity.status }}</td>
+                                            <td>
+                                                {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_edit', { 'id': entity.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('inventory', { 'id': entity.id }) }}"><i class="fa fa-th-large"></i> Inventario</a>
+                                                {% else %}
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('tank_show', { 'id': entity.id }) }}"><i class="fa fa-search"></i></a>
+                                                    <a class="btn btn-primary btn-sm margin-right-5" href="{{ path('inventory', { 'id': entity.id }) }}"><i class="fa fa-th-large"></i> Inventario</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                         <!-- end widget content -->
-
                     </div>
                     <!-- end widget div -->
 
@@ -144,23 +151,34 @@
                     responsiveHelper_dt_basic.respond();
                 },
                 "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por pagina",
-                    "zeroRecords": "Nada encontrado",
-                    "info": "Mostrando pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "paginate": {
-                        "first": "Primera",
-                        "last": "Última",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
                 }
             });
-            {% if app.user and is_granted('ROLE_SUPERVISOR') %}
-            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('tank_new') }}">Nuevo</a>');
-            {% endif %}
-        });
+        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('tank_new') }}">Nuevo</a>');
+        {% endif %}
+            });
     </script>
 {% endblock %}
 
