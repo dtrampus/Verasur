@@ -20,6 +20,8 @@ inventory_create:
 inventory_edit:
     path:     /{id}/edit
     defaults: { _controller: "MainBundle:Inventory:edit" }
+    options:
+        expose: true
 
 inventory_update:
     path:     /{id}/update

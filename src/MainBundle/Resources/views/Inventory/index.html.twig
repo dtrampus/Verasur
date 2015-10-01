@@ -38,7 +38,7 @@
                     -->
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Listado de Inventarios {{tank.plant?"de la planta":"del tanque"}} {{tank.code}} - {{tank.description}}</h2>
+                        <h2>Listado de Inventarios {{tank.plant ? "de la planta":"del tanque"}} {{tank.code}} - {{tank.description}}</h2>
 
                     </header>
 
@@ -72,6 +72,10 @@
                         </div>
                         <!-- end widget content -->
 
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
+                            <input type="hidden" id="user" name="user" class="form-control" value="supervisor" />    
+                        {% endif %}
+
                     </div>
                     <!-- end widget div -->
 
@@ -95,6 +99,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function () {
 
+            var supervisor = $("#user").val();
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
@@ -120,8 +125,14 @@
                     {"name": "difference"},
                     {"name": "observation"},
                     {"name": "id", "className": "text-center", "render": function (data, type, row) {
-                            return '<a href="' + Routing.generate('inventory_show', {id: row[7]}) + '" class="btn btn-primary">Ver</a>';
-                        }}
+                            if (supervisor != "supervisor") {
+                                return '<a href="' + Routing.generate('inventory_show', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
+                            } else {
+                                return '<a href="' + Routing.generate('inventory_show', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>\n\
+                                    <a href="' + Routing.generate('inventory_edit', {id: row[7]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
+                            }
+                        }
+                    }
                 ],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +

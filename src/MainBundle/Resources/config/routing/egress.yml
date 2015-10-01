@@ -20,6 +20,8 @@ egress_create:
 egress_edit:
     path:     /{id}/edit
     defaults: { _controller: "MainBundle:Egress:edit" }
+    options:
+        expose: true
 
 egress_update:
     path:     /{id}/update

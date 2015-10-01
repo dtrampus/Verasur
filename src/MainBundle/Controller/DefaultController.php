@@ -8,6 +8,11 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+       $em = $this->getDoctrine()->getManager();
+       $tanks = $em->getRepository('MainBundle:Tank')->calculateGraphic();
+       
+        return $this->render('MainBundle:Default:index.html.twig', array(
+                    'tanks' => $tanks
+        ));
     }
 }

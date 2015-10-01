@@ -104,6 +104,20 @@ class Tank {
      * 
      */
     protected $products;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255)
+     */
+    private $status;  
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reason", type="text", nullable=true)
+     */
+    private $reason;
 
     /**
      * @ORM\OneToMany(targetEntity="MovementDetail", mappedBy="tank", cascade={"persist"})
@@ -435,5 +449,51 @@ class Tank {
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
         $this->movementDetails = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inventories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Provider
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+        /**
+     * Set reason
+     *
+     * @param string $reason
+     * @return Movement
+     */
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+
+        return $this;
+    }
+
+    /**
+     * Get reason
+     *
+     * @return string 
+     */
+    public function getReason()
+    {
+        return $this->reason;
     }
 }

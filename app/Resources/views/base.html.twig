@@ -205,16 +205,13 @@
                                 </li>#}
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="{{ path('fos_user_security_logout') }}" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                                    <a href="{{ path('fos_user_security_logout') }}" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>S</u>alir</strong></a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
 
                     <!-- logout button -->
-                    <div id="logout" class="btn-header transparent pull-right">
-                        <span> <a href="{{ path('fos_user_security_logout') }}" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
-                    </div>
                     <!-- end logout button -->
 
                     <!-- search mobile button (this is hidden till mobile view port) -->
@@ -458,7 +455,19 @@
                                     <a href="{{ path('ingress_new') }}">Carga de Ingresos</a>
                                 </li>
                             </ul>
-                        </li>                  
+                        </li> 
+                         <li>
+                            <a href="#"><i class="fa fa-lg fa-fw fa fa-share-square-o"></i> <span class="menu-item-parent">Gestión de Pases</span></a>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('pass') }}">Listado de Pases</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('pass_new') }}">Carga de Pases</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-sign-out"></i> <span class="menu-item-parent">Gestión de Egresos</span></a>
                             <ul>
@@ -467,18 +476,6 @@
                                 </li>
                                 <li>
                                     <a href="{{ path('egress_new') }}">Carga de Egresos</a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        <li>
-                            <a href="#"><i class="fa fa-lg fa-fw fa fa-share-square-o"></i> <span class="menu-item-parent">Gestión de Pases</span></a>
-                            <ul>
-                                <li>
-                                    <a href="{{ path('pass') }}">Listado de Pases</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('pass_new') }}">Carga de Pases</a>
                                 </li>
                             </ul>
                         </li>
