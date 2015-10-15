@@ -19,7 +19,7 @@ class GroupFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label' => 'form.group_name', 'translation_domain' => 'FOSUserBundle'))
+        $builder->add('name', 'text', array('label' => 'form.group_name', 'translation_domain' => 'FOSUserBundle'))
                 ->add('roles', 'permissionType', array(
                     'mapped' => true,
                     'expanded' => true,

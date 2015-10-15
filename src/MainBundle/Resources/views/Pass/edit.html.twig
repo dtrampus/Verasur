@@ -41,7 +41,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        <form name="mainbundle_pass" method="post" id="pass-form" action="/pass/{{ passes.id }}/update">
+                        <form name="mainbundle_pass" method="post" id="pass-form" action="{{ path("pass_update", {'id': passes.id}) }}">
                             <div id="mainbundle_pass">
                                 <div class='row'>
                                     <div class='col-md-3'>
@@ -54,16 +54,16 @@
                                         <div class="form-group">
                                             <label class="control-label required" for="mainbundle_pass_date_time">Hora</label>
                                             <input type="time" id="mainbundle_pass_date_time" name="time" required="required" class="form-control" value="{{ passes.date|date("H:i") }}"/>
-                                            
+
                                         </div>
                                     </div>  
-                                            <input type="hidden" name="pass_datetime" id="pass_datetime" value="{{ passes.date|date("Y-m-d H:i") }}">
+                                    <input type="hidden" name="pass_datetime" id="pass_datetime" value="{{ passes.date|date("Y-m-d H:i") }}">
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-6'>
                                         <div class="form-group">                
-                                            <label class="control-label required" for="mainbundle_pass_tank_origin">Tanque/Planta Origen</label>
-                                            <select id="mainbundle_pass_tank_origin" name="tank_1" required="required" class="select2 form-control" style="width:100%">
+                                            <label class="control-label required" for="mainbundle_edit_pass_tank_origin">Tanque/Planta Origen</label>
+                                            <select id="mainbundle_edit_pass_tank_origin" name="tank_1" required="required" class="select2 form-control" style="width:100%">
                                                 <option value="" selected="selected">Elige una opción</option>    
                                                 {% for tank in tanks %}
                                                     {% for movementDetail in passes.getMovementDetails() %}
@@ -84,8 +84,8 @@
                                     </div>
                                     <div class='col-md-6'>
                                         <div class="form-group">                
-                                            <label class="control-label required" for="mainbundle_pass_tank_destination">Tanque/Planta Destino</label>
-                                            <select id="mainbundle_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
+                                            <label class="control-label required" for="mainbundle_edit_pass_tank_destination">Tanque/Planta Destino</label>
+                                            <select id="mainbundle_edit_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
                                                 <option value="" selected="selected">Elige una opción</option>    
                                                 {% for tank in tanks %}
                                                     {% for movementDetail in passes.getMovementDetails() %}
@@ -134,7 +134,20 @@
                                     <button type="submit" id="mainbundle_pass_submit" name="mainbundle_pass[submit]" class="btn-primary btn">Grabar</button>
                                 </div>
                                 <input type="hidden" id="mainbundle_pass__token" name="mainbundle_pass[_token]" class="form-control" value="" />
+                                <input type="hidden" id="product_id_for_change" name="product_id_for_change" class="form-control" value="{{ passes.product.id }}" />
                             </div>
+                            {% for tank in tanks %}
+                                {% for movementDetail in passes.getMovementDetails() %}
+                                    {% if movementDetail.tank.id == tank.id %}
+                                        {% if movementDetail.quantity < 0 %}
+                                            <input type="hidden" id="tank_id_for_change" name="tank_id_for_change" class="form-control" value="{{ tank.id }}" />
+                                        {% endif %}
+                                        {% if movementDetail.quantity > 0 %}
+                                            <input type="hidden" id="tank_id_for_change2" name="tank_id_for_change2" class="form-control" value="{{ tank.id }}" />
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
                         </form>
                     </div>
                     <!-- end widget content -->

@@ -41,9 +41,9 @@ class Driver {
     private $surname;
 
     /**
-     * @var integer
+     * @var string
      * @Assert\NotBlank()
-     * @ORM\Column(name="dni", type="integer", unique=true)
+     * @ORM\Column(name="dni", type="string", length=50, unique=true)
      */
     private $dni;
 

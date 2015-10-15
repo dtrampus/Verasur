@@ -81,5 +81,8 @@ security:
         - { path: ^/driver, role: ROLE_SUPERVISOR }
         - { path: ^/product, role: ROLE_SUPERVISOR }
         - { path: ^/report/inventory/index, role: ROLE_SUPERVISOR }
+        - { path: ^/report/inventory/export, role: ROLE_SUPERVISOR }
+        - { path: ^/report/tank/index, role: ROLE_SUPERVISOR }
+        - { path: ^/report/tank/export, role: ROLE_SUPERVISOR }
         - { path: ^/group, role: ROLE_ADMIN }
         - { path: ^/user, role: ROLE_ADMIN }

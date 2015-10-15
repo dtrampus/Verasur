@@ -47,10 +47,10 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li>
-                                        <a href="{{ path('ingress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
+                                        <a href="{{ path('ingress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i> Excel</a>
                                     </li>
                                     <li>
-                                        <a class="fa fa-file-pdf-o" href="{{ path('ingress_export', { 'type': 'pdf' }) }}">PDF</a>
+                                        <a href="{{ path('ingress_export', { 'type': 'pdf' }) }}"><i class="fa fa-file-pdf-o"></i> PDF</a>
                                     </li>
                                 </ul>
                             </div>
@@ -149,7 +149,10 @@
                 "processing": true,
                 "serverSide": true,
                 "pageLength": 10,
-                "ajax": "{{ path('ingress_list') }}",
+                "ajax": {
+                    "url": "{{ path('ingress_list') }}",
+                    "type": "POST"
+                },
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
@@ -165,18 +168,14 @@
                     {"name": "i.status", "targets": 8, "className": "text-center"},
                     {"name": "i.id", "targets": 9, "className": "text-center", "searchable": false, "orderable": false,
                         "render": function (data, type, row) {
-                            if (supervisor != "supervisor") {
-                                return '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
-                            } else {
-                                if (row[8].toLowerCase() == "en plaza") {
-                                    return '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>\n\
-                                       <a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>\n\
-                                       <a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
-                                } else {
-                                    return '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>\n\
-                                <a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
-                                }
+                            var html = "";
+                            html += '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
+                            if (supervisor == "supervisor") {
+                                html += '<a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
                             }
+                                html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
+                            }
+                            return html;
                         }
                     }
                 ],
@@ -221,4 +220,3 @@
         });
     </script>
 {% endblock %}
-

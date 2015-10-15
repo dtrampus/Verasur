@@ -155,6 +155,7 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{ path("pass_ajax_list") }}",
+                    "type": "POST",
                     "data": function (d) {
                         d.fromDate = $("#fromDate").val();
                         d.toDate = $("#toDate").val();

@@ -157,15 +157,17 @@ class UserController extends Controller
         $form = $this->createFormBuilder($entity)
             ->setAction($this->generateUrl('user_edit', array('id' => $entity->getId())))
             ->setMethod('PUT')
-            ->add('email', 'email')
-            ->add('username', 'text')
-            ->add('firstname', 'text')
-            ->add('lastname', 'text')
+            ->add('email', 'email', array('label' => 'Email:'))
+            ->add('username', 'text', array('label' => 'Nombre de usuario:'))
+            ->add('firstname', 'text', array('label' => 'Nombre:'))
+            ->add('lastname', 'text', array('label' => 'Apellido:'))
             ->add('plainPassword', 'password', array(
+                'label' => 'Contraseña:',
                 'required' => false
             ))
             ->add('enabled')
             ->add('groups', null, array(
+                'label' => 'Grupos:',
                 'property' => 'name',
                 'expanded' => true,
                 'multiple' => true,)
