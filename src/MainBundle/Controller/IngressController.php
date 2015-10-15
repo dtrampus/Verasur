@@ -233,7 +233,7 @@ class IngressController extends Controller
                 'El ingreso se ha grabado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('ingress', array('id' => $id)));
+            return $this->redirect($this->generateUrl('ingress'));
         }
 
         return $this->render('MainBundle:Ingress:edit.html.twig', array(
@@ -427,7 +427,7 @@ class IngressController extends Controller
     }
     
     public function listAjaxAction(Request $request) {
-        $get = $request->query->all();
+        $get = $request->request->all();
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
