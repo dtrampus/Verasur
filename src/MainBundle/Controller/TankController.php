@@ -178,7 +178,7 @@ class TankController extends Controller {
                     'success', 'El tanque se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('tank', array('id' => $id)));
+            return $this->redirect($this->generateUrl('tank'));
         }
 
         return $this->render('MainBundle:Tank:edit.html.twig', array(

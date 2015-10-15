@@ -25,11 +25,11 @@ class InventoryRepository extends EntityRepository
           'product' => "CONCAT(p.code,' - ',p.description)",
           'vacuum' => "i.vacuum",
           'volume' => "i.liter",
-          'difference' => "IFNULL((SELECT ROUND((i.liter - i2.liter),2)
+          'difference' => "ROUND(IFNULL((SELECT ROUND(i.liter,2) - ROUND(i2.liter,2)
                            FROM inventories i2
                            WHERE i2.date < i.date AND i2.tank_id = ".$get["tankId"]."
                            ORDER BY i2.date DESC
-                           LIMIT 1),i.liter)",
+                           LIMIT 1),i.liter),2)",
           'observation' => "i.observation");
 
         /* Indexed column (used for fast and accurate table cardinality) */

@@ -220,7 +220,7 @@ class PassController extends Controller {
                     'success', 'El pase se ha grabado correctamente.'
             );
 
-            return $this->redirect($this->generateUrl('pass', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pass'));
         
     }
 

@@ -3,11 +3,17 @@ var verasurNewEditPass = function () {
     var Initialize = function () {
         //$(".datepicker").datepicker('setDate', new Date());
 
+        var tank_id_for_change2 = $("#tank_id_for_change2").val();
+        var product_id_for_change = $("#product_id_for_change").val();
+
 //        $("#mainbundle_pass_product").html("");
-        $("#mainbundle_pass_tank_origin").change(function () {
+        var variable = "";
+        $("#mainbundle_new_pass_tank_origin,#mainbundle_edit_pass_tank_origin").change(function () {
             var value = $(this).select2('val');
-            $('#mainbundle_pass_product').select2("val", "");
-            $('#mainbundle_pass_tank_destination').select2("val", "");
+            if (variable == "1") {
+                $('#mainbundle_pass_product').select2("val", "");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
+            }
             $('#cantidad2').html("");
             if (value != "" && typeof value != "undefined") {
                 $.ajax({
@@ -18,24 +24,35 @@ var verasurNewEditPass = function () {
                         $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
                         for (var product in jsonProducts) {
                             var arrayProduct = jsonProducts[product];
-                            $('#mainbundle_pass_product').append("<option value=" + arrayProduct[0] + ">" + arrayProduct[1] + " - " + arrayProduct[2] + "</option>");
+                            var id_jsonProduct = jsonProducts[product][0];
+                            if (id_jsonProduct == product_id_for_change) {
+                                $('#mainbundle_pass_product').append("<option selected='selected' value=" + arrayProduct[0] + ">" + arrayProduct[1] + " - " + arrayProduct[2] + "</option>");
+                            } else {
+                                $('#mainbundle_pass_product').append("<option value=" + arrayProduct[0] + ">" + arrayProduct[1] + " - " + arrayProduct[2] + "</option>");
+                            }
                         }
                     }
                 });
             } else {
-                $('#cantidad1').html("");
-                $('#cantidad2').html("");
-                $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
-                $('#mainbundle_pass_product').select2("val", "");
-                $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
-                $('#mainbundle_pass_tank_destination').select2("val", "");
+                    $('#cantidad1').html("");
+                    $('#cantidad2').html("");
+                    $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
+                    $('#mainbundle_pass_product').select2("val", "");
+                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
             }
+            return variable = "1";
         });
 
+        var variable2 = "";
+        var value_prod = $("#mainbundle_pass_product").select2('val');
         $("#mainbundle_pass_product").change(function () {
             var value2 = $(this).select2('val');
-            $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
-            $('#mainbundle_pass_tank_destination').select2("val", "");
+            $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+            if (variable2 == "1") {
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+            }
             $('#cantidad2').html("");
             if (value2 != '' && typeof value2 != "undefined") {
                 $.ajax({
@@ -43,23 +60,29 @@ var verasurNewEditPass = function () {
                     url: Routing.generate('getTanksAjax', {id: value2}),
                     dataType: "json",
                     success: function (jsonTanks) {
-                        $('#mainbundle_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                        $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
                         for (var tank in jsonTanks) {
                             var arrayTank = jsonTanks[tank];
-                            $('#mainbundle_pass_tank_destination').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                            var id_jsonTank = jsonTanks[tank][0];
+                            if (id_jsonTank == tank_id_for_change2) {
+                                $('#mainbundle_edit_pass_tank_destination').append("<option selected='selected' value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                            } else {
+                                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                            }
                         }
                     }
                 });
             } else {
-                $('#cantidad2').html("");
-                $('#mainbundle_pass_tank_destination').select2('val', "");
-                $('#mainbundle_pass_tank_destination').html("");
+                    $('#cantidad2').html("");
+                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2('val', "");
+                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("");
             }
+            variable2 = "1";
         });
 
-//                $("#mainbundle_pass_product").html("");
-        $("#mainbundle_pass_tank_origin").change(function () {
-            var value = $("#mainbundle_pass_tank_origin").select2('val');
+        //Codigo para nuevo pase:
+        $("#mainbundle_new_pass_tank_origin").change(function () {
+            var value = $("#mainbundle_new_pass_tank_origin").select2('val');
             if (value != 0) {
                 $.ajax({
                     type: 'GET',
@@ -76,9 +99,8 @@ var verasurNewEditPass = function () {
             }
         });
 
-//        $("#mainbundle_pass_product").html("");
-        $("#mainbundle_pass_tank_destination").change(function () {
-            var value = $("#mainbundle_pass_tank_destination").select2('val');
+        $("#mainbundle_new_pass_tank_destination").change(function () {
+            var value = $("#mainbundle_new_pass_tank_destination").select2('val');
             if (value != 0) {
                 $.ajax({
                     type: 'GET',
@@ -90,14 +112,68 @@ var verasurNewEditPass = function () {
                 });
             }
         });
-//        $("#mainbundle_pass_tank_origin,#mainbundle_pass_tank_destination").trigger("change");
 
+        var quantity = parseFloat($("#mainbundle_pass_quantity").val());
+        if (isNaN(quantity)) {
+            quantity = parseFloat("0");
+        }
+        //Codigo para editar pase ORIGEN:   
+        var tank_id_for_change = $("#tank_id_for_change").val();
+        $("#mainbundle_edit_pass_tank_origin").change(function () {
+            var value = $("#mainbundle_edit_pass_tank_origin").select2('val');
+            if (value != 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('calculateCapacity', {id: value}),
+                    dataType: "json",
+                    success: function (jsonTank) {
+                        if (jsonTank['tankOcupedCapacity'] != null) {
+                            var ocupedInTank = jsonTank['tankOcupedCapacity'];
+                            var quantity2 = quantity;
+                            if (tank_id_for_change == value) {
+                                var ocuped = parseFloat(ocupedInTank + quantity2).toFixed(2);
+                            } else {
+                                ocuped = ocupedInTank;
+                            }
+                            $('#cantidad1').html("<span>Ocupado en el tanque: " + ocuped + "</span>");
+                        } else {
+                            $('#cantidad1').html("<span>Ocupado en el tanque: 0 </span>");
+                        }
+                    }
+                });
+            }
+        });
+
+        //Codigo para editar pase DESTINO:
+        $("#mainbundle_edit_pass_tank_destination").change(function () {
+            var value = $("#mainbundle_edit_pass_tank_destination").select2('val');
+            if (value != 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('calculateCapacity', {id: value}),
+                    dataType: "json",
+                    success: function (jsonTank) {
+                        var freeInTank = jsonTank['tankFreeCapacity'];
+                        var quantity3 = quantity;
+                        if (tank_id_for_change2 == value) {
+                            var free = parseFloat(freeInTank - quantity3).toFixed(2);
+                        } else {
+                            free = freeInTank;
+                        }
+                        $('#cantidad2').html("<span>Capacidad disponible en el tanque: " + free + "</span>");
+                    }
+                });
+            }
+        });
+        $("#mainbundle_edit_pass_tank_destination,#mainbundle_edit_pass_tank_origin,#mainbundle_pass_product").trigger("change");
+
+        //JQuery Validate:
         jQuery.validator.addMethod("notEqual", function (value, element, param) {
-            return $('#mainbundle_pass_tank_origin').select2('val') != $('#mainbundle_pass_tank_destination').select2('val');
+            return $('#mainbundle_new_pass_tank_origin,#mainbundle_edit_pass_tank_origin').select2('val') != $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2('val');
         }, "Los tanques son iguales");
 
         jQuery.validator.addMethod("maxOriginQuantity", function (value, element, param) {
-            var valueT = parseInt($("#mainbundle_pass_tank_origin").select2('val'));
+            var valueT = parseInt($("#mainbundle_new_pass_tank_origin,#mainbundle_edit_pass_tank_origin").select2('val'));
             var valueQ = parseFloat($("#mainbundle_pass_quantity").val());
             var response;
             if (valueT != 0) {
@@ -107,15 +183,16 @@ var verasurNewEditPass = function () {
                     dataType: "json",
                     async: false,
                     success: function (jsonTank) {
-                        response = valueQ <= jsonTank['tankOcupedCapacity'];
+                        var tankOcupedCapacity = parseFloat(jsonTank['tankOcupedCapacity'] + quantity).toFixed(2);
+                        response = valueQ <= tankOcupedCapacity;
                     }
                 });
             }
             return response;
-        }, "La cantidad no puede superar a la del tanque de origen.");
+        }, "La cantidad no puede superar a la del tanque de origen");
 
         jQuery.validator.addMethod("maxDestinyQuantity", function (value, element, param) {
-            var valueT2 = parseInt($("#mainbundle_pass_tank_destination").select2('val'));
+            var valueT2 = parseInt($("#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination").select2('val'));
             var valueQ2 = parseFloat($("#mainbundle_pass_quantity").val());
             var response;
             if (valueT2 != 0) {
@@ -125,13 +202,15 @@ var verasurNewEditPass = function () {
                     dataType: "json",
                     async: false,
                     success: function (jsonTank) {
-                        response = valueQ2 <= jsonTank['tankFreeCapacity'];
+                        var tankFreeCapacity = parseFloat(jsonTank['tankFreeCapacity'] + quantity).toFixed(2);
+                        response = valueQ2 <= tankFreeCapacity;
                     }
                 });
             }
             return response;
-        }, "La cantidad no puede superar a la del tanque de destino.");
+        }, "La cantidad no puede superar a la del tanque de destino");
 
+        //JQuery validate
         jQuery.validator.addMethod("heigherThan0", function (value, element, param) {
             var quant = parseFloat($("#mainbundle_pass_quantity").val());
             var response = quant >= 0.01;
@@ -249,7 +328,7 @@ var verasurNewEditPass = function () {
                 }
             }
         });
-        
+
         $("select").removeClass("form-control").on("change", function (e) {
             $(this).valid();
         });
