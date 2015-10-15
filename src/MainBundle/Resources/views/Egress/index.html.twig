@@ -48,10 +48,10 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li>
-                                        <a href="{{ path('egress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
+                                        <a href="{{ path('egress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i> Excel</a>
                                     </li>
                                     <li>
-                                        <a class="fa fa-file-pdf-o" href="{{ path('egress_export', { 'type': 'pdf' }) }}">PDF</a>
+                                        <a href="{{ path('egress_export', { 'type': 'pdf' }) }}"><i class="fa fa-file-pdf-o"></i> PDF</a>
                                     </li>
                                 </ul>
                             </div>
@@ -148,7 +148,10 @@
             $('#tableClient').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ path('egress_list') }}",
+                "ajax": {
+                        "url": '{{ path('egress_list') }}',
+                        "type": 'POST'     
+                        },
                 "order": [[0, "asc"]],
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +

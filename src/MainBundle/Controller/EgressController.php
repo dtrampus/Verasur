@@ -442,7 +442,7 @@ class EgressController extends Controller {
     }
 
     public function listAjaxAction(Request $request) {
-        $get = $request->query->all();
+        $get = $request->request->all();
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */

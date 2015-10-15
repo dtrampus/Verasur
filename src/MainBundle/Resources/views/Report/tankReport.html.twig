@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Pases <span>&gt; Listado de Pases </span></h1>
+            <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Informes <span>&gt; Movimientos </span></h1>
         </div>
     </div>
 
@@ -38,7 +38,23 @@
                     -->
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Listado de Pases </h2>
+                        <h2>Informe de Movimientos </h2>
+
+                        <div class="widget-toolbar" role="menu">								
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
+                                    Exportar <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a id="excel-file"><i class="fa fa-file-excel-o"></i> Excel</a>
+                                    </li>
+                                    <li>
+                                        <a id="pdf-file"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </header>
 
                     <!-- widget div-->
@@ -55,28 +71,28 @@
                         <div class="widget-body no-padding">
                             <div class="widget-body-toolbar">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label" style="padding-top: 7px;">Desde:</label>
-                                            <div class="col-md-10">
+                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Desde:</label>
+                                            <div class="col-md-9">
                                                 <input class="form-control datepicker filters" id="fromDate" type="text" data-dateformat="dd/mm/yy" value="{{ "now"|date("d/m/Y")}}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label" style="padding-top: 7px;">Hasta:</label>
-                                            <div class="col-md-10">
+                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Hasta:</label>
+                                            <div class="col-md-9">
                                                 <input class="form-control datepicker filters" id="toDate" type="text" data-dateformat="dd/mm/yy" value="{{ "now"|date("d/m/Y")}}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Origen:</label>
+                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Tanque/Planta:</label>
                                             <div class="col-md-9">
-                                                <select id="origin" class="filters" style="width:100%">
-                                                    <option value="">Ingrese un tanque...</option>
+                                                <select id="tank" class="filters" style="width:100%">
+                                                    <option value="">Ingrese un tanque/planta...</option>
                                                     {% for tank in tanks %}
                                                         <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
                                                     {% endfor %}
@@ -86,39 +102,42 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Destino:</label>
+                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Buscar:</label>
                                             <div class="col-md-9">
-                                                <select id="destiny" class="filters" style="width:100%">
-                                                    <option value="">Ingrese un tanque...</option>
-                                                    {% for tank in tanks %}
-                                                        <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                <input class="form-control" id="searchBar" type="text">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <table id="tableClient" class="table table-striped table-bordered table-hover" width="100%">
+                            <table id="tableTankReport" class="table table-striped table-bordered table-hover" width="100%" style="margin-top: 0px!important;">
                                 <thead>
                                     <tr>
                                         <th data-class="expand">Fecha</th>
-                                        <th data-hide="phone">Producto</th>
-                                        <th data-hide="phone">Cantidad</th>
                                         <th data-hide="phone">Origen</th>
                                         <th data-hide="phone">Destino</th>
-                                        <th data-hide="phone">Stock Destino</th>
-                                        <th></th>
+                                        <th data-hide="phone">Tipo de movimiento</th>
+                                        <th data-hide="phone">Producto</th>
+                                        <th data-hide="phone">Cantidad</th>
                                     </tr>
                                 </thead>
-
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Total:</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                             </table>
+                            <form action="{{path('report_tank_export')}}" method="POST" id="table-parameters">
+                                <input type="hidden" id="file-type" name="file-type">
+                                <input type="hidden" id="parameters" name="parameters">
+                            </form>
                         </div>
                         <!-- end widget content -->
-
-                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
-                            <input type="hidden" id="user" name="user" class="form-control" value="supervisor" />    
-                        {% endif %}
 
                     </div>
                     <!-- end widget div -->
@@ -142,7 +161,6 @@
     <script type="text/javascript">
         jQuery(document).ready(function () {
 
-            var supervisor = $("#user").val();
             var responsiveHelper_dt_basic = undefined;
 
             var breakpointDefinition = {
@@ -150,43 +168,32 @@
                 phone: 480
             };
 
-            var table = $('#tableClient').DataTable({
+            var table = $('#tableTankReport').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ path("pass_ajax_list") }}",
-                    "type": "POST",
+                    "url": "{{ path("report_tank_ajax_list") }}",
                     "data": function (d) {
                         d.fromDate = $("#fromDate").val();
                         d.toDate = $("#toDate").val();
-                        d.origin = $("#origin").val();
-                        d.destiny = $("#destiny").val();
+                        d.tank = $("#tank").val();
+                        //d.destiny = $("#destiny").val();
                     }
                 },
                 "columns": [
                     {"name": "date"},
-                    {"name": "product"},
-                    {"name": "realLiter"},
                     {"name": "origin"},
                     {"name": "destiny"},
-                    {"name": "stockDestiny"},
-                    {"name": "id", "className": "text-center", "render": function (data, type, row) {
-                            if (supervisor != "supervisor") {
-                                return '<a href="' + Routing.generate('pass_show', {id: row[6]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
-                            } else {
-                                return '<a href="' + Routing.generate('pass_show', {id: row[6]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>\n\
-                                        <a href="' + Routing.generate('pass_edit', {id: row[6]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>'
-                            }
-                        }
-                    }
+                    {"name": "movementType"},
+                    {"name": "product"},
+                    {"name": "quantity"}
                 ],
-                "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
-                        "t" +
+                "sDom": "tr" +
                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
-                        responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#tableClient'), breakpointDefinition);
+                        responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#tableTankReport'), breakpointDefinition);
                     }
                 },
                 "rowCallback": function (nRow) {
@@ -218,9 +225,15 @@
                         "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
+                },
+                "footerCallback": function (tfoot, data, start, end, display) {
+                    var response = this.api().ajax.json();
+                    if (response) {
+                        var $th = $(tfoot).find('th');
+                        $th.eq(5).html(response['total']);
+                    }
                 }
             });
-            $(".dt-toolbar").children("div").first().prepend('<a class="btn btn-primary margin-bottom-5" href="{{ path('pass_new') }}">Nuevo</a>');
 
             $("select").select2();
             $(".datepicker").datepicker();
@@ -228,7 +241,24 @@
             $(".filters").change(function () {
                 table.draw();
             });
+            
+            $('#searchBar').keyup(function(){
+                table.search($(this).val()).draw() ;
+            });
+            
+            $('#excel-file').click(function(){
+                var paramsObject = JSON.stringify(table.ajax.params());
+                $('#file-type').val('excel');
+                $('#parameters').val(paramsObject);
+                $('#table-parameters').submit();
+            });
+            
+            $('#pdf-file').click(function(){
+                var paramsObject = JSON.stringify(table.ajax.params());
+                $('#file-type').val('pdf');
+                $('#parameters').val(paramsObject);
+                $('#table-parameters').submit();
+            });
         });
     </script>
 {% endblock %}
-

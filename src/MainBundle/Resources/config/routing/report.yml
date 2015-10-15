@@ -9,3 +9,15 @@ report_inventory_ajax_list:
 report_inventory_export:
     path:     /inventory/export
     defaults: { _controller: "MainBundle:Report:inventoryExport" }
+
+report_tank_index:
+    path:     /tank/index
+    defaults: { _controller: "MainBundle:Report:tankIndex" }
+    
+report_tank_ajax_list:
+    path:     /tank/list
+    defaults: { _controller: "MainBundle:Report:tankAjaxList" }
+    
+report_tank_export:
+    path:     /tank/export
+    defaults: { _controller: "MainBundle:Report:tankExport" }

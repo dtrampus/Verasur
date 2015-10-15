@@ -6,7 +6,7 @@ var verasurNewEditMovement = function () {
         
         //Carga de tanques segun el producto seleccionado
         var productoAnterior = $("#mainbundle_egress_product,#mainbundle_ingress_product").val();
-        $("#mainbundle_egress_product").change(function () {
+        $("#mainbundle_egress_product, #mainbundle_ingress_product").change(function () {
             var value = $(this).select2('val');
             if(productoAnterior != value){
                 $('#tanque1,#tanque2').select2("val", "");
@@ -19,6 +19,7 @@ var verasurNewEditMovement = function () {
                     dataType: "json",
                     success: function (jsonTanks) {
                         $('#tanque1 option, #tanque2 option').addClass("hide");
+                        $('#tanque1 option[value=""], #tanque2 option[value=""]').removeClass("hide");
                         for (var tank in jsonTanks) {
                             var arrayTank = jsonTanks[tank];
                             $('#tanque1 option[value="' + arrayTank[0] + '"],#tanque2 option[value="' + arrayTank[0] + '"]').removeClass("hide");
