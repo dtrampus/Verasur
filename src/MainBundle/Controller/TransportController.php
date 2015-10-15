@@ -188,7 +188,7 @@ class TransportController extends Controller
                 'El transporte se ha grabado correctamente.'
             );
             
-            return $this->redirect($this->generateUrl('transport', array('id' => $id)));
+            return $this->redirect($this->generateUrl('transport'));
         }
 
         return $this->render('MainBundle:Transport:edit.html.twig', array(

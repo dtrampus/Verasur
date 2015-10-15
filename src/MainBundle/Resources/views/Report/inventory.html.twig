@@ -32,6 +32,22 @@
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>Informe de Inventario </h2>
+
+                        <div class="widget-toolbar" role="menu">								
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
+                                    Exportar <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="#" id="excel-file"><i class="fa fa-file-excel-o"></i>Excel</a>
+                                    </li>
+                                    <li>
+                                        <a class="fa fa-file-pdf-o" href="#" id="pdf-file">PDF</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </header>
 
                     <!-- widget div-->
@@ -46,7 +62,7 @@
 
                         <!-- widget content -->
                         <div class="widget-body no-padding">
-{#                            <div class="widget-body-toolbar">
+                            <div class="widget-body-toolbar">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                         <div class="form-group">
@@ -56,22 +72,34 @@
                                             </div>
                                         </div>
                                     </div>
-{#                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-offset-6">
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label" style="padding-top: 7px;">Origen:</label>
-                                            <div class="col-md-9">
-                                                <select id="origin" class="filters" style="width:100%">
-                                                    <option value="">Ingrese un tanque...</option>
-                                                    {% for tank in tanks %}
-                                                        <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                            <label class="col-md-2 control-label" style="padding-top: 7px;">Buscar:</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="searchBar" type="text">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>#}
-                            <table id="tableInventory" class="table table-striped table-bordered table-hover" width="100%">
+                            </div>
+
+                            {#                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3 control-label" style="padding-top: 7px;">Origen:</label>
+                                                                        <div class="col-md-9">
+                                                                            <select id="origin" class="filters" style="width:100%">
+                                                                                <option value="">Ingrese un tanque...</option>
+                                                                                {% for tank in tanks %}
+                                                                                    <option value="{{ tank.id }}">{{ tank.code }} - {{ tank.description }}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>#}
+                            <table id="tableInventory" class="table table-striped table-bordered table-hover" width="100%" width="100%" style="margin-top: 0px!important">
+
                                 <thead>
                                     <tr>
                                         <th data-class="expand">Tanque</th>
@@ -82,6 +110,10 @@
                                 </thead>
 
                             </table>
+                            <form method="POST" action="{{ path('report_inventory_export')}}" id="table-parameters">
+                                <input type="hidden" id="file-type" name="file-type">
+                                <input type="hidden" id="parameters" name="parameters">
+                            </form>
                         </div>
                         <!-- end widget content -->
 
@@ -129,9 +161,8 @@
                     {"name": "real_inventory"},
                     {"name": "difference"}
                 ],
-                "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
-                        "t" +
-                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                "sDom": "tr" +
+                       "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
                 "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
@@ -169,21 +200,38 @@
                     }
                 }
             });
-            $(".dt-toolbar").children("div").first().prepend(
-                "<div class='form-group'>" + 
-                    "<label class='col-md-2 control-label' style='padding-top: 7px;'>Fecha:</label>" +
-                    "<div class='col-md-10'>" +
-                        "<input class='form-control datepicker filters' id='txtDate' type='text' data-dateformat='dd/mm/yy' value='{{ "now"|date("d/m/Y")}}' />" + 
-                    "</div>" +
-                "</div>"
-            );
+        {#$(".dt-toolbar").children("div").first().prepend(
+            "<div class='form-group'>" + 
+                "<label class='col-md-2 control-label' style='padding-top: 7px;'>Fecha:</label>" +
+                "<div class='col-md-10'>" +
+                    "<input class='form-control datepicker filters' id='txtDate' type='text' data-dateformat='dd/mm/yy' value='{{ "now"|date("d/m/Y")}}' />" + 
+                "</div>" +
+            "</div>"
+        );#}
 
-            $("select").select2();
-            $(".datepicker").datepicker();
-            
-            $(".filters").change(function(){
-                table.draw();
+                $(".datepicker").datepicker();
+
+                $(".filters").change(function () {
+                    table.draw();
+                });
+
+                $('#excel-file').click(function () {
+                    var paramsObject = JSON.stringify(table.ajax.params());
+                    $('#file-type').val('excel');
+                    $('#parameters').val(paramsObject);
+                    $('#table-parameters').submit();
+                });
+
+                $('#pdf-file').click(function () {
+                    var paramsObject = JSON.stringify(table.ajax.params());
+                    $('#file-type').val('pdf');
+                    $('#parameters').val(paramsObject);
+                    $('#table-parameters').submit();
+                });
+                
+                $('#searchBar').keyup(function(){
+               table.search($(this).val()).draw() ;
+           });
             });
-        });
     </script>
 {% endblock %}

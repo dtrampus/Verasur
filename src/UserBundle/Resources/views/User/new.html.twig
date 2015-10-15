@@ -8,7 +8,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Usuarios <span>&gt; Crear Usuario </span></h1>
         </div>
     </div>
-    
+
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -41,7 +41,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        {{ form(form) }}
+                        {{ form(form, {'attr': {'id': 'user-form'}}) }}
                     </div>
                     <!-- end widget content -->
 
@@ -52,6 +52,95 @@
             <!-- end widget -->
         </article>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js'%}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Validation
+            
+            jQuery.validator.addMethod("notEqual", function (value, element, param) {
+                return $('#user_user_plainPassword_first').val() == $('#user_user_plainPassword_second').val();
+            }, "Los tanques son iguales");
+
+            $('#user-form').validate({
+                onkeyup: false,
+                submitHandler: function (form) {
+                    form.submit();
+                    $("#user_user_submit").prop('disabled', true);
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    "user_user[email]": {
+                        required: true,
+                        email: true
+                    },
+                    "user_user[username]": {
+                        required: true,
+                        minlength: 2
+                    },
+                    "user_user[plainPassword][first]": {
+                        required: true
+                    },
+                    "user_user[plainPassword][second]": {
+                        required: true,
+                        notEqual: true
+                    },
+                    "user_user[firstname]": {
+                        required: true,
+                        minlength: 2
+                    },
+                    "user_user[lastname]": {
+                        required: true,
+                        minlength: 2
+                    }
+                },
+                messages: {
+                    "user_user[email]": {
+                        required: "Este campo es requerido",
+                        email: "Por favor ingrese una direccion de correo valida"
+                    },
+                    "user_user[username]": {
+                        required: "Este campo es requerido",
+                        minlength: "Este campo debe tener dos caracteres como mínimo"
+                    },
+                    "user_user[plainPassword][first]": {
+                        required: "Este campo es requerido"
+                    },
+                    "user_user[plainPassword][second]": {
+                        required: "Este campo es requerido",
+                        notEqual: "Las contraseñas no coinciden"
+                    },
+                    "user_user[firstname]": {
+                        required: "Este campo es requerido",
+                        minlength: "Este campo debe tener dos caracteres como mínimo"
+                    },
+                    "user_user[lastname]": {
+                        required: "Este campo es requerido",
+                        minlength: "Este campo debe tener dos caracteres como mínimo"
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 

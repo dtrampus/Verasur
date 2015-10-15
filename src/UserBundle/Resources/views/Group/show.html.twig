@@ -18,7 +18,7 @@
                     <strong>Éxito:</strong> {{ flashMessage }}
                 </div>
             {% endfor %}
-            
+
             <div class="jarviswidget" id="wid-id-8" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
@@ -79,9 +79,10 @@
                         <hr class="simple">
 
                         <a href="{{ path('fos_user_group_list') }}" class="btn btn-default">Volver</a>
-                        <a href="{{ path('fos_user_group_edit', { 'groupName': group.getName() }) }}" class="btn btn-primary pull-right">Editar</a>
-                        <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
-
+                        {% if group.getName() != 'Administrador' %}
+                            <a href="{{ path('fos_user_group_edit', { 'groupName': group.getName() }) }}" class="btn btn-primary pull-right">Editar</a>
+                            <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+                        {% endif %}
                     </div>
                     <!-- end widget content -->
 

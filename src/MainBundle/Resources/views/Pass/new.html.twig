@@ -39,7 +39,7 @@
 
                     <!-- widget content -->
                     <div class="widget-body">
-                        <form name="mainbundle_pass" method="post" id="pass-form" action="/pass/create">
+                        <form name="mainbundle_pass" method="post" id="pass-form" action="{{ path("pass_create") }}">
                             <div id="mainbundle_pass">
                                 <div class='row'>
                                     <div class='col-md-3'>
@@ -58,8 +58,8 @@
                                 <div class='row'>
                                     <div class='col-md-6'>
                                         <div class="form-group">                
-                                            <label class="control-label required" for="mainbundle_pass_tank_origin">Tanque/Planta Origen</label>
-                                            <select id="mainbundle_pass_tank_origin" name="tank_1" required="required" class="select2 form-control" style="width:100%">
+                                            <label class="control-label required" for="mainbundle_new_pass_tank_origin">Tanque/Planta Origen</label>
+                                            <select id="mainbundle_new_pass_tank_origin" name="tank_1" required="required" class="select2 form-control" style="width:100%">
                                                 <option value="" selected="selected">Elige una opción</option>    
                                                 {% for tank in tanks %}
                                                     <option value="{{ tank.id }}" >{{ tank.code }} - {{ tank.description }}</option>                   
@@ -70,8 +70,8 @@
                                     </div>
                                     <div class='col-md-6'>
                                         <div class="form-group">                
-                                            <label class="control-label required" for="mainbundle_pass_tank_destination">Tanque/Planta Destino</label>
-                                            <select id="mainbundle_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
+                                            <label class="control-label required" for="mainbundle_new_pass_tank_destination">Tanque/Planta Destino</label>
+                                            <select id="mainbundle_new_pass_tank_destination" name="tank_2" required="required" class="select2 form-control" style="width:100%">
                                                 <option value="" selected="selected">Elige una opción</option>
                                             </select>
                                             <span id='cantidad2'></span>
