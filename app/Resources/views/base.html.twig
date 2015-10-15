@@ -456,7 +456,7 @@
                                 </li>
                             </ul>
                         </li> 
-                         <li>
+                        <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-share-square-o"></i> <span class="menu-item-parent">Gestión de Pases</span></a>
                             <ul>
                                 <li>
@@ -467,7 +467,6 @@
                                 </li>
                             </ul>
                         </li>
-                        {% if app.user and is_granted('ROLE_SUPERVISOR') %}
                         <li>
                             <a href="#"><i class="fa fa-lg fa-fw fa fa-sign-out"></i> <span class="menu-item-parent">Gestión de Egresos</span></a>
                             <ul>
@@ -485,6 +484,9 @@
                             <ul>
                                 <li>
                                     <a href="{{ path('report_inventory_index') }}">Inventario</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('report_tank_index') }}">Movimientos</a>
                                 </li>
                             </ul>
                         </li>

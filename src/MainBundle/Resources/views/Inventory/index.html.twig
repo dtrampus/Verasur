@@ -112,6 +112,7 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{ path("inventory_ajax_list") }}",
+                    "type": "POST",
                     "data": function (d) {
                         d.tankId = $("#tankId").val();
                     }

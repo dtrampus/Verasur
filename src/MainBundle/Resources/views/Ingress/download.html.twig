@@ -110,7 +110,7 @@
                     url: Routing.generate('getTanksAjax', {id: value}),
                     dataType: "json",
                     success: function (jsonTanks) {
-                        $('#tanque1, #tanque2').html("");
+                        $('#tanque1, #tanque2').html("<option value=''>Elige un tanque</option>");
                         for (var tank in jsonTanks) {
                             var arrayTank = jsonTanks[tank];
                             $('#tanque1, #tanque2').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");

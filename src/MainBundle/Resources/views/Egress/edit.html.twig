@@ -117,6 +117,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
+                                        <input type="hidden" id="tank{{i}}selectedId">
                                         <input type="hidden" id="tank{{i}}OcupedCapacity" />
                                         <span id="tank{{i}}Msg"></span>
                                     </div>
@@ -129,8 +130,10 @@
                                         <label>Cantidad (Litros):</label>
                                         {% if i == 1%}
                                             <input class="form-control cantidad{{i}}" type="text" id="cantidad{{i}}" name="cantidad{{i}}" value="{{detail.quantity * (-1)}}">
+                                            <input type="hidden" id="quantity1selected" value="{{detail.quantity * (-1)}}">
                                         {% else %}    
                                             <input class="form-control cantidad{{i}}" type="text" id="cantidad{{i}}" name="cantidad{{i}}" readonly value="{{detail.quantity * (-1)}}">
+                                            <input type="hidden" id="quantity2selected" value="{{detail.quantity * (-1)}}">
                                         {% endif %}    
                                     </div>
                                     {% endfor %}
@@ -147,6 +150,7 @@
                                                     <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
                                                 {% endfor %}
                                             </select>
+                                            <input type="hidden" id="tank2selectedId">
                                             <input type="hidden" id="tank2OcupedCapacity" />
                                             <span id="tank2Msg"></span>
                                         </div>
@@ -225,34 +229,21 @@
                 return redondeo($('#cantidad1').val(),2) <= redondeo($('#mainbundle_egress_realLiter').val(),2);
             }, "La cantidad no puede superar los litros reales");
             
-{#            jQuery.validator.addMethod("minOcupedCapacity1", function (value, element, param) {
-                var value = $("#tanque1").val();
-                var retorno = true;
-                if (value != "") {
-                    $.ajax({
-                        type: 'GET',
-                        url: Routing.generate('calculateCapacity', {id: value}),
-                        dataType: "json",
-                        async:false,
-                        success: function (jsonTank) {
-                            retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
-                        }
-                    });
-                }
-                if ($(element).attr("id")=="tanque1" && $('#cantidad1').val() != ""){
-                    $('#cantidad1').valid();
-                }
-                return retorno;
-            }, "La cantidad no puede superar los litros ocupados del tanque");#}
-            
             jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
-                return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val(),2);
+                return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val() + $('#cantidad2').val(),2);
             }, "La cantidad no puede superar los litros ocupados del tanque");
             
             jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
                 return redondeo($("#mainbundle_egress_realLiter").val(),2) == redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2);
             }, "Las suma de las cantidades ingresadas deber ser igual a los litros reales");
             
+            //valores iniciales de los tanques
+            $("#tank1selectedId").val($("#tanque1").val());
+            $("#tank2selectedId").val($("#tanque2").val());
+            var tank1selected = $("#tank1selectedId").val();
+            var tank2selected = $("#tank2selectedId").val();
+            var quantity1 = redondeo($("#quantity1selected").val(),2);
+            var quantity2 = redondeo($("#quantity2selected").val(),2);
             //Events
             $("#tanque1").change(function () {
                 var value = $("#tanque1").val();
@@ -262,8 +253,13 @@
                         url: Routing.generate('calculateCapacity', {id: value}),
                         dataType: "json",
                         success: function (jsonTank) {
-                            $('#tank1Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
-                            $("#tank1OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
+                            if (value == tank1selected){
+                                $('#tank1Msg').html("La cantidad ocupada es " + redondeo(jsonTank['tankOcupedCapacity']+quantity1,2));
+                                $("#tank1OcupedCapacity").val(redondeo(jsonTank['tankOcupedCapacity']+quantity1,2));
+                            }else{
+                                $('#tank1Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
+                                $("#tank1OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
+                            }
                         }
                     });
                 }
@@ -278,8 +274,13 @@
                         dataType: "json",
                         async: false,
                         success: function (jsonTank) {
-                            $('#tank2Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
-                            $("#tank2OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
+                            if (value == tank2selected){
+                                $('#tank2Msg').html("La cantidad ocupada es " + redondeo(jsonTank['tankOcupedCapacity']+quantity2,2));
+                                $("#tank2OcupedCapacity").val(redondeo(jsonTank['tankOcupedCapacity']+quantity2,2));
+                            }else{
+                                $('#tank2Msg').html("La cantidad ocupada es " + jsonTank['tankOcupedCapacity']);
+                                $("#tank2OcupedCapacity").val(jsonTank['tankOcupedCapacity']);
+                            }
                         }
                     });
                     calculateRest();
@@ -310,7 +311,11 @@
                             dataType: "json",
                             async:false,
                             success: function (jsonTank) {
-                                retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity'],2);
+                                if (value == tank1selected){
+                                    retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity']+quantity1,2);
+                                }else{
+                                   retorno = redondeo($('#cantidad1').val(),2) <= jsonTank['tankOcupedCapacity']; 
+                                }
                             }
                         });
                     }
@@ -465,6 +470,7 @@
             });
             
             $("#mainbundle_egress_transport").trigger("change");
+            $("#mainbundle_egress_product").trigger("change");
             $("#tanque1").removeClass("form-control");
             $("#tanque2").removeClass("form-control");
             $("#tanque1").trigger("change");

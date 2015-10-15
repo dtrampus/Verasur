@@ -80,11 +80,12 @@
                         </div>
 
                         <hr class="simple">
-
+                        
                         <a href="{{ path('user_list') }}" class="btn btn-default">Volver</a>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
-                        <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
-
+                        {% if entity.username != 'admin' %}
+                            <a href="{{ path('user_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-right">Editar</a>
+                            <button class="btn btn-danger pull-right margin-right-5" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+                        {% endif %}
                     </div>
                     <!-- end widget content -->
 

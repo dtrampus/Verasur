@@ -62,7 +62,7 @@ class TankRepository extends EntityRepository
                         ROUND(t.total_capacity - sum(IFNULL(md.quantity,0)),2) AS free
                 FROM tanks t
                 LEFT JOIN movement_detail md ON t.id=md.tank_id
-                WHERE t.code = $code
+                WHERE t.code = '$code'
                 GROUP BY t.id";
        
        $stmt = $em->getConnection()->prepare($query);
