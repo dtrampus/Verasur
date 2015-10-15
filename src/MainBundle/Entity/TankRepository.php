@@ -55,7 +55,8 @@ class TankRepository extends EntityRepository
    public function calculateGraphic2($code) {
        $em = $this->getEntityManager();
 
-       $query = "SELECT CONCAT(t.code,' - ',t.description) AS name,
+       $query = "SELECT t.id as id,
+                        CONCAT(t.code,' - ',t.description) AS name,
                         t.status AS status,
                         t.total_capacity AS totalCapacity,
                         ROUND(SUM(IFNULL(md.quantity,0)),2) AS occupied,
@@ -68,6 +69,15 @@ class TankRepository extends EntityRepository
        $stmt = $em->getConnection()->prepare($query);
        $stmt->execute();
        $result = $stmt->fetch();
+       
+       $query2 = "SELECT CONCAT(p.code,' - ',p.description) AS name
+                  FROM tanks_products tp 
+                  INNER JOIN products p ON tp.product_id=p.id
+                  WHERE tp.tank_id=".$result['id'];
+       
+       $stmt = $em->getConnection()->prepare($query2);
+       $stmt->execute();
+       $result["products"] = $stmt->fetchAll();
        
        return $result;
    }

@@ -111,6 +111,10 @@
                             async: false,
                             success: function (jsonTankInfo) {
                                 html += "<label style='font-weight: bold;'>" + jsonTankInfo["name"] + "</label><br/>";
+                                html += "<label>Productos:</label><br/>";
+                                for (var i = 0; i < jsonTankInfo["products"].length; i++) {
+                                    html += "<label>" +jsonTankInfo['products'][i]['name']+ "</label><br/>";
+                                }
                                 html += "<label>Estado: " + jsonTankInfo["status"] + "</label><br/>";
                                 html += "<label>Capacidad Total: " + jsonTankInfo["totalCapacity"] + " litros</label><br/>";
                                 html += "<label style='color:" + options.barColors[0] + "'>Ocupado: " + jsonTankInfo["occupied"] + " litros</label><br/>";

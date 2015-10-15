@@ -150,8 +150,8 @@
                 "serverSide": true,
                 "pageLength": 10,
                 "ajax": {
-                    "url" : "{{ path('ingress_list') }}",
-                    "type" : "POST",
+                    "url": "{{ path('ingress_list') }}",
+                    "type": "POST"
                 },
                 "sDom": "<'dt-toolbar'<'col-xs-3 col-sm-6'><'col-sm-6 col-xs-9'f>r>" +
                         "t" +
@@ -168,12 +168,11 @@
                     {"name": "i.status", "targets": 8, "className": "text-center"},
                     {"name": "i.id", "targets": 9, "className": "text-center", "searchable": false, "orderable": false,
                         "render": function (data, type, row) {
-                            var html = '';
+                            var html = "";
                             html += '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
-                            if (supervisor == "supervisor"){
+                            if (supervisor == "supervisor") {
                                 html += '<a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
                             }
-                            if (row[8].toLowerCase() == "en plaza"){
                                 html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
                             }
                             return html;
@@ -221,4 +220,3 @@
         });
     </script>
 {% endblock %}
-

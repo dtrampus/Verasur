@@ -66,8 +66,11 @@
                                         <tr>
                                             <td>{{ group.getName() }}</td>
                                             <td class="text-center">
-                                                <a class="btn btn-primary" href="{{ path('fos_user_group_show', {'groupName': group.getName()}) }}">Ver</a>
-                                            </td>
+                                                <a class="btn btn-primary" href="{{ path('fos_user_group_show', {'groupName': group.getName()}) }}"><i class="fa fa-search"></i></a>
+                                                {% if group.getName()!="Administrador" %}
+                                                <a class="btn btn-primary" href="{{ path('fos_user_group_edit', {'groupName': group.getName()}) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                            {% endif %}
+                                                </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
