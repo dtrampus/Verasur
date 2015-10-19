@@ -47,10 +47,10 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li>
-                                        <a href="{{ path('ingress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i>Excel</a>
+                                        <a href="{{ path('ingress_export', { 'type': 'excel' }) }}"><i class="fa fa-file-excel-o"></i> Excel</a>
                                     </li>
                                     <li>
-                                        <a class="fa fa-file-pdf-o" href="{{ path('ingress_export', { 'type': 'pdf' }) }}">PDF</a>
+                                        <a href="{{ path('ingress_export', { 'type': 'pdf' }) }}"><i class="fa fa-file-pdf-o"></i> PDF</a>
                                     </li>
                                 </ul>
                             </div>
@@ -172,9 +172,9 @@
                             html += '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
                             if (supervisor == "supervisor") {
                                 html += '<a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
-                            }
-                            if (row[8].toLowerCase() == "en plaza") {
-                                html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
+                                if (row[8]=='En plaza'){
+                                    html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
+                                }
                             }
                             return html;
                         }
@@ -221,4 +221,3 @@
         });
     </script>
 {% endblock %}
-

@@ -293,7 +293,7 @@
                         form.submit();
                         $("#mainbundle_egress_submit").prop('disabled', true);
                     }else{
-                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
+                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede ser inferior a los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
                     }
                 },
                 highlight: function (element) {

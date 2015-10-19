@@ -30,7 +30,7 @@ class PassController extends Controller {
     }
 
     public function listAjaxAction(Request $request) {
-        $get = $request->query->all();
+        $get = $request->request->all();
         $em = $this->getDoctrine()->getEntityManager();
         $output = $em->getRepository('MainBundle:Pass')->findDataTable($get);
         return new JsonResponse($output);

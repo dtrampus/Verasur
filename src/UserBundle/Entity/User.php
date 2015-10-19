@@ -43,9 +43,9 @@ class User extends BaseUser
     protected $groups;
     
     /**
-     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Movement", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Movement", mappedBy="user")
      */
-    protected $movement;
+    protected $movements;
     
     /**
      * @ORM\OneToMany(targetEntity="MainBundle\Entity\Inventory", mappedBy="users")
