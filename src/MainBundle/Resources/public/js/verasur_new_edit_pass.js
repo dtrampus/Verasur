@@ -52,6 +52,7 @@ var verasurNewEditPass = function () {
             if (variable2 == "1") {
                 $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
                 $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').trigger('change');
             }
             $('#cantidad2').html("");
             if (value2 != '' && typeof value2 != "undefined") {
@@ -66,6 +67,7 @@ var verasurNewEditPass = function () {
                             var id_jsonTank = jsonTanks[tank][0];
                             if (id_jsonTank == tank_id_for_change2) {
                                 $('#mainbundle_edit_pass_tank_destination').append("<option selected='selected' value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
+                                $('#mainbundle_edit_pass_tank_destination').trigger('change');
                             } else {
                                 $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').append("<option value=" + arrayTank[0] + ">" + arrayTank[1] + " - " + arrayTank[2] + "</option>");
                             }
@@ -100,7 +102,7 @@ var verasurNewEditPass = function () {
         });
 
         $("#mainbundle_new_pass_tank_destination").change(function () {
-            var value = $("#mainbundle_new_pass_tank_destination").select2('val');
+            var value = $("#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination").select2('val');
             if (value != 0) {
                 $.ajax({
                     type: 'GET',
@@ -112,6 +114,7 @@ var verasurNewEditPass = function () {
                 });
             }
         });
+        
 
         var quantity = parseFloat($("#mainbundle_pass_quantity").val());
         if (isNaN(quantity)) {
@@ -162,6 +165,7 @@ var verasurNewEditPass = function () {
                         }
                         $('#cantidad2').html("<span>Capacidad disponible en el tanque: " + free + "</span>");
                     }
+                    
                 });
             }
         });

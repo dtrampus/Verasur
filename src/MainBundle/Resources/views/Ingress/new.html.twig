@@ -148,126 +148,14 @@
 {% block javascripts %}
    {{ parent() }}
     {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js'
-                   '@MainBundle/Resources/public/js/verasur_new_edit_movement.js'
-                   'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js'%}
+                   '@MainBundle/Resources/public/js/verasur_new_ingress.js' %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 
 <script type="text/javascript">
     // START AND FINISH DATE
     $(document).ready(function(){
-        verasurNewEditMovement.init();
-{#        $("#mainbundle_ingress_transport").trigger("change");#}
-        function redondeoMuestra (value, precision) {
-            if (value == "" || isNaN(value)) {
-                return "";
-            } else {
-                return parseFloat(parseFloat(value).toFixed(precision));
-            }
-        }
-        $('.floatNumberPrecision').focusout(function(){
-            $(this).val(redondeoMuestra($(this).val(),1));
-        });
-        
-        //Validation
-        $('#ingress-form').validate({
-            onkeyup: false,
-            submitHandler: function(form) {
-                    form.submit();
-                    $("#mainbundle_ingress_submit").prop('disabled', true);
-            },
-            highlight: function (element) {
-                $(element).closest('.form-group').addClass('has-error');
-            },
-            unhighlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-error');
-            },
-            errorElement: 'span',
-            errorClass: 'help-block',
-            errorPlacement: function (error, element) {
-                if (element.parent('.input-group').length) {
-                    error.insertAfter(element.parent());
-                } else {
-                    error.insertAfter(element);
-                }
-            },
-            rules: {
-                "mainbundle_ingress[truckDomain]":{
-                    required :true
-                },
-                "mainbundle_ingress[coupledDomain]":{
-                    required :true
-                },
-                "mainbundle_ingress[grossWeight]":{
-                    required :true,
-                    number: true
-                },
-                "mainbundle_ingress[tareWeight]":{
-                    required :true,
-                    number: true
-                },
-                "mainbundle_ingress[density]":{
-                    required :true,
-                    number: true
-                },
-                "mainbundle_ingress[clean]":{
-                    required :true
-                },
-                "mainbundle_ingress[realLiter]":{
-                    required :true
-                },
-                "mainbundle_ingress[provider]":{
-                    required :true
-                },
-                "mainbundle_ingress[product]":{
-                    required :true
-                },
-                "mainbundle_ingress[transport]":{
-                    required :true
-                },
-                "mainbundle_ingress[driver]":{
-                    required :true
-                }
-            },
-            messages: {
-                "mainbundle_ingress[truckDomain]":{
-                    required : "Este campo es requerido"
-                },
-                "mainbundle_ingress[coupledDomain]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[grossWeight]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[tareWeight]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[density]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[clean]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[realLiter]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[provider]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[product]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[transport]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[driver]":{
-                    required :"Este campo es requerido"
-                }
-            }
-        });
+        verasurNewIngress.init();
     });
 </script>
 {% endblock %}
