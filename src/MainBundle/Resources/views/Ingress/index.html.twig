@@ -172,8 +172,9 @@
                             html += '<a href="' + Routing.generate('ingress_show', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-search"></i></a>';
                             if (supervisor == "supervisor") {
                                 html += '<a href="' + Routing.generate('ingress_edit', {id: row[9]}) + '" class="btn btn-primary btn-sm margin-right-5"><i class="fa fa-pencil-square-o"></i></a>';
-                            }
-                                html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
+                                if (row[8]=='En plaza'){
+                                    html += '<a href="' + Routing.generate('ingress_newDownload', {id: row[9]}) + '" class="btn btn-danger btn-sm margin-right-5"><i class="fa fa-download"></i> Descargar</a>';
+                                }
                             }
                             return html;
                         }

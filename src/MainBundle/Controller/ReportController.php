@@ -258,7 +258,7 @@ class ReportController extends Controller {
 				  (SELECT CONCAT(t.code,' - ',t.description) 
 				   FROM movement_detail md2
 				   INNER JOIN tanks t ON md2.tank_id = t.id 
-				   WHERE md2.id = m.id)
+				   WHERE md2.id = md.id)
 			  when 'egress' then NULL
 			  when 'pass' then
 				  (SELECT CONCAT(t.code,' - ',t.description) 
@@ -506,7 +506,7 @@ class ReportController extends Controller {
 				  (SELECT CONCAT(t.code,' - ',t.description) 
 				   FROM movement_detail md2
 				   INNER JOIN tanks t ON md2.tank_id = t.id 
-				   WHERE md2.id = m.id)
+				   WHERE md2.id = md.id)
 			  when 'egress' then NULL
 			  when 'pass' then
 				  (SELECT CONCAT(t.code,' - ',t.description) 

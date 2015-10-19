@@ -1034,6 +1034,8 @@
                                           'SmartAdmin/js/app.min.js'
                                           'SmartAdmin/js/libs/jquery-ui.datepicker.es.js'
                                           'SmartAdmin/js/plugin/select2/select2.min.js'
+                                          'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js'
+                                          '@MainBundle/Resources/public/js/verasur_main.js'
                 %}
                 <script src="{{ asset_url }}" type="text/javascript"></script>
                 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -1044,6 +1046,7 @@
                     $(document).ready(function() {
 
                         pageSetUp();
+                        verasurMain.init();
                         
                     });
                 </script>   
