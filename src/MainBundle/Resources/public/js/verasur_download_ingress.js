@@ -9,8 +9,27 @@ var verasurDownloadIngress = function () {
         $('#download-form').validate({
             onkeyup: false,
             submitHandler: function(form) {
-                form.submit();
-                $("#submitform").prop('disabled', true);
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('calculateCapacity', {id: $("#tanque1").val()}),
+                    dataType: "json",
+                    success: function (jsonTank) {
+                        $("#tank1FreeCapacity").val(jsonTank['tankFreeCapacity']);
+                    }
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('calculateCapacity', {id: $("#tanque2").val()}),
+                    dataType: "json",
+                    async: false,
+                    success: function (jsonTank) {
+                        $("#tank2FreeCapacity").val(jsonTank['tankFreeCapacity']);
+                    }
+                });
+                if ($('#download-form').valid() == true){
+                    form.submit();
+                    $("#submitform").prop('disabled', true);    
+                }
             },
             rules: {
                 tanque1 : {
