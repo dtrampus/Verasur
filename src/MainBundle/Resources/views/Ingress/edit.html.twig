@@ -8,7 +8,7 @@
             <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Gestión de Ingresos <span>&gt; Editar Ingreso </span></h1>
         </div>
     </div>
-    
+
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">
             <!-- Widget ID (each widget will need unique ID)-->
@@ -42,69 +42,69 @@
                     <!-- widget content -->
                     <div class="widget-body">
                         {{ form_start(form, {'attr': {'id': 'ingress-form'}}) }}
-                            {{ form_errors(form) }}
+                        {{ form_errors(form) }}
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                {{ form_row(form.baln) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.date.date,{ 'label': 'Fecha' }) }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form_row(form.date.time ,{ 'label': 'Hora' }) }}
+                            </div>                                
+                        </div>
+                        <hr>
+                        <h5>Proveedor:</h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                {{form_row(form.provider)}}
+                            </div>
+                        </div>
+                        <hr>
+                        <h5>Transporte:</h5>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                {{ form_row(form.transport) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.driver) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.truckDomain) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.coupledDomain) }}
+                            </div>
+                        </div>
+                        <hr>
+                        <h5>Producto:</h5>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                {{ form_row(form.product) }}
+                            </div>
+                            <div class='col-md-3'>
+
+                                {{ form_row(form.grossWeight) }}
+                            </div>
+                            <div class='col-md-3'>
+                                {{ form_row(form.tareWeight) }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form_row(form.density) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">{{form_row(form.clean)}}</div>
+                            <div class="col-md-3">{{form_row(form.realLiter)}}</div>
+                            <div class="col-md-3 col-md-offset-3">{{form_row(form.tested)}}</div>
+                        </div>
+                        {% if entity.status == 'Descargado' %}
+                            <h5>Tanques de destino :</h5>
                             <div class='row'>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.baln) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.date.date,{ 'label': 'Fecha' }) }}
-                                </div>
-                                <div class="col-md-3">
-                                    {{ form_row(form.date.time ,{ 'label': 'Hora' }) }}
-                                </div>                                
-                            </div>
-                            <hr>
-                            <h5>Proveedor:</h5>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{form_row(form.provider)}}
-                                </div>
-                            </div>
-                            <hr>
-                            <h5>Transporte:</h5>
-                            <div class='row'>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.transport) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.driver) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.truckDomain) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.coupledDomain) }}
-                                </div>
-                            </div>
-                            <hr>
-                            <h5>Producto:</h5>
-                            <div class='row'>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.product) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    
-                                    {{ form_row(form.grossWeight) }}
-                                </div>
-                                <div class='col-md-3'>
-                                    {{ form_row(form.tareWeight) }}
-                                </div>
-                                <div class="col-md-3">
-                                    {{ form_row(form.density) }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">{{form_row(form.clean)}}</div>
-                                <div class="col-md-3">{{form_row(form.realLiter)}}</div>
-                                <div class="col-md-3 col-md-offset-3">{{form_row(form.tested)}}</div>
-                            </div>
-                            {% if entity.status == 'Descargado' %}
-                                <h5>Tanques de destino :</h5>
-                                <div class='row'>
-                                    <div class='col-md-6'>
-                                        {% set i = 0 %}
-                                        {% for detail in entity.getMovementDetails() %}
+                                <div class='col-md-6'>
+                                    {% set i = 0 %}
+                                    {% for detail in entity.getMovementDetails() %}
                                         {% set i = i + 1 %}
                                         <div class="form-group">
                                             <label>Tanque {{i}}:</label>
@@ -122,10 +122,10 @@
                                             <input type="hidden" id="tank{{i}}OcupedCapacity" />
                                             <span id="tank{{i}}Msg"></span>
                                         </div>
-                                        {% endfor %}
-                                    </div>
-                                    <div class='col-md-6'> {% set i = 0 %}
-                                        {% for detail in entity.getMovementDetails() %}
+                                    {% endfor %}
+                                </div>
+                                <div class='col-md-6'> {% set i = 0 %}
+                                    {% for detail in entity.getMovementDetails() %}
                                         {% set i = i + 1 %}    
                                         <div class="form-group">
                                             <label>Cantidad (Litros):</label>
@@ -137,69 +137,69 @@
                                                 <input type="hidden" id="quantity2selected" value="{{detail.quantity}}">
                                             {% endif %}    
                                         </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% if i == 1%}
-                                    <div class='row'>
-                                        <div class='col-md-6'>
-                                            <div class="form-group">
-                                                <label>Tanque 2:</label>
-                                                <select class="tanque2 select2" id="tanque2" name="tanque2">
-                                                    <option value="" selected="selected">Elige un tanque</option>
-                                                    {% for entity in tanks %}
-                                                        <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <input type="hidden" id="tank2selectedId">
-                                                <input type="hidden" id="tank2OcupedCapacity" />
-                                                <span id="tank2Msg"></span>
-                                            </div>
-                                        </div>
-                                        <div class='col-md-6'>
-                                            <div class="form-group">
-                                                <label>Cantidad (Litros):</label>   
-                                                <input class="form-control cantidad2" type="text" id="cantidad2" name="cantidad2" readonly>
-                                            </div>
+                            </div>
+                            {% if i == 1%}
+                                <div class='row'>
+                                    <div class='col-md-6'>
+                                        <div class="form-group">
+                                            <label>Tanque 2:</label>
+                                            <select class="tanque2 select2" id="tanque2" name="tanque2">
+                                                <option value="" selected="selected">Elige un tanque</option>
+                                                {% for entity in tanks %}
+                                                    <option value="{{ entity.id }}">{{ entity.code }}-{{ entity.description }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <input type="hidden" id="tank2selectedId">
+                                            <input type="hidden" id="tank2OcupedCapacity" />
+                                            <span id="tank2Msg"></span>
                                         </div>
                                     </div>
-                                {% endif %}    
-                            {% endif %}
-                            <input type="hidden" id="status-value" value="{{entity.status}}">
-                            <hr>
-                            <h5>Muestra:</h5>
-                            <div class="row">
-                                <div class="col-md-1">{{form_row(form.fivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.tenPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.twentyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.thirtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.fortyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.fiftyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.sixtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.seventyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.eightyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.ninetyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-1">{{form_row(form.ninetyFivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">{{form_row(form.distillationGout, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-3">{{form_row(form.pDry, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-3">{{form_row(form.pFinal, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                                <div class="col-md-3">{{form_row(form.recovered, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
-                            </div>
-                            <hr>
-                            <h5>Remito:</h5>
-                            <div class='row'>
-                                <div class='col-md-2'>
-                                    {{ form_row(form.branchNumber) }}
+                                    <div class='col-md-6'>
+                                        <div class="form-group">
+                                            <label>Cantidad (Litros):</label>   
+                                            <input class="form-control cantidad2" type="text" id="cantidad2" name="cantidad2" readonly>
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                                <div class='col-md-4'>
-                                    {{ form_row(form.remitNumber) }}
-                                </div>
+                            {% endif %}    
+                        {% endif %}
+                        <input type="hidden" id="status-value" value="{{entity.status}}">
+                        <hr>
+                        <h5>Muestra:</h5>
+                        <div class="row">
+                            <div class="col-md-1">{{form_row(form.fivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.tenPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.twentyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.thirtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.fortyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.fiftyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.sixtyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.seventyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.eightyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.ninetyPercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-1">{{form_row(form.ninetyFivePercent, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">{{form_row(form.distillationGout, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-3">{{form_row(form.pDry, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-3">{{form_row(form.pFinal, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                            <div class="col-md-3">{{form_row(form.recovered, {'attr': {'class': 'floatNumberPrecision'}})}}</div>
+                        </div>
+                        <hr>
+                        <h5>Remito:</h5>
+                        <div class='row'>
+                            <div class='col-md-2'>
+                                {{ form_row(form.branchNumber) }}
                             </div>
-                            <hr>
-                            {{form_row(form.observation)}}
+
+                            <div class='col-md-4'>
+                                {{ form_row(form.remitNumber) }}
+                            </div>
+                        </div>
+                        <hr>
+                        {{form_row(form.observation)}}
                         {{ form_end(form) }}
                     </div>
                     <!-- end widget content -->
@@ -214,279 +214,310 @@
 {% endblock %}
 
 {% block javascripts %}
-   {{ parent() }}
+    {{ parent() }}
     {% javascripts 'SmartAdmin/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js'
                    '@MainBundle/Resources/public/js/verasur_new_edit_movement.js' 
                    'SmartAdmin/js/plugin/jquery-validate/jquery.validate.min.js'%}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
-    
 
-<script type="text/javascript">
-    // START AND FINISH DATE
-    $(document).ready(function(){
-        verasurNewEditMovement.init();
-        
-        function redondeoMuestra (value, precision) {
-            if (value == "" || isNaN(value)) {
-                return "";
-            } else {
-                return parseFloat(parseFloat(value).toFixed(precision));
-            }
-        }
-        $('.floatNumberPrecision').focusout(function(){
-            $(this).val(redondeoMuestra($(this).val(),1));
-        });
-        
-        //Rules
-        jQuery.validator.addMethod("notEqual", function (value, element, param) {
-            return $('#tanque1').val() != $('#tanque2').val();
-        }, "Los tanques son iguales");
 
-        jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
-            return redondeo($('#cantidad1').val(),2) <= redondeo($('#mainbundle_ingress_realLiter').val(),2);
-        }, "La cantidad no puede superar los litros reales");
-        
-        jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
-            return redondeo($('#cantidad2').val(),2) <= redondeo($('#tank2OcupedCapacity').val() + $('#cantidad2').val(),2);
-        }, "La cantidad no puede superar los litros disponibles en el tanque");
+    <script type="text/javascript">
+        // START AND FINISH DATE
+        $(document).ready(function () {
+            verasurNewEditMovement.init();
 
-        jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
-            return redondeo($("#mainbundle_ingress_realLiter").val(),2) == redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2);
-        }, "Las suma de las cantidades ingresadas debe ser igual a los litros reales");
-
-        //valores iniciales de los tanques
-        $("#tank1selectedId").val($("#tanque1").val());
-        $("#tank2selectedId").val($("#tanque2").val());
-        var tank1selected = $("#tank1selectedId").val();
-        var tank2selected = $("#tank2selectedId").val();
-        var quantity1 = redondeo($("#quantity1selected").val(),2);
-        var quantity2 = redondeo($("#quantity2selected").val(),2);
-        //Events
-        $("#tanque1").change(function () {
-            var value = $("#tanque1").val();
-            if (value != "") {
-                $.ajax({
-                    type: 'GET',
-                    url: Routing.generate('calculateCapacity', {id: value}),
-                    dataType: "json",
-                    success: function (jsonTank) {
-                        if (value == tank1selected){
-                            $('#tank1Msg').html("La cantidad libre es " + redondeo(jsonTank['tankFreeCapacity']+quantity1,2));
-                            $("#tank1OcupedCapacity").val(redondeo(jsonTank['tankFreeCapacity']+quantity1,2));
-                        }else{
-                            $('#tank1Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
-                            $("#tank1OcupedCapacity").val(jsonTank['tankFreeCapacity']);
-                        }
-                    }
-                });
-            }
-        });
-
-        $("#tanque2").change(function () {
-            var value = $("#tanque2").val();
-            if (value != "") {
-                $.ajax({
-                    type: 'GET',
-                    url: Routing.generate('calculateCapacity', {id: value}),
-                    dataType: "json",
-                    async: false,
-                    success: function (jsonTank) {
-                        if (value == tank2selected){
-                            $('#tank2Msg').html("La cantidad libre es " + redondeo(jsonTank['tankFreeCapacity']+quantity2,2));
-                            $("#tank2OcupedCapacity").val(redondeo(jsonTank['tankFreeCapacity']+quantity2,2));
-                        }else{
-                            $('#tank2Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
-                            $("#tank2OcupedCapacity").val(jsonTank['tankFreeCapacity']);
-                        }
-                    }
-                });
-                calculateRest();
-            }else{
-                $("#cantidad1").val($("#mainbundle_ingress_realLiter").val());
-                $("#cantidad2").val("");
-            }
-        });
-
-        $("#cantidad1").focusout(function () {
-            var quantity1 = redondeo($(this).val(),2);
-            $(this).val(quantity1);
-            if($(this).closest(".form-group").hasClass("has-error") == false){
-                calculateRest();
-            }
-        });
-        
-        var status = $("#status-value").val();
-        //Validation
-        $('#ingress-form').validate({
-            onkeyup: false,
-            submitHandler: function(form) {
-                if (status == "Descargado"){
-                    var value = $("#tanque1").val();
-                    var retorno = true;
-                    var retorno2 = true;
-                    if (value != "") {
-                        $.ajax({
-                            type: 'GET',
-                            url: Routing.generate('calculateCapacity', {id: value}),
-                            dataType: "json",
-                            async:false,
-                            success: function (jsonTank) {
-                                if (value == tank1selected){
-                                    retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankFreeCapacity']+quantity1,2);
-                                }else{
-                                   retorno = redondeo($('#cantidad1').val(),2) <= jsonTank['tankFreeCapacity']; 
-                                }
-                            }
-                        });
-                    }
-                    if (redondeo($("#mainbundle_ingress_realLiter").val(),2) != redondeo(redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2),2)){
-                        var retorno2 = false;
-                    }
-                    if(retorno == true && retorno2 == true){
-                        form.submit();
-                        $("#mainbundle_ingress_submit").prop('disabled', true);
-                    }else{
-                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
-                    }
-                }else{
-                    form.submit();
-                }
-            },
-            highlight: function (element) {
-                $(element).closest('.form-group').addClass('has-error');
-            },
-            unhighlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-error');
-            },
-            errorElement: 'span',
-            errorClass: 'help-block',
-            errorPlacement: function (error, element) {
-                if (element.parent('.input-group').length) {
-                    error.insertAfter(element.parent());
+            function redondeoMuestra(value, precision) {
+                if (value == "" || isNaN(value)) {
+                    return "";
                 } else {
-                    error.insertAfter(element);
-                }
-            },
-            rules: {
-                tanque1: {
-                    required: true,
-                    notEqual: true,
-                    minRealLiters: true
-                },
-                cantidad1: {
-                    required: true,
-                    number: true,
-                    minRealLiters: true
-                    
-                },
-                cantidad2: {
-                    required: false,
-                    number: true,
-                    minOcupedCapacity2: true
-                },
-                tanque2: {
-                    required: false,
-                    notEqual: true
-                },
-                "mainbundle_ingress[truckDomain]":{
-                    required:true
-                },
-                "mainbundle_ingress[coupledDomain]":{
-                    required:true
-                },
-                "mainbundle_ingress[grossWeight]":{
-                    required:true,
-                    number:true
-                },
-                "mainbundle_ingress[tareWeight]":{
-                    required:true,
-                    number: true
-                },
-                "mainbundle_ingress[density]":{
-                    required:true,
-                    number: true
-                },
-                "mainbundle_ingress[provider]":{
-                    required:true
-                },
-                "mainbundle_ingress[product]":{
-                    required:true
-                },
-                "mainbundle_ingress[transport]":{
-                    required:true
-                },
-                "mainbundle_ingress[driver]":{
-                    required:true
-                }
-            },
-            messages: {
-                tanque1: {
-                    required: "Este campo es requerido"
-                },
-                cantidad1: {
-                    required: "Este campo es requerido",
-                    number: "El valor ingresado debe ser un número"
-                },
-                "mainbundle_ingress[truckDomain]":{
-                    required : "Este campo es requerido"
-                },
-                "mainbundle_ingress[coupledDomain]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[grossWeight]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[tareWeight]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[density]":{
-                    required :"Este campo es requerido",
-                    number: "El valor debe ser numerico"
-                },
-                "mainbundle_ingress[provider]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[product]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[transport]":{
-                    required :"Este campo es requerido"
-                },
-                "mainbundle_ingress[driver]":{
-                    required :"Este campo es requerido"
+                    return parseFloat(parseFloat(value).toFixed(precision));
                 }
             }
+            $('.floatNumberPrecision').focusout(function () {
+                $(this).val(redondeoMuestra($(this).val(), 1));
+            });
+
+            //Rules
+            jQuery.validator.addMethod("notEqual", function (value, element, param) {
+                return $('#tanque1').val() != $('#tanque2').val();
+            }, "Los tanques son iguales");
+
+            jQuery.validator.addMethod("minRealLiters", function (value, element, param) {
+                return redondeo($('#cantidad1').val(), 2) <= redondeo($('#mainbundle_ingress_realLiter').val(), 2);
+            }, "La cantidad no puede superar los litros reales");
+
+            jQuery.validator.addMethod("minOcupedCapacity2", function (value, element, param) {
+                return redondeo($('#cantidad2').val(), 2) <= redondeo($('#tank2OcupedCapacity').val() + $('#cantidad2').val(), 2);
+            }, "La cantidad no puede superar los litros disponibles en el tanque");
+
+            jQuery.validator.addMethod("lessRealLiter", function (value, element, param) {
+                return redondeo($("#mainbundle_ingress_realLiter").val(), 2) == redondeo($("#cantidad1").val(), 2) + redondeo($("#cantidad2").val(), 2);
+            }, "Las suma de las cantidades ingresadas debe ser igual a los litros reales");
+
+            //valores iniciales de los tanques
+            $("#tank1selectedId").val($("#tanque1").val());
+            $("#tank2selectedId").val($("#tanque2").val());
+            var tank1selected = $("#tank1selectedId").val();
+            var tank2selected = $("#tank2selectedId").val();
+            var quantity1 = redondeo($("#quantity1selected").val(), 2);
+            var quantity2 = redondeo($("#quantity2selected").val(), 2);
+            //Events
+            $("#tanque1").change(function () {
+                var value = $("#tanque1").val();
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        success: function (jsonTank) {
+                            if (value == tank1selected) {
+                                $('#tank1Msg').html("La cantidad libre es " + redondeo(jsonTank['tankFreeCapacity'] + quantity1, 2));
+                                $("#tank1OcupedCapacity").val(redondeo(jsonTank['tankFreeCapacity'] + quantity1, 2));
+                            } else {
+                                $('#tank1Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
+                                $("#tank1OcupedCapacity").val(jsonTank['tankFreeCapacity']);
+                            }
+                        }
+                    });
+                }
+            });
+
+            $("#tanque2").change(function () {
+                var value = $("#tanque2").val();
+                if (value != "") {
+                    $.ajax({
+                        type: 'GET',
+                        url: Routing.generate('calculateCapacity', {id: value}),
+                        dataType: "json",
+                        async: false,
+                        success: function (jsonTank) {
+                            if (value == tank2selected) {
+                                $('#tank2Msg').html("La cantidad libre es " + redondeo(jsonTank['tankFreeCapacity'] + quantity2, 2));
+                                $("#tank2OcupedCapacity").val(redondeo(jsonTank['tankFreeCapacity'] + quantity2, 2));
+                            } else {
+                                $('#tank2Msg').html("La cantidad libre es " + jsonTank['tankFreeCapacity']);
+                                $("#tank2OcupedCapacity").val(jsonTank['tankFreeCapacity']);
+                            }
+                        }
+                    });
+                    calculateRest();
+                } else {
+                    $("#cantidad1").val($("#mainbundle_ingress_realLiter").val());
+                    $("#cantidad2").val("");
+                }
+            });
+
+            $("#cantidad1").focusout(function () {
+                var quantity1 = redondeo($(this).val(), 2);
+                $(this).val(quantity1);
+                if ($(this).closest(".form-group").hasClass("has-error") == false) {
+                    calculateRest();
+                }
+            });
+
+            var status = $("#status-value").val();
+            //Validation
+            $('#ingress-form').validate({
+                onkeyup: false,
+                submitHandler: function (form) {
+                    if (status == "Descargado") {
+                        var cantidadTanque1 = redondeo($("#cantidad1").val(), 2);
+                        var cantidadTanque2 = redondeo($("#cantidad2").val(), 2);
+                        //Checkea capacidad del tanque 1
+                        var validezTanque1 = true;
+                        var tank1Id = $("#tanque1").val();
+                        var tank1selected = $("#tank1selectedId").val();
+                        var previousQuantity1 = redondeo($("#quantity1selected").val(), 2);
+                        if (tank1Id != "") {
+                            $.ajax({
+                                type: 'GET',
+                                url: Routing.generate('calculateCapacity', {id: tank1Id}),
+                                dataType: "json",
+                                async: false,
+                                success: function (jsonTank) {
+                                    if (tank1Id == tank1selected) {
+                                        validezTanque1 = cantidadTanque1 <= redondeo(jsonTank['tankFreeCapacity'] + previousQuantity1, 2);
+                                    } else {
+                                        validezTanque1 = cantidadTanque1 <= jsonTank['tankFreeCapacity'];
+                                    }
+                                    if (validezTanque1 == false) {
+                                        $('#tanque1').closest('.form-group').append("<span class='help-block'>La cantidad no puede superar los litros disponibles en el tanque 1.</span>").addClass('has-error');
+                                    }
+                                }
+                            });
+                        }
+                        //Checkea capacidad del tanque 2
+                        var validezTanque2 = true;
+                        var tank2Id = $("#tanque2").val();
+                        var tank2selected = $("#tank2selectedId").val();
+                        var previousQuantity2 = redondeo($("#quantity2selected").val(), 2);
+                        if (tank2Id != "") {
+                            $.ajax({
+                                type: 'GET',
+                                url: Routing.generate('calculateCapacity', {id: tank2Id}),
+                                dataType: "json",
+                                async: false,
+                                success: function (jsonTank) {
+                                    if (tank2Id == tank2selected) {
+                                        validezTanque2 = cantidadTanque2 <= redondeo(jsonTank['tankFreeCapacity'] + previousQuantity2, 2);
+                                    } else {
+                                        validezTanque2 = cantidadTanque2 <= jsonTank['tankFreeCapacity'];
+                                    }
+                                    if (validezTanque2 == false) {
+                                        $('#tanque2').closest('.form-group').append("<span class='help-block'>La cantidad no puede superar los litros disponibles en el tanque 2.</span>").addClass('has-error');
+                                    }
+                                }
+                            });
+                        }
+                        //Valida que las cantidades sean iguales a los litros reales
+                        var validezCantidades = true;
+                        var realLiters = redondeo($("#mainbundle_ingress_realLiter").val(), 2);
+                        var totalCantidadTanques = redondeo(cantidadTanque1 + cantidadTanque2, 2);
+                        if (realLiters != totalCantidadTanques) {
+                            validezCantidades = false;
+                            $('#mainbundle_ingress_realLiter').closest('.form-group').append("<span class='help-block'>La suma de las cantidades debe ser iguales a los litros reales.</span>").addClass('has-error');
+                        }
+                        if (validezTanque1 && validezTanque2 && validezCantidades) {
+                            form.submit();
+                            $("#mainbundle_ingress_submit").prop('disabled', true);
+                        }
+                    } else {
+                        form.submit();
+                    }
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    tanque1: {
+                        required: true,
+                        notEqual: true
+                    },
+                    cantidad1: {
+                        required: true,
+                        number: true,
+                        minRealLiters: true
+                    },
+                    cantidad2: {
+                        required: false,
+                        number: true,
+                        minOcupedCapacity2: true
+                    },
+                    tanque2: {
+                        required: false,
+                        notEqual: true
+                    },
+                    "mainbundle_ingress[truckDomain]": {
+                        required: true
+                    },
+                    "mainbundle_ingress[coupledDomain]": {
+                        required: true
+                    },
+                    "mainbundle_ingress[grossWeight]": {
+                        required: true,
+                        number: true
+                    },
+                    "mainbundle_ingress[tareWeight]": {
+                        required: true,
+                        number: true
+                    },
+                    "mainbundle_ingress[density]": {
+                        required: true,
+                        number: true
+                    },
+                    "mainbundle_ingress[provider]": {
+                        required: true
+                    },
+                    "mainbundle_ingress[product]": {
+                        required: true
+                    },
+                    "mainbundle_ingress[transport]": {
+                        required: true
+                    },
+                    "mainbundle_ingress[driver]": {
+                        required: true
+                    }
+                },
+                messages: {
+                    tanque1: {
+                        required: "Este campo es requerido"
+                    },
+                    cantidad1: {
+                        required: "Este campo es requerido",
+                        number: "El valor ingresado debe ser un número"
+                    },
+                    "mainbundle_ingress[truckDomain]": {
+                        required: "Este campo es requerido"
+                    },
+                    "mainbundle_ingress[coupledDomain]": {
+                        required: "Este campo es requerido"
+                    },
+                    "mainbundle_ingress[grossWeight]": {
+                        required: "Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_ingress[tareWeight]": {
+                        required: "Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_ingress[density]": {
+                        required: "Este campo es requerido",
+                        number: "El valor debe ser numerico"
+                    },
+                    "mainbundle_ingress[provider]": {
+                        required: "Este campo es requerido"
+                    },
+                    "mainbundle_ingress[product]": {
+                        required: "Este campo es requerido"
+                    },
+                    "mainbundle_ingress[transport]": {
+                        required: "Este campo es requerido"
+                    },
+                    "mainbundle_ingress[driver]": {
+                        required: "Este campo es requerido"
+                    }
+                }
+            });
+            //Functions
+            function redondeo(value, precision) {
+                if (value == "") {
+                    return 0;
+                } else {
+                    return parseFloat(parseFloat(value).toFixed(precision));
+                }
+            }
+            function calculateRest() {
+                var quantity1 = redondeo($("#cantidad1").val(), 2);
+                var realLiter = redondeo($('#mainbundle_ingress_realLiter').val(), 2);
+                var rest = redondeo(realLiter - quantity1, 2);
+                if (rest <= 0) {
+                    $("#cantidad2").val("");
+                } else {
+                    if ($("#tanque2").val() != "") {
+                        $("#cantidad2").val(rest);
+                    }
+                }
+                $("#cantidad2").trigger("focusout");
+            }
+
+            $("#mainbundle_ingress_transport").trigger("change");
+            $("#mainbundle_egress_product").trigger("change");
+            $("#tanque1").trigger("change");
+            $("#tanque2").trigger("change");
+            $("#cantidad1").trigger("focusout");
         });
-        //Functions
-        function redondeo(value, precision) {
-            if (value == "") {
-                return 0;
-            } else {
-                return parseFloat(parseFloat(value).toFixed(precision));
-            }
-        }
-        function calculateRest(){
-            var quantity1 = redondeo($("#cantidad1").val(),2);
-            var realLiter = redondeo($('#mainbundle_ingress_realLiter').val(),2);
-            var rest = redondeo(realLiter - quantity1,2);
-            if (rest <= 0) {
-                $("#cantidad2").val("");
-            } else {
-                if ($("#tanque2").val() != "") {
-                    $("#cantidad2").val(rest);
-                }
-            }
-            $("#cantidad2").trigger("focusout");
-        }
-        
-        $("#mainbundle_ingress_transport").trigger("change");
-        $("#mainbundle_egress_product").trigger("change");
-        $("#tanque1").trigger("change");
-        $("#tanque2").trigger("change");
-        $("#cantidad1").trigger("focusout");
-});
-</script>
+    </script>
 {% endblock %}
