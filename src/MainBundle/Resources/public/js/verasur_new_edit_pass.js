@@ -34,12 +34,12 @@ var verasurNewEditPass = function () {
                     }
                 });
             } else {
-                    $('#cantidad1').html("");
-                    $('#cantidad2').html("");
-                    $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
-                    $('#mainbundle_pass_product').select2("val", "");
-                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
-                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
+                $('#cantidad1').html("");
+                $('#cantidad2').html("");
+                $('#mainbundle_pass_product').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_pass_product').select2("val", "");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("<option value=''>Elige una opción</option>");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2("val", "");
             }
             return variable = "1";
         });
@@ -75,9 +75,9 @@ var verasurNewEditPass = function () {
                     }
                 });
             } else {
-                    $('#cantidad2').html("");
-                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2('val', "");
-                    $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("");
+                $('#cantidad2').html("");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').select2('val', "");
+                $('#mainbundle_new_pass_tank_destination,#mainbundle_edit_pass_tank_destination').html("");
             }
             variable2 = "1";
         });
@@ -114,7 +114,7 @@ var verasurNewEditPass = function () {
                 });
             }
         });
-        
+
 
         var quantity = parseFloat($("#mainbundle_pass_quantity").val());
         if (isNaN(quantity)) {
@@ -165,7 +165,7 @@ var verasurNewEditPass = function () {
                         }
                         $('#cantidad2').html("<span>Capacidad disponible en el tanque: " + free + "</span>");
                     }
-                    
+
                 });
             }
         });
@@ -223,13 +223,11 @@ var verasurNewEditPass = function () {
 
         $('#pass-form').validate({
             submitHandler: function (form) {
-                $("#mainbundle_pass_submit").prop('disabled', true);
-
                 var date = $("#mainbundle_pass_date_date").val();
                 var time = $("#mainbundle_pass_date_time").val();
                 var datetime = date.concat(" ").concat(time);
                 var pass_datetime = $("#pass_datetime").val();
-                if (typeof pass_datetime == 'undefined') {
+                if (typeof pass_datetime == 'undefined' || pass_datetime != datetime) {
                     $.ajax({
                         type: 'GET',
                         url: Routing.generate('checkDateTime', {date: datetime}),
@@ -239,26 +237,13 @@ var verasurNewEditPass = function () {
                                 $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
                             } else {
                                 form.submit();
+                                $("#mainbundle_pass_submit").prop('disabled', true);
                             }
                         }
                     });
                 } else {
-                    if (pass_datetime != datetime) {
-                        $.ajax({
-                            type: 'GET',
-                            url: Routing.generate('checkDateTime', {date: datetime}),
-                            dataType: "json",
-                            success: function (jsonDate) {
-                                if (jsonDate == false) {
-                                    $('#mainbundle_pass_date_time').closest('.form-group').append("<span for='mainbundle_pass_date_time' class='help-block'>Ya se ha cargado un pase con esta fecha, hora y minutos!</span>").addClass('has-error');
-                                } else {
-                                    form.submit();
-                                }
-                            }
-                        });
-                    } else {
-                        form.submit();
-                    }
+                    form.submit();
+                    $("#mainbundle_pass_submit").prop('disabled', true);
                 }
             },
             highlight: function (element) {

@@ -301,32 +301,65 @@
             //Validation
             $('#egress-form').validate({
                 submitHandler: function(form) {
-                    var value = $("#tanque1").val();
-                    var retorno = true;
-                    var retorno2 = true;
-                    if (value != "") {
+                    var cantidadTanque1 = redondeo($("#cantidad1").val(), 2);
+                    var cantidadTanque2 = redondeo($("#cantidad2").val(), 2);
+                    //Checkea capacidad del tanque 1
+                    var validezTanque1 = true;
+                    var tank1Id = $("#tanque1").val();
+                    var tank1selected = $("#tank1selectedId").val();
+                    var previousQuantity1 = redondeo($("#quantity1selected").val(), 2);
+                    if (tank1Id != "") {
                         $.ajax({
                             type: 'GET',
-                            url: Routing.generate('calculateCapacity', {id: value}),
+                            url: Routing.generate('calculateCapacity', {id: tank1Id}),
                             dataType: "json",
-                            async:false,
+                            async: false,
                             success: function (jsonTank) {
-                                if (value == tank1selected){
-                                    retorno = redondeo($('#cantidad1').val(),2) <= redondeo(jsonTank['tankOcupedCapacity']+quantity1,2);
-                                }else{
-                                   retorno = redondeo($('#cantidad1').val(),2) <= jsonTank['tankOcupedCapacity']; 
+                                if (tank1Id == tank1selected) {
+                                    validezTanque1 = cantidadTanque1 <= redondeo(jsonTank['tankOcupedCapacity'] + previousQuantity1, 2);
+                                } else {
+                                    validezTanque1 = cantidadTanque1 <= jsonTank['tankOcupedCapacity'];
+                                }
+                                if (validezTanque1 == false) {
+                                    $('#tanque1').closest('.form-group').append("<span class='help-block'>La cantidad no puede superar los litros disponibles en el tanque 1.</span>").addClass('has-error');
                                 }
                             }
                         });
                     }
-                    if (redondeo($("#mainbundle_egress_realLiter").val(),2) != redondeo(redondeo($("#cantidad1").val(),2)+redondeo($("#cantidad2").val(),2),2)){
-                        var retorno2 = false;
+                    //Checkea capacidad del tanque 2
+                    var validezTanque2 = true;
+                    var tank2Id = $("#tanque2").val();
+                    var tank2selected = $("#tank2selectedId").val();
+                    var previousQuantity2 = redondeo($("#quantity2selected").val(), 2);
+                    if (tank2Id != "") {
+                        $.ajax({
+                            type: 'GET',
+                            url: Routing.generate('calculateCapacity', {id: tank2Id}),
+                            dataType: "json",
+                            async: false,
+                            success: function (jsonTank) {
+                                if (tank2Id == tank2selected) {
+                                    validezTanque2 = cantidadTanque2 <= redondeo(jsonTank['tankOcupedCapacity'] + previousQuantity2, 2);
+                                } else {
+                                    validezTanque2 = cantidadTanque2 <= jsonTank['tankOcupedCapacity'];
+                                }
+                                if (validezTanque2 == false) {
+                                    $('#tanque2').closest('.form-group').append("<span class='help-block'>La cantidad no puede superar los litros disponibles en el tanque 2.</span>").addClass('has-error');
+                                }
+                            }
+                        });
                     }
-                    if(retorno == true && retorno2 == true){
+                    //Valida que las cantidades sean iguales a los litros reales
+                    var validezCantidades = true;
+                    var realLiters = redondeo($("#mainbundle_egress_realLiter").val(), 2);
+                    var totalCantidadTanques = redondeo(cantidadTanque1 + cantidadTanque2, 2);
+                    if (realLiters != totalCantidadTanques) {
+                        validezCantidades = false;
+                        $('#mainbundle_egress_realLiter').closest('.form-group').append("<span class='help-block'>La suma de las cantidades debe ser iguales a los litros reales.</span>").addClass('has-error');
+                    }
+                    if (validezTanque1 && validezTanque2 && validezCantidades) {
                         form.submit();
                         $("#mainbundle_egress_submit").prop('disabled', true);
-                    }else{
-                        $('#cantidad1').closest('.form-group').append("<span for='cantidad1' class='help-block'>La cantidad no puede superar los litros disponibles en el tanque y debe ser igual a los litros reales</span>").addClass('has-error');
                     }
                 },
                 highlight: function (element) {
@@ -352,8 +385,7 @@
                     },
                     cantidad1: {
                         required: true,
-                        number: true,
-                        minRealLiters: true
+                        number: true
                     },
                     cantidad2: {
                         required: false,
